@@ -1,0 +1,43 @@
+.sidebar {
+  width: 270px;
+  height: 100vh;
+  font-size: 16px;
+  border: 1px solid #444;
+  ul {
+    margin-top: 40px;
+    list-style: none;
+    padding-left: 20px;
+    li {
+      display: flex;
+      align-items: center;
+      a.ant-typography {
+        font-weight: 500;
+        display: block;
+        padding: 6px 10px;
+        font-size: 16px;
+      }
+      .icon,
+      .anticon,
+      .anticon.anticon-right.ant-collapse-arrow {
+        font-size: 20px;
+        margin-right: 20px;
+        color: #1890ff;
+        &-large {
+          font-size: 22px;
+        }
+      }
+    }
+  }
+  .ant-collapse-header {
+    padding-left: 0 !important;
+    color: #1890ff !important;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  .ant-collapse-content-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 42px !important;
+  }
+}
