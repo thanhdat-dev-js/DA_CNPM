@@ -24,9 +24,8 @@ export default function Sidebar({ workspaceIdList, handleSwitchState }) {
               {workspaceIdList?.map(item => (
                 <Typography.Link
                   key={item.workspaceId}
-                  onClick={() => handleSwitchState(item.workspaceId)}>
-                  {item.name}
-                </Typography.Link>
+                  onClick={() => handleSwitchState(item.workspaceId)}
+                ># {item.name}</Typography.Link>
               ))}
               <Button type="dashed" >+  New Workspace</Button>
             </Panel>

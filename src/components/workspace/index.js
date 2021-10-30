@@ -5,6 +5,7 @@ import DashBoard from './Dashboard';
 import Setting from './Setting';
 import Sidebar from './Sidebar';
 import './index.scss';
+import { Row, Col } from "antd";
 
 export default function Home() {
   const [state, setState] = useState('dashboard');
@@ -37,12 +38,14 @@ export default function Home() {
     <div className="app">
       <Sidebar handleSwitchState={handleSwitchState}
         workspaceIdList={workspaceIdList} />
-      <div className="main">
-        {state === 'dashboard' && <DashBoard />}
-        {state !== 'dashboard' && state !== "setting" &&
-          <Workspace workspaceId={state} />}
-        {state === 'setting' && <Setting />}
-      </div>
+      <Row style={{ flex: "1" }}>
+        <Col span={24}>
+          {state === 'dashboard' && <DashBoard />}
+          {state !== 'dashboard' && state !== "setting" &&
+            <Workspace workspaceId={state} />}
+          {state === 'setting' && <Setting />}
+        </Col>
+      </Row>
     </div>
   )
 }

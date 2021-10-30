@@ -3,8 +3,8 @@ import './firebase/config';
 import Login from "./components/login";
 
 
-import Home from './components/home/index';
 import AuthProvider from './context/AuthProvider';
+import Workspace from './components/workspace/index';
 
 
 
@@ -14,7 +14,7 @@ function App() {
       <AuthProvider>
         <Switch>
           <Route component={Login} exact path='/login' />
-          <Route component={Home} exact path='/' />
+          <Route component={Workspace} exact path='/' />
         </Switch>
       </AuthProvider>
     </Router>
