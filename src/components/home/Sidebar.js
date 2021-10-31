@@ -12,7 +12,7 @@ import './sidebar.scss';
 const { Panel } = Collapse;
 
 export default function Sidebar() {
-  const { setStatus, workspaceIdList } = useContext(AppContext);
+  const { setStatus, workspaceList } = useContext(AppContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [input, setInput] = useState('');
   const { user:
@@ -49,7 +49,7 @@ export default function Sidebar() {
         <li>
           <Collapse ghost >
             <Panel header="Workspace" className="workspace">
-              {workspaceIdList?.map(item => (
+              {workspaceList?.map(item => (
                 <Typography.Link
                   key={item.workspaceId}
                   onClick={() => setStatus(item.workspaceId)}
