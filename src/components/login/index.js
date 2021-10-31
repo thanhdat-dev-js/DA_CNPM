@@ -22,7 +22,8 @@ export default function Login() {
               avaURL: data.user.photoURL,
               workSpaceIdList: [],
               taskIdList: [],
-              createdAt: serverTimestamp()
+              createdAt: serverTimestamp(),
+              uid: data.user.uid
             })
           }
         })

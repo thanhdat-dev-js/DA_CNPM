@@ -1,53 +1,49 @@
-# Workspace
+# workspace
 
 | Thuộc tính   | Kiểu dữ liệu |
 | ------------ | ------------ |
-| workspaceId  | ObjectId     |
+| id           | ObjectId     |
 | name         | string       |
 | leaderIdList | array        |
 | memberIdList | array        |
 | columnIdList | array        |
-| createById   | ObjectId     |
+| createdById  | ObjectId     |
 | status       | string       |
-| timestamp    |              |
+| createdAt    | timestamps   |
 
 **Giải thích**
 
-* workspaceId là duy nhất để định danh workspace
+* id là duy nhất để định danh workspace
 * leaderIdList là mảng chứa tất cả Id của leader, tương tự với memberIdList. 
 * columnIdList là mảng chứa tất cả các column có trong workspace đó.
-* createById lưu giữ Id người tạo. 
+* createdById lưu giữ Id người tạo. 
 * status lưu giữ trạng thái workspace đã bị xóa hay chưa.
 
-# Person
+# person
 
-| Thuộc tính      | Kiểu dữ liệu |
-| --------------- | ------------ |
-| personId        | ObjectId     |
-| email           | string       |
-| name            | string       |
-| avaUrl          | string       |
-| workspaceIdList | array        |
-| taskIdList      | array        |
-| timestamp       |              |
+| Thuộc tính | Kiểu dữ liệu |
+| ---------- | ------------ |
+| id         | ObjectId     |
+| email      | string       |
+| name       | string       |
+| avaUrl     | string       |
+| createdAt  | timestamps   |
 
 **Giải thích**
 
 Person lưu giữ thông tin của một người sử dụng.
 * Lưu giữ các thông tin cơ bản
-* workspaceIdList là mảng chứa Id của các workspace mà người đó tham gia. tương tự với taskId
 
-
-# Column
+# column
 
 | Thuộc tính | Kiểu dữ liệu |
 | ---------- | ------------ |
-| columnId   | ObjectId     |
+| id         | ObjectId     |
 | name       | string       |
 | taskIdList | array        |
-| timestamp  |              |
+| createdAt  | timestamps   |
 
-* columnId định danh cột đó
+* id định danh cột đó
 * name là tên của cột đó
 * taskIdList là mảng chứa id các cột
 
@@ -56,7 +52,7 @@ Person lưu giữ thông tin của một người sử dụng.
 
 | Thuộc tính    | Kiểu dữ liệu |
 | ------------- | ------------ |
-| taskId        | ObjectId     |
+| id            | ObjectId     |
 | name          | string       |
 | description   | string       |
 | priority      | string       |
@@ -66,7 +62,7 @@ Person lưu giữ thông tin của một người sử dụng.
 | commentIdList | array        |
 | linkList      | array        |
 | progession    | number       |
-| timestamp     |              |
+| createdAt     | timestamps   |
 
 **Giải thích** 
 * Task có lưu trữ những thông tin cơ bản của một task. 
@@ -75,34 +71,34 @@ Person lưu giữ thông tin của một người sử dụng.
 * LogIdList là mảng chứa những logId của Task đó. 
 * Tương tự với commentIdList là mảng chứa những commentId của task đó.
 
-# Comment
+# comment
 
 | Thuộc tính | Kiểu dữ liệu |
 | ---------- | ------------ |
-| commentId  | ObjectId     |
+| id         | ObjectId     |
 | content    | string       |
 | personId   | ObjectId     |
-| timestamp  |              |
+| createdAt  | timestamps   |
 
 
 **Giải thích** 
-* personId lưu mã Id của người bình luận.
+* id lưu mã Id của người bình luận.
 
-# Log
+# log
 
 | Thuộc tính  | Kiểu dữ liệu |
 | ----------- | ------------ |
-| logId       | ObjectId     |
+| id          | ObjectId     |
 | description | string       |
 | personId    | ObjectId     |
 | behavior    | ObjectId     |
-| timestamp   |              |
+| createdAt   | timestamps   |
 
 
 
 **Giải thích**
 
-* logId định danh bản log đó
+* id định danh bản log đó
 * behavior là tên của hành động. 
 * description là mô tả hành động đó
 * personId là Id của người thực hiện hành động đó

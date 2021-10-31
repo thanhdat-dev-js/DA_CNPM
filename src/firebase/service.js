@@ -9,5 +9,5 @@ export const addDocument = async (collectionParam, data) => {
   } catch (e) {
     console.error("Error adding document: ", e);
   }
-
 }
+
