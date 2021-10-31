@@ -11,7 +11,13 @@ export default function useFirebase(collectionParam, condition, convertFunc) {
         setDocument([]);
       return;
     }
-    const q = query(collectionRef, where(condition.fieldName, condition.operator, condition.compareValue));
+    var q = [];
+    try {
+      q = query(collectionRef, where(condition.fieldName, condition.operator, condition.compareValue));
+    } catch (error) {
+      // console.log(error);
+      return;
+    }
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const documents = [];
       querySnapshot.forEach(doc => {
