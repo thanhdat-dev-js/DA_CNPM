@@ -5,8 +5,6 @@ import AppProvider from './context/AppProvider';
 import AuthProvider from './context/AuthProvider';
 import Home from './components/home/index';
 
-
-
 function App() {
   return (
     <Router>
