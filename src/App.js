@@ -7,8 +7,9 @@ import CreateTask from './components/task/CreateTask';
 import ViewTask from './components/task/ViewTask';
 import UpdateTask from './components/task/UpdateTask';
 import Home from './components/home/index';
-
+import TestComment from './components/task/TestComment';
 function App() {
+  return (<TestComment />);
   return (
     <Router>
       <AuthProvider>
