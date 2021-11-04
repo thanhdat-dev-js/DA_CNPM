@@ -1,0 +1,13 @@
+$bg: #987;
+.roundedborder {
+    border-radius: .2em;
+    border: 2px solid darken($bg, 10%);
+}
+
+.task-container{
+    font-size:1.2em; 
+    margin: 2em auto;
+    @extend .roundedborder;
+    padding: 2em;
+    width: 55%;
+}
