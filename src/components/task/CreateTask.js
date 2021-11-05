@@ -55,7 +55,7 @@ export default function CreateTask() {
     };
     
     function handleInputConfirm(e){
-        if(e.target.value != "" && !tags.includes(e.target.value)){
+        if(e.target.value !== "" && !tags.includes(e.target.value)){
             tags.push(e.target.value);
         }
         setVisibleTagInput(false);       
@@ -75,7 +75,7 @@ export default function CreateTask() {
 
     function getData(){
         const form = nameForm.current;
-        if (form['task-name'].value == ''){
+        if (form['task-name'].value === ''){
             message.error('Please enter task name');
         }
         console.log(`Task Name: ${form['task-name'].value}`);

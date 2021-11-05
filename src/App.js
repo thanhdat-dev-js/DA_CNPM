@@ -5,7 +5,6 @@ import AppProvider from './context/AppProvider';
 import AuthProvider from './context/AuthProvider';
 import CreateTask from './components/task/CreateTask';
 import ViewTask from './components/task/ViewTask';
-import UpdateTask from './components/task/UpdateTask';
 import Home from './components/home/index';
 import TestComment from './components/task/TestComment';
 function App() {
@@ -19,7 +18,6 @@ function App() {
             <Route component={Home} exact path='/'/>
             <Route component={CreateTask} exact path='/newtask' />
             <Route component={ViewTask} exact path='/:taskID'/>
-            <Route component={UpdateTask} exact path='/:taskID/u'/>
           </Switch>
         </AppProvider>
       </AuthProvider>
