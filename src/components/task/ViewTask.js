@@ -7,6 +7,7 @@ import { DatePicker, Menu, Dropdown, message, Tag, Slider, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import moment from 'moment';
 import './index.scss';
+import TestComment from './TestComment';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -287,7 +288,7 @@ export default function ViewTask() {
             <Row style={{marginTop: '10px', marginBottom: '10px' }}>
                 <TextArea disabled={!editMode} name={'task-desc'} value={desc} onChange={descChange} placeholder="Description" autoSize={{ minRows: 5, maxRows: 10 }} />
             </Row>
-                
+            <TestComment />
             <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                 { editMode ? <Button type="primary" onClick={saveChange}>Save</Button> : <Button type="primary">Comment</Button> }      
                 { editMode ? <Button type="secondary"  style={{marginLeft: '30px'}} onClick={cancelChange}>Cancel</Button> : <Button type="secondary"  style={{marginLeft: '30px'}}><Link to={`/`}>Cancel</Link></Button>}
