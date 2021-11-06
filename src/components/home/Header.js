@@ -55,13 +55,11 @@ export default function Header( {name} ) {
             </Avatar.Group>
 
             <Button type="dashed" onClick={showModal}>
-            +  New Workspace
+            +  New Member
             </Button>
 
             <Modal title="Add New Member" visible={isModalVisible} width="400px" onOk={handleOk} onCancel={handleCancel}>
             <Input
-            value={keyword}
-            onChange={handleInputChange}
             placeholder="@Username"
             />
             </Modal>
@@ -75,7 +73,6 @@ export default function Header( {name} ) {
             style={{ width: 200 }}
             placeholder="Search"
             />
-          
           </div>
           <Avatar size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf', marginRight: "5px"}}>A</Avatar>
         </div>
