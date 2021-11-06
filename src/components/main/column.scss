@@ -1,0 +1,25 @@
+.column-wrapper {
+    padding: 0px 8px;
+    .column-content {
+        width: 280px;
+    }
+    .column-header {
+        display: flex;
+        background-color: white;
+        border-radius: 5px 5px 0px 0px;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 5px 5px 10px;
+        .column-title {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .column-icons {
+            margin-left: auto;
+            margin-right: 0;
+        }
+    }
+    .task-wrapper {
+        padding: 2px 2px;
+    }
+}
