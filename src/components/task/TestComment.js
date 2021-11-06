@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import { Collapse } from 'antd';
 import CommentItem, { Editor } from './CommentItem';
@@ -34,7 +33,7 @@ export default function TestComment() {
   const [value, setValue] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [comments, setComments] = useState([defaultComment]);
-  
+
   const newComment = {
     person: user,
     commentId: Date.now(),
@@ -46,24 +45,24 @@ export default function TestComment() {
   const handleDelete = (victim) => {
     if (victim.personId !== user.personId) // recheck at serverside
       return;
-      setComments(comments.filter(c => c.commentId !== victim.commentId))
-      console.log("Delete " + victim);
+    setComments(comments.filter(c => c.commentId !== victim.commentId))
+    console.log("Delete " + victim);
   }
   const handleModify = (victim, newContent) => {
     if (victim.personId !== user.personId) // recheck at serverside
-    return;
+      return;
     setComments(comments.map(c =>
-      (c.commentId === victim.commentId) ? Object.assign(c, { content: newContent }) :c
-      ))
+      (c.commentId === victim.commentId) ? Object.assign(c, { content: newContent }) : c
+    ))
     console.log("Edit " + newContent);
   }
   const handleChange = (e) => {
     setValue(e.target.value);
-  } 
+  }
   const handleSubmit = () => {
     if (!value)
-    return;
-    
+      return;
+
     // TODO: fetch comment from server
     setTimeout(() => {
       setSubmitting(false);
@@ -78,9 +77,9 @@ export default function TestComment() {
 
   return (<>
     <div className="fluid-container">
-    <Collapse defaultActiveKey={['0']}>
-      <Panel header={comments.length + " bình luận"} key="1">
-          {comments.map((acomment) => <CommentItem 
+      <Collapse defaultActiveKey={['0']}>
+        <Panel header={comments.length + " bình luận"} key="1">
+          {comments.map((acomment) => <CommentItem
             key={acomment.commentId}
             comment={acomment}
             onDelete={handleDelete}
@@ -98,8 +97,8 @@ export default function TestComment() {
             submitting={submitting}
             value={value}
           />
-      </Panel>
-    </Collapse>
+        </Panel>
+      </Collapse>
     </div>
   </>);
 }

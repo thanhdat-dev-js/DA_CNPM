@@ -13,13 +13,10 @@ export default function Home() {
   return (
     <div className="app">
       <Sidebar />
-      <Row style={{ flex: "1" }}>
-        <Col span={24}>
-          {status === 'dashboard' && <DashBoard />}
-          {status !== 'dashboard' && <Workspace />}
-        </Col>
-      </Row>
-      <button onClick={() => signOut(getAuth())}>Dang xaut </button>
+      <div className="home-container">
+        {status === 'dashboard' && <DashBoard />}
+        {status !== 'dashboard' && <Workspace />}
+      </div>
     </div>
   )
 }

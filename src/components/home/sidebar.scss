@@ -1,30 +1,44 @@
 .sidebar {
-  width: 270px;
-  height: 100vh;
   font-size: 16px;
-  border: 1px solid #444;
+  background-color: #fff;
+  border-radius: 20px;
+  margin: 16px;
+  min-width: 200px;
+  max-width: 200px;
   ul {
-    margin-top: 40px;
     list-style: none;
-    padding-left: 20px;
+    padding: 0;
+    margin-top: 20px;
     li {
       display: flex;
       align-items: center;
-      a.ant-typography {
+      > a.ant-typography {
         font-weight: 500;
         display: block;
-        padding: 6px 10px;
-        padding-left: 0;
+        padding: 12px 10px;
+        padding-left: 10px;
         font-size: 16px;
       }
       .icon,
       .anticon,
       .anticon.anticon-right.ant-collapse-arrow {
         font-size: 20px;
-        margin-right: 20px;
         color: #1890ff;
         &-large {
           font-size: 22px;
+        }
+      }
+      span {
+        margin-left: 24px;
+      }
+      button {
+        margin-left: 28px;
+        margin-top: 10px;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #1890ff;
+        span {
+          margin-left: 0;
         }
       }
     }
@@ -34,11 +48,24 @@
     color: #1890ff !important;
     font-weight: 500;
     font-size: 16px;
+    padding-left: 20px;
   }
   .ant-collapse-content-box {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 0 42px !important;
+    padding: 0 !important;
+    // background-color: #dff0ff54;
+    > a.ant-typography {
+      font-weight: 400;
+      display: block;
+      font-size: 16px;
+      padding: 2px 16px;
+      padding-left: 28px;
+      width: 100%;
+    }
+  }
+  .active-border {
+    border-right: 4px solid #1890ff;
   }
 }
