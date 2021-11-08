@@ -1,0 +1,39 @@
+// Custom.scss
+// Include parts of Bootstrap
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "../../node_modules/bootstrap/scss/functions";
+
+// 2. Include any default variable overrides here
+$theme-colors: (
+  "primary":     #1890FF,
+  "secondary":  #222831,
+  "light":      #FFFFFF,
+  "dark":       #F0F0F0,
+  "success":    #4E9F3D,
+  "info":       #C8E3D4,
+  "warning":    #FDA65D,
+  "danger":     #F05454,
+);
+// $component-active-bg: #E30220;
+// $input-border-color: #E30220;
+
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/utilities";
+
+// 4. Include any optional Bootstrap components as you like
+@import "../../node_modules/bootstrap/scss/root";
+@import "../../node_modules/bootstrap/scss/reboot";
+@import "../../node_modules/bootstrap/scss/containers";
+@import "../../node_modules/bootstrap/scss/grid";
+
+// Helpers
+@import "../../node_modules/bootstrap/scss/helpers";
+
+// Utilities
+@import "../../node_modules/bootstrap/scss/utilities/api";
+
+// 5. Add additional custom code here

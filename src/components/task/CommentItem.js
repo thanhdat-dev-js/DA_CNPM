@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { Modal, Comment, Avatar, Form, Button, Input as TextArea } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import {timeSince} from './Utils'
+import { ExclamationCircleOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import { timeSince } from './Utils'
 
 const { confirm } = Modal;
 
@@ -78,14 +78,14 @@ export default function CommentItem({comment, mutable=false, onDelete, onModify}
   } 
 
   const displayModeParams = {
-    author: <a className="font-weight-bold">{comment.person.name}</a>,
+    author: <div className="font-weight-bold">{comment.person.name}</div>,
     datetime: timeSince(new Date(comment.timestamp)) + " ago",
     content: <p>{comment.content}</p>,
   }
 
   return (
     <div className={"container-fluid position-relative " + (
-      active? "bg bg-secondary": "bg bg-light")}
+      active? "bg bg-dark": "bg bg-light")}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
       onMouseOver={() => setActive(true)}
@@ -98,8 +98,8 @@ export default function CommentItem({comment, mutable=false, onDelete, onModify}
       <div className={"position-absolute top-0 end-0 translate-middle " + (
         (active && mutable)? "": "d-none")}
       >
-        <Button onClick={onDeleteClick}>Xoá</Button>
-        <Button onClick={handleEditClick}>Sửa</Button>
+        <Button onClick={onDeleteClick} icon={<DeleteOutlined />} size='middle' />
+        <Button onClick={handleEditClick} icon={<EditOutlined />} size='middle' />
       </div>
     </div>
   );
