@@ -262,7 +262,7 @@ export default function ViewTask() {
                         style={{minWidth: '100px'}}
                     >
                         {Members.map(member => {
-                            return <Option value={member.id}>{member.name}</Option>
+                            return <Option key={member.id} value={member.id}>{member.name}</Option>
                         })}
                     </Select>
                 </Col>
