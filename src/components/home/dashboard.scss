@@ -1,0 +1,23 @@
+.dashboard {
+  .site-calendar {
+    max-width: 300px;
+    border: 1px solid #f0f0f0;
+    border-radius: 2px;
+  }
+  .wrapper {
+    display: flex;
+    overflow: auto;
+    .content {
+      margin-right: 20px;
+      min-width: 860px;
+    }
+  }
+  .ant-col.ant-col-8 {
+    min-width: 280px;
+  }
+  .site-calendar {
+    @media (max-width: 1200px) {
+      display: none;
+    }
+  }
+}

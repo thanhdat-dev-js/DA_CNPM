@@ -6,6 +6,8 @@ export const AppContext = React.createContext();
 
 export default function AppProvider({ children }) {
   const [status, setStatus] = useState('dashboard');
+  // Tat ca state cua app duoc luu o day
+  // useEffect 
   const {
     user: { uid },
   } = React.useContext(AuthContext);
@@ -15,11 +17,13 @@ export default function AppProvider({ children }) {
       operator: "array-contains",
       compareValue: uid
     }
-  }, [uid])
+  }, [uid]);
+
   const workspaceList = useFirebase('workspace', workspaceCondition, (doc) => ({
     name: doc.data().name,
     workspaceId: doc.id
-  }))
+  }));
+
   return (
     <AppContext.Provider
       value={{

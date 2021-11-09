@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { Collapse, Typography, Button } from 'antd';
-import { AppstoreTwoTone } from '@ant-design/icons';
+import { AppstoreTwoTone, EditTwoTone } from '@ant-design/icons';
 import { AppContext } from '../../context/AppProvider';
 import { Input } from 'antd';
 import { Modal } from 'antd';
@@ -54,7 +54,7 @@ export default function Sidebar() {
                   className={status === item.workspaceId && "active-border"}
                   key={item.workspaceId}
                   onClick={() => setStatus(item.workspaceId)}
-                ># {item.name}</Typography.Link>
+                > {item.name}<EditTwoTone /></Typography.Link>
               ))}
               <Button type="dashed" onClick={showModal}  >+  New Workspace</Button>
             </Panel>

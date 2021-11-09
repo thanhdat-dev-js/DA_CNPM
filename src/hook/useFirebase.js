@@ -32,6 +32,6 @@ export default function useFirebase(collectionParam, condition, convertFunc) {
     return () => {
       unsubscribe();
     }
-  }, [collection, condition])
+  }, [collectionParam, condition])
   return document;
 }
