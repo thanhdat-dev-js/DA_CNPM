@@ -37,12 +37,11 @@ export default function Header( {name} ) {
 
   return (
     <div className="header">
-        <div className="header-left">
-          <h1> {name}</h1>
+        <div  className="header-left">
+          <h1>Team</h1>
         </div>
-
         <div className="header-center">
-            <Avatar.Group maxCount={3} size="large" maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
+            <Avatar.Group maxCount={2} size="large" maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
                  {
                     Members.map((item) => (
                     <Tooltip key={item.name} title={item.name} placement="top">  
@@ -55,29 +54,25 @@ export default function Header( {name} ) {
             </Avatar.Group>
 
             <Button type="dashed" onClick={showModal}>
-            +  New Workspace
+            +  New Member
             </Button>
 
             <Modal title="Add New Member" visible={isModalVisible} width="400px" onOk={handleOk} onCancel={handleCancel}>
             <Input
-            value={keyword}
-            onChange={handleInputChange}
             placeholder="@Username"
             />
             </Modal>
         </div>
         
         <div className="header-right">
-          <div> 
           <Input.Search
             value={keyword}
             onChange={handleInputChange}
             style={{ width: 200 }}
             placeholder="Search"
             />
-          
-          </div>
-          <Avatar size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf', marginRight: "5px"}}>A</Avatar>
+  
+          <Avatar size ="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf',  marginLeft: "10px"}}>A</Avatar>
         </div>
     </div>
   )
