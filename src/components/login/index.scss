@@ -4,7 +4,7 @@
     align-items: center;
     height: 100vh;
     padding: 0 20px;
-    background-color: rgb(255, 255, 255);
+    background-color: #f8f8f8;
     .login-wrapper {
         display: flex;
         flex-direction: column;
@@ -16,7 +16,7 @@
         padding: 20px;
         border-radius: 10px;
         box-shadow: 2px 2px 11px 1px #b1b1b1;
-        background-color: #f8f8f8;
+        background-color: rgb(255, 255, 255);
         .image-wrapper, .btn-wrapper {
             display: flex;
             justify-content: center;
