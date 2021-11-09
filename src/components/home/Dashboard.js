@@ -1,12 +1,13 @@
+import { Button } from 'antd';
 import React from 'react';
-import { Link } from 'react-router-dom';
-export default function Dashboard() {
+
+export default function Dashboard({openCTV, openVTV}) {
   return (
     <div className="dashboard">
       <h1>This is a dashboard</h1>
-      <Link to={`/newtask`}>Create New Task</Link>
+      <Button onClick={openCTV}>Create Task</Button>
+      <Button onClick={openVTV}>View Task</Button>
       <br />
-      <Link to={`/A12`}>View Task</Link>
     </div>
   )
 }
