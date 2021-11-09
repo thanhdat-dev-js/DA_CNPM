@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { signOut, getAuth } from 'firebase/auth';
 import { Input, Col, Row, Button } from 'antd';
-import { DatePicker, Menu, Dropdown, message, Tag, Tooltip, Slider, Select } from 'antd';
-import { Link } from 'react-router-dom';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import { DatePicker, Menu, Dropdown, message, Tag, Slider, Select, Modal } from 'antd';
+import { PlusOutlined } from '@ant-design/icons'
 import moment from 'moment';
 import './index.scss';
 
@@ -14,11 +13,14 @@ function getDay(){
     let date_raw = newDate.getDate();
     let month_raw = newDate.getMonth() + 1;
     let year = newDate.getFullYear();
-
     return date_raw  + "/" + month_raw +  "/" + year
 }
 
-let Members = [
+// Get User Name
+const Name = "Dieu Ai";
+
+// Get Member in Workspace
+const Members = [
     {name:"Hoang Lam", id: "a1"},
     {name:"Hoang Phuc", id: "a2"},
     {name:"Thanh Dat", id: "a3"},
@@ -26,24 +28,23 @@ let Members = [
     {name:"Phuc Thinh", id: "a5"}
 ]
 
+const { TextArea } = Input;
+const { Option } = Select;
 
-const Title = '';
-const CreateDate = getDay();
-const Name = "Dieu Ai";
-const initPrio = "Low"
-const initTag = [];
-let AA = []; 
-const initProg = 0;
-const initDesc = '';
+export default function CreateTask({visible, close}) {
+    // For saving input
+    const [title, setTitle] = useState('');
+    const CreateDate = getDay();
+    const Author = Name;
+    const [dl, setDl] = useState('');
+    const [priority, setPriority] = useState("Low");
+    const [tags, setTags] = useState([]);
+    const [AA, setAA] = useState([]);
+    const [desc, setDesc] = useState('');
 
-export default function CreateTask() {
-    const nameForm = useRef(null);
-    const { TextArea } = Input;
-    const { Option } = Select;
-    const [priority, setPriority] = useState(initPrio);
-    const [tags, setTags] = useState(initTag);
+    //Variable for make visible
     const [visibleTagInput, setVisibleTagInput] = useState(false);
-
+    
     function tagClose (removedTag) {
         setVisibleTagInput(false);
         const ttags = tags.filter(tag => tag !== removedTag);
@@ -61,10 +62,6 @@ export default function CreateTask() {
         setVisibleTagInput(false);       
     };
 
-    function handleAA (value){
-        AA = value;
-    }
-
     const p = (
         <Menu onClick={(e) => {setPriority(e.key)}}>
           <Menu.Item key="Low">Low</Menu.Item>
@@ -73,51 +70,83 @@ export default function CreateTask() {
         </Menu>
     );
 
-    function getData(){
-        const form = nameForm.current;
-        if (form['task-name'].value === ''){
+    function titleChange(event) {    
+        setTitle(event.target.value);
+    }
+
+    function dateChange(date, dateString) {
+        setDl(dateString);
+    }
+
+    function handleAA (value){
+        setAA(value);
+    }
+
+    function descChange(event) {    
+        setDesc(event.target.value);
+    }
+
+    function resetInput(){
+        setTitle();
+        setDl('');
+        setPriority('Low');
+        setTags([]);
+        setAA([]);
+        setDesc('');
+    }
+
+    // Push Data to DB
+    function queryData(){
+        if (title === '' || AA === []){
             message.error('Please enter task name');
         }
-        console.log(`Task Name: ${form['task-name'].value}`);
-        console.log(`Task Create Date: ${CreateDate}`);
-        console.log(`Task Deadline: ${form['ddate'].value}`);
-        if(AA == []){
-            message.error('Please choose the assignee(s)');
+        else{
+            console.log(`Task Name: ${title}`);  
+            console.log(`Create Date: ${CreateDate}`);
+            console.log(`Dl: ${dl}`);  
+            console.log(`Create by: ${Author}`);
+            console.log(`Priority: ${priority}`)
+            console.log(`Tag: ${tags}`);
+            console.log(`Assigned to: ${AA}`);
+            console.log(`Description: ${desc}`);
+            resetInput();
+            close();
         }
-        console.log(AA);
-        console.log(`Task Priority: ${priority}`);
-        console.log(`Task Desc: ${form['task-desc'].value}`);
-        
     }
 
     return (
-        <form className="task-container" ref={nameForm} >
+        <Modal visible={visible} width={800} onCancel={() => {resetInput(); close();}} footer={
+            <div>
+                <Button type="primary" onClick={queryData}>Create</Button>
+            </div>
+        }>
             {/* Title */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                <Col span={15}>
-                    <Input  defaultValue={Title} name={'task-name'} 
-                            placeholder="Title" size="large" bordered={false}  
-                            style={{paddingLeft: 0, fontSize: '25px', fontWeight:'bold'}}/>
+            <Row className="title-row">
+                <Col span={14}>
+                <Input value={title} onChange={titleChange} 
+                        placeholder="Title" size="large" bordered={false} />
                 </Col>
             </Row>
 
             {/* Date & Deadline */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                <Col span={4}>Create Date:</Col>
+            <Row className="normal-row">
+                <Col span={4} className='element-text'>Create Date:</Col>
                 <Col span={5}>
-                    <DatePicker name={'cdate'} defaultValue={moment(CreateDate, dateFormat)} format={dateFormat} disabled= {true}/>
+                    <input type="text" size={10} value={CreateDate} readOnly />
                 </Col>
-                <Col span={4} style={{marginLeft: '20px'}}>Deadline:</Col>
+                <Col span={4} className='element-text align-pair' >Deadline:</Col>
                 <Col span={5}>
-                    <DatePicker name={'ddate'} format={dateFormat} />
+                    <DatePicker value={dl !== "" ? moment(dl,dateFormat) : null} onChange={dateChange} format={dateFormat}/>
                 </Col>
             </Row>
 
             {/* Creator & Priority */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                <Col span={4}>Create By:</Col>
-                <Col span={5}><Input disabled='true' value={Name}/></Col>  
-                <Col span={4} style={{marginLeft: '20px'}}>Priority:</Col>
+            <Row className="normal-row">
+                <Col span={4} className='element-text'>Create By:</Col>
+                <Col span={5}> 
+                    <input type="text" size={10} value={Author} readOnly /> 
+                </Col>
+                <Col span={4} className='element-text align-pair'>Priority:</Col>
                 <Col span={5}>
                     <Dropdown overlay={p}>
                         <Button> {priority} </Button>
@@ -126,18 +155,17 @@ export default function CreateTask() {
             </Row>
 
             {/* Tag */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                <Col span={4}>Tag:</Col>
+            <Row className="normal-row">
+                <Col span={4} className='element-text'>Tag:</Col>
                     {tags.map((tag) => {
-                    const isLongTag = tag.length > 10;
+                    const isLongTag = tag.length > 15;
                     const tagElem = (
                     <Tag
-                        className="edit-tag"
                         key={tag}
-                        closable= 'true'
+                        closable= {true}
                         onClose={() => tagClose(tag)}
                     >
-                    <span> {isLongTag ? `${tag.slice(0, 7)}...` : tag} </span>
+                    <span> {isLongTag ? `${tag.slice(0, 15)}...` : tag} </span>
                     </Tag>
                     );
                     return tagElem;
@@ -164,51 +192,43 @@ export default function CreateTask() {
             </Row>
 
             {/* Assigns */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                <Col span={4}>Assign to:</Col>
+            <Row className="normal-row">
+                <Col span={4} className="element-text">Assign to:</Col>
                 <Col span={15}>
                     <Select
                         name = {'assign'}
                         mode="multiple"
                         style={{ width: '100%' }}
                         placeholder="Select person/people to assign"
-                        defaultValue={AA}
+                        value={AA}
                         optionLabelProp="label"
                         onChange = {handleAA}
+                        style={{minWidth: '150px'}}
                     >
                         {Members.map(member => {
-                            return <Option value={member.name}>{member.name}</Option>
+                            return <Option value={member.id}>{member.name}</Option>
                         })}
                     </Select>
                 </Col>
             </Row>
 
             {/* Progression */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                <Col span={4}>Progression:</Col>
-                <Col span={8}>
-                    <Slider defaultValue={initProg} disabled='true' />
-                </Col>
+            <Row className="normal-row">
+                <Col span={4} className="element-text">Progression:</Col>
                 <Col span={3}>
-                    <Input defaultValue={initProg} disabled='true' suffix="%"/>
+                    <input type="text" size={10} value={0} readOnly />
                 </Col>
-                
             </Row>
 
             {/* Description */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                Description:
+            <Row className="normal-row">
+                <h1 className="element-text">Description:</h1> 
             </Row>
             
             {/* DescTextArea */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                <TextArea defaultValue={initDesc} placeholder="Description" autoSize={{ minRows: 5, maxRows: 10 }} name={'task-desc'}/>
+            <Row className="desc-row">
+                <TextArea  value={desc} bordered={false} onChange={descChange} placeholder="Description" autoSize={{ minRows: 5, maxRows: 10 }} />
             </Row>
-                
-            <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '10px'}}>
-                <Button type="primary" onClick={getData}>Create</Button>
-                <Button type="secondary" href='/' style={{marginLeft: '30px'}}>Cancel</Button>
-            </div>
-        </form>
+        </Modal>
     )
 }
