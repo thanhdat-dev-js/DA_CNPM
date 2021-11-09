@@ -1,66 +1,64 @@
-.ant-modal-content{
+.ant-modal-content {
     border-radius: 15px;
-    .button-div{
+    .button-div {
         display: flex;
         justify-content: flex-end;
         margin-top: 10px;
     }
-    
-    .element-text{
-        font-size: 18px; 
+
+    .element-text {
+        font-size: 18px;
         font-weight: 600;
         user-select: none;
     }
 
-    input{
+    input {
         border: none;
     }
 
-    .title-row input{
+    .title-row input {
         border: none;
-        font-size: 30px; 
+        font-size: 30px;
         font-weight: bold;
     }
 
-    .input:focus{
+    .input:focus {
         outline: none !important;
     }
 
-    .ant-modal-body{
+    .ant-modal-body {
         padding: 50px;
-        .title-row{
+        .title-row {
             margin-top: 10px;
             margin-bottom: 10px;
-            .ant-col{
-                .ant-input{
-                    padding-left: 0; 
-                    font-size: 30px; 
+            .ant-col {
+                .ant-input {
+                    padding-left: 0;
+                    font-size: 30px;
                     font-weight: bold;
                 }
             }
-            .button-div{
-                margin-left: auto; 
+            .button-div {
+                margin-left: auto;
                 margin-right: 20px;
             }
-
         }
 
-        .normal-row{
+        .normal-row {
             margin-top: 10px;
-            margin-bottom: 10px ;
-            .align-pair{
+            margin-bottom: 10px;
+            .align-pair {
                 margin-left: 20px;
             }
             height: 32px;
         }
 
-        .desc-row{
+        .desc-row {
             margin-top: 10px;
-            margin-bottom: 10px ;
-            .align-pair{
+            margin-bottom: 10px;
+            .align-pair {
                 margin-left: 20px;
             }
         }
     }
 }
-

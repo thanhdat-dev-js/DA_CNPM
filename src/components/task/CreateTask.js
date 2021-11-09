@@ -8,12 +8,12 @@ import './index.scss';
 
 const dateFormat = 'DD/MM/YYYY';
 
-function getDay(){
+function getDay() {
     let newDate = new Date()
     let date_raw = newDate.getDate();
     let month_raw = newDate.getMonth() + 1;
     let year = newDate.getFullYear();
-    return date_raw  + "/" + month_raw +  "/" + year
+    return date_raw + "/" + month_raw + "/" + year
 }
 
 // Get User Name
@@ -21,17 +21,17 @@ const Name = "Dieu Ai";
 
 // Get Member in Workspace
 const Members = [
-    {name:"Hoang Lam", id: "a1"},
-    {name:"Hoang Phuc", id: "a2"},
-    {name:"Thanh Dat", id: "a3"},
-    {name:"Dieu Ai", id: "a4"},
-    {name:"Phuc Thinh", id: "a5"}
+    { name: "Hoang Lam", id: "a1" },
+    { name: "Hoang Phuc", id: "a2" },
+    { name: "Thanh Dat", id: "a3" },
+    { name: "Dieu Ai", id: "a4" },
+    { name: "Phuc Thinh", id: "a5" }
 ]
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-export default function CreateTask({visible, close}) {
+export default function CreateTask({ visible, close }) {
     // For saving input
     const [title, setTitle] = useState('');
     const CreateDate = getDay();
@@ -44,33 +44,33 @@ export default function CreateTask({visible, close}) {
 
     //Variable for make visible
     const [visibleTagInput, setVisibleTagInput] = useState(false);
-    
-    function tagClose (removedTag) {
+
+    function tagClose(removedTag) {
         setVisibleTagInput(false);
         const ttags = tags.filter(tag => tag !== removedTag);
         setTags(ttags);
     };
 
-    function showTagInput(){
+    function showTagInput() {
         setVisibleTagInput(true);
     };
-    
-    function handleInputConfirm(e){
-        if(e.target.value !== "" && !tags.includes(e.target.value)){
+
+    function handleInputConfirm(e) {
+        if (e.target.value !== "" && !tags.includes(e.target.value)) {
             tags.push(e.target.value);
         }
-        setVisibleTagInput(false);       
+        setVisibleTagInput(false);
     };
 
     const p = (
-        <Menu onClick={(e) => {setPriority(e.key)}}>
-          <Menu.Item key="Low">Low</Menu.Item>
-          <Menu.Item key="Medium">Medium</Menu.Item>
-          <Menu.Item key="High">High</Menu.Item>
+        <Menu onClick={(e) => { setPriority(e.key) }}>
+            <Menu.Item key="Low">Low</Menu.Item>
+            <Menu.Item key="Medium">Medium</Menu.Item>
+            <Menu.Item key="High">High</Menu.Item>
         </Menu>
     );
 
-    function titleChange(event) {    
+    function titleChange(event) {
         setTitle(event.target.value);
     }
 
@@ -78,15 +78,15 @@ export default function CreateTask({visible, close}) {
         setDl(dateString);
     }
 
-    function handleAA (value){
+    function handleAA(value) {
         setAA(value);
     }
 
-    function descChange(event) {    
+    function descChange(event) {
         setDesc(event.target.value);
     }
 
-    function resetInput(){
+    function resetInput() {
         setTitle();
         setDl('');
         setPriority('Low');
@@ -96,14 +96,14 @@ export default function CreateTask({visible, close}) {
     }
 
     // Push Data to DB
-    function queryData(){
-        if (title === '' || AA === []){
+    function queryData() {
+        if (title === '' || AA === []) {
             message.error('Please enter task name');
         }
-        else{
-            console.log(`Task Name: ${title}`);  
+        else {
+            console.log(`Task Name: ${title}`);
             console.log(`Create Date: ${CreateDate}`);
-            console.log(`Dl: ${dl}`);  
+            console.log(`Dl: ${dl}`);
             console.log(`Create by: ${Author}`);
             console.log(`Priority: ${priority}`)
             console.log(`Tag: ${tags}`);
@@ -115,7 +115,7 @@ export default function CreateTask({visible, close}) {
     }
 
     return (
-        <Modal visible={visible} width={800} onCancel={() => {resetInput(); close();}} footer={
+        <Modal visible={visible} width={800} onCancel={() => { resetInput(); close(); }} footer={
             <div>
                 <Button type="primary" onClick={queryData}>Create</Button>
             </div>
@@ -123,7 +123,7 @@ export default function CreateTask({visible, close}) {
             {/* Title */}
             <Row className="title-row">
                 <Col span={14}>
-                <Input value={title} onChange={titleChange} 
+                    <Input value={title} onChange={titleChange}
                         placeholder="Title" size="large" bordered={false} />
                 </Col>
             </Row>
@@ -136,15 +136,15 @@ export default function CreateTask({visible, close}) {
                 </Col>
                 <Col span={4} className='element-text align-pair' >Deadline:</Col>
                 <Col span={5}>
-                    <DatePicker value={dl !== "" ? moment(dl,dateFormat) : null} onChange={dateChange} format={dateFormat}/>
+                    <DatePicker value={dl !== "" ? moment(dl, dateFormat) : null} onChange={dateChange} format={dateFormat} />
                 </Col>
             </Row>
 
             {/* Creator & Priority */}
             <Row className="normal-row">
                 <Col span={4} className='element-text'>Create By:</Col>
-                <Col span={5}> 
-                    <input type="text" size={10} value={Author} readOnly /> 
+                <Col span={5}>
+                    <input type="text" size={10} value={Author} readOnly />
                 </Col>
                 <Col span={4} className='element-text align-pair'>Priority:</Col>
                 <Col span={5}>
@@ -157,19 +157,19 @@ export default function CreateTask({visible, close}) {
             {/* Tag */}
             <Row className="normal-row">
                 <Col span={4} className='element-text'>Tag:</Col>
-                    {tags.map((tag) => {
+                {tags.map((tag) => {
                     const isLongTag = tag.length > 15;
                     const tagElem = (
-                    <Tag
-                        key={tag}
-                        closable= {true}
-                        onClose={() => tagClose(tag)}
-                    >
-                    <span> {isLongTag ? `${tag.slice(0, 15)}...` : tag} </span>
-                    </Tag>
+                        <Tag
+                            key={tag}
+                            closable={true}
+                            onClose={() => tagClose(tag)}
+                        >
+                            <span> {isLongTag ? `${tag.slice(0, 15)}...` : tag} </span>
+                        </Tag>
                     );
                     return tagElem;
-                    })}
+                })}
                 <Col>
                     {(visibleTagInput && tags.length < 4) ? (
                         <Input
@@ -178,16 +178,16 @@ export default function CreateTask({visible, close}) {
                             className="tag-input"
                             onBlur={(e) => handleInputConfirm(e)}
                             onPressEnter={(e) => handleInputConfirm(e)}
-                            placeholder = 'Enter @Tag'
+                            placeholder='Enter @Tag'
                         />
-                    ) 
-                    :
-                    (
-                        (tags.length < 4 &&
-                        <Tag className="site-tag-plus" onClick={showTagInput}>
-                            <PlusOutlined /> New Tag
-                        </Tag>)
-                    )}
+                    )
+                        :
+                        (
+                            (tags.length < 4 &&
+                                <Tag className="site-tag-plus" onClick={showTagInput}>
+                                    <PlusOutlined /> New Tag
+                                </Tag>)
+                        )}
                 </Col>
             </Row>
 
@@ -196,17 +196,17 @@ export default function CreateTask({visible, close}) {
                 <Col span={4} className="element-text">Assign to:</Col>
                 <Col span={15}>
                     <Select
-                        name = {'assign'}
+                        name={'assign'}
                         mode="multiple"
                         style={{ width: '100%' }}
                         placeholder="Select person/people to assign"
                         value={AA}
                         optionLabelProp="label"
-                        onChange = {handleAA}
-                        style={{minWidth: '150px'}}
+                        onChange={handleAA}
+                        style={{ minWidth: '150px' }}
                     >
                         {Members.map(member => {
-                            return <Option value={member.id}>{member.name}</Option>
+                            return <Option value={member.name}>{member.name}</Option>
                         })}
                     </Select>
                 </Col>
@@ -222,12 +222,12 @@ export default function CreateTask({visible, close}) {
 
             {/* Description */}
             <Row className="normal-row">
-                <h1 className="element-text">Description:</h1> 
+                <h1 className="element-text">Description:</h1>
             </Row>
-            
+
             {/* DescTextArea */}
             <Row className="desc-row">
-                <TextArea  value={desc} bordered={false} onChange={descChange} placeholder="Description" autoSize={{ minRows: 5, maxRows: 10 }} />
+                <TextArea value={desc} bordered={false} onChange={descChange} placeholder="Description" autoSize={{ minRows: 5, maxRows: 10 }} />
             </Row>
         </Modal>
     )

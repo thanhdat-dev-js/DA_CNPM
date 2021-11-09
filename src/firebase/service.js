@@ -10,4 +10,3 @@ export const addDocument = async (collectionParam, data) => {
     console.error("Error adding document: ", e);
   }
 }
-

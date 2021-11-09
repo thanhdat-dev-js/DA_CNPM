@@ -6,11 +6,31 @@ export const AppContext = React.createContext();
 
 export default function AppProvider({ children }) {
   const [status, setStatus] = useState('dashboard');
+  // status = {
+  //   name: "asd",
+  //   workspaceId : "asdasdas"
+  // }
+  const [memberList, setMemberList] = useState([]);
+  // memberList = [
+  //   {
+  //     avaURL: "asdas",
+  //     name: "asda",
+  //     uid: "asdasd"
+  //   }, {
+  //     avaURL: "asdas",
+  //     name: "asda",
+  //     uid: "asdasd"
+  //   }
+  // ]
+
+
+
   // Tat ca state cua app duoc luu o day
   // useEffect 
   const {
     user: { uid },
   } = React.useContext(AuthContext);
+
   const workspaceCondition = React.useMemo(() => {
     return {
       fieldName: "memberIdList",

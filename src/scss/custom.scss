@@ -6,18 +6,17 @@
 
 // 2. Include any default variable overrides here
 $theme-colors: (
-  "primary":     #1890FF,
-  "secondary":  #222831,
-  "light":      #FFFFFF,
-  "dark":       #F0F0F0,
-  "success":    #4E9F3D,
-  "info":       #C8E3D4,
-  "warning":    #FDA65D,
-  "danger":     #F05454,
+  "primary": #1890ff,
+  "secondary": #222831,
+  "light": #ffffff,
+  "dark": #f0f0f0,
+  "success": #4e9f3d,
+  "info": #c8e3d4,
+  "warning": #fda65d,
+  "danger": #f05454,
 );
 // $component-active-bg: #E30220;
 // $input-border-color: #E30220;
-
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "../../node_modules/bootstrap/scss/variables";

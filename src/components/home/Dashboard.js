@@ -80,42 +80,41 @@ const tasks = [
   }
 ]
 
-
-// export default function Dashboard() {
-//   return (
-//     <div className="dashboard">
-//       <div >
-//         <h1>This is a header</h1>
-//       </div>
-//       <div className="wrapper">
-//         <div className="content">
-//           <Row gutter={[16, 12]}>
-//             {tasks.map((task) => {
-//               return (
-//                 <Col span={8}>
-//                   <div className="task-wrapper">
-//                     <Task key={task.id} name={task.name} progression={task.progression} deadline={task.deadline} />
-//                   </div>
-//                 </Col>
-//               )
-//             })}
-//           </Row>
-//         </div>
-//         <div className="site-calendar">
-//           <Calendar fullscreen={false} />
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-export default function Dashboard({ openCTV, openVTV }) {
+export default function Dashboard() {
   return (
     <div className="dashboard">
-      <h1>This is a dashboard</h1>
-      <Button onClick={openCTV}>Create Task</Button>
-      <Button onClick={openVTV}>View Task</Button>
-      <br />
+      <div >
+        <h1>This is a header</h1>
+      </div>
+      <div className="wrapper">
+        <div className="content">
+          <Row gutter={[16, 12]}>
+            {tasks.map((task) => {
+              return (
+                <Col span={8}>
+                  <div className="task-wrapper">
+                    <Task key={task.id} name={task.name} progression={task.progression} deadline={task.deadline} />
+                  </div>
+                </Col>
+              )
+            })}
+          </Row>
+        </div>
+        <div className="site-calendar">
+          <Calendar fullscreen={false} />
+        </div>
+      </div>
     </div>
   )
 }
+// export default function Dashboard({ openCTV, openVTV }) {
+//   return (
+//     <div className="dashboard">
+//       <h1>This is a dashboard</h1>
+//       <Button onClick={openCTV}>Create Task</Button>
+//       <Button onClick={openVTV}>View Task</Button>
+//       <br />
+//     </div>
+//   )
+// }
 
