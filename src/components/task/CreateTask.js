@@ -206,7 +206,7 @@ export default function CreateTask({visible, close}) {
                         style={{minWidth: '150px'}}
                     >
                         {Members.map(member => {
-                            return <Option value={member.id}>{member.name}</Option>
+                            return <Option key={member.id} value={member.id}>{member.name}</Option>
                         })}
                     </Select>
                 </Col>

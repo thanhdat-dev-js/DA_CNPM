@@ -45,7 +45,7 @@ export default function Header( {name} ) {
             <Avatar.Group maxCount={3} size="large" maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
                  {
                     Members.map((item) => (
-                    <Tooltip title={item.name} placement="top">  
+                    <Tooltip key={item.name} title={item.name} placement="top">  
                       <Avatar style={{ backgroundColor: '#1890ff' }} >{item.key}</Avatar>
                     </Tooltip>
                       )
