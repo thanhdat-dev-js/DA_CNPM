@@ -20,8 +20,6 @@ export default function Login() {
               email: data.user.email,
               name: data.user.displayName,
               avaURL: data.user.photoURL,
-              workSpaceIdList: [],
-              taskIdList: [],
               createdAt: serverTimestamp(),
               uid: data.user.uid
             })

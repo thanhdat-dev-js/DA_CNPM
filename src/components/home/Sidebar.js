@@ -12,7 +12,7 @@ import './sidebar.scss';
 const { Panel } = Collapse;
 
 export default function Sidebar() {
-  const { setStatus, workspaceList } = useContext(AppContext);
+  const { status, setStatus, workspaceList } = useContext(AppContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [input, setInput] = useState('');
   const { user:
@@ -42,15 +42,16 @@ export default function Sidebar() {
   return (
     <div className="sidebar">
       <ul>
-        <li onClick={() => setStatus('dashboard')}>
+        <li onClick={() => setStatus('dashboard')} className={status === 'dashboard' && "active-border"}>
           <AppstoreTwoTone className="icon" />
-          <Typography.Link>DashBoard</Typography.Link>
+          <Typography.Link >DashBoard</Typography.Link>
         </li>
         <li>
           <Collapse ghost >
-            <Panel header="Workspace" className="workspace">
+            <Panel header="Workspace" >
               {workspaceList?.map(item => (
                 <Typography.Link
+                  className={status === item.workspaceId && "active-border"}
                   key={item.workspaceId}
                   onClick={() => setStatus(item.workspaceId)}
                 ># {item.name}</Typography.Link>

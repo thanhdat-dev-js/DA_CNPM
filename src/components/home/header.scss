@@ -1,3 +1,30 @@
-.header {
-  background-color: aqua;
+.header{
+  display: flex;
+  justify-content: space-between;
+  background-color: #FFFFFF;
+  font-size: 0.9em;
+  border-radius: 10px;
+  border-style: groove;
+  border-color: #F7F7F4;
+  margin: 10px 10px 10px;
+  box-shadow: inset 10px 10px 5px #F7F7F4;
+}
+.header >* >*{
+  padding: 0 15px;
+}
+.header-left{
+  font-family: nunito;
+  font-weight: bold;
+  //display: flex;
+  //align-items: center;
+}
+.header-center{
+  margin: 5px 10px 5px;
+
+  display: flex;
+  align-items: center;
+}
+.header-right{
+  display: flex;
+  align-items: center;
 }

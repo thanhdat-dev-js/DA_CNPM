@@ -5,6 +5,7 @@ import { DatePicker, Menu, Dropdown, message, Tag, Slider, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import moment from 'moment';
 import './index.scss';
+import TestComment from './TestComment';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -29,10 +30,6 @@ const TaskInfo = {
     progress: 40,
     desc: "Sample Text Sample Text Sample Text Sample Text Sample Text"
 }
-
-// User 
-const CreateDate = '2/12/2021';
-const Name = "Dieu Ai";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -214,7 +211,7 @@ export default function ViewTask({visible, close}) {
             <Row className="normal-row">
                 <Col span={4} className="element-text">Create Date:</Col>
                 <Col span={5}>
-                    <input type="text" size={10} value={CreateDate} readOnly />
+                    <input type="text" size={10} value={TaskInfo.createDate} readOnly />
                 </Col>
                 <Col span={4} className="element-text align-pair">Deadline:</Col>
                 <Col span={5}>
@@ -229,7 +226,7 @@ export default function ViewTask({visible, close}) {
             <Row className="normal-row">
                 <Col span={4} className="element-text">Create By:</Col>
                 <Col span={5}>
-                    <input type="text" size={10} value={Name} readOnly /> 
+                    <input type="text" size={10} value={TaskInfo.Name} readOnly /> 
                 </Col >  
                 <Col span={4} className='element-text align-pair'>Priority:</Col>
                 <Col span={5}>
@@ -336,6 +333,7 @@ export default function ViewTask({visible, close}) {
             <Row className="desc-row">
                 <TextArea readOnly={!editMode} bordered={false} name={'task-desc'} value={desc} onChange={descChange} placeholder="Description" autoSize={{ minRows: 5, maxRows: 10 }} />
             </Row>
+            {!editMode && <TestComment />}
         </Modal>
     )
 }
