@@ -169,9 +169,8 @@ export default function ViewTask({visible, close}) {
         <Modal visible={visible} width={800} onCancel={closeAbrupt} footer={
             <div>
                 { 
-                editMode 
-                ? <Button type="primary" onClick={saveChange}>Save</Button> 
-                : (<Button type="primary">Comment</Button>) 
+                editMode && 
+                <Button type="primary" onClick={saveChange}>Save</Button> 
                 } 
                 {
                 editMode &&
@@ -291,9 +290,9 @@ export default function ViewTask({visible, close}) {
                         onChange = {handleAA}
                         style={{minWidth: '150px'}}
                     >
-                    {Members.map(member => {
-                        return <Option value={member.id}>{member.name}</Option>
-                    })}
+                        {Members.map(member => {
+                            return <Option key={member.id} value={member.id}>{member.name}</Option>
+                        })}
                     </Select>
                     : 
                     <div>
