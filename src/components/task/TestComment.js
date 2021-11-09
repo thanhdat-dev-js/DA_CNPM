@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Collapse } from 'antd';
-import CommentItem, { Editor } from './CommentItem';
+import { Button, Input } from 'antd';
+import { CaretDownOutlined, CaretUpOutlined, SendOutlined } from '@ant-design/icons';
+import CommentItem from './CommentItem';
 
-const { Panel } = Collapse;
+const { TextArea } = Input;
 
 // TODO: remove default value
 const defaultUser = {
@@ -62,23 +63,31 @@ export default function TestComment() {
   const handleSubmit = () => {
     if (!value)
       return;
-
     // TODO: fetch comment from server
+    setSubmitting(true);
     setTimeout(() => {
       setSubmitting(false);
+      console.log("Submitting to server: " + value);
+      setComments([...comments, newComment]);
+      setValue("");
     }, 500);
-
-    console.log("Submitting to server: " + value);
-    setComments([...comments, newComment]);
-
-    setValue("");
-    setSubmitting(true);
   }
 
+  const [collapse, setCollapse] = useState(true);
   return (<>
-    <div className="fluid-container">
-      <Collapse defaultActiveKey={['0']}>
-        <Panel header={comments.length + " bình luận"} key="1">
+    <div className="container">
+      <Button
+        onClick={() => setCollapse(!collapse)}
+        type="primary"
+        className="mb-2"
+      >
+        Comment ({comments.length})
+        {collapse ? <CaretDownOutlined /> : <CaretUpOutlined />}
+      </Button>
+      <br/>
+
+      <div className={collapse ? "d-none" : ""}>
+        <div className='mb-2'>
           {comments.map((acomment) => <CommentItem
             key={acomment.commentId}
             comment={acomment}
@@ -86,19 +95,25 @@ export default function TestComment() {
             onModify={handleModify}
             mutable={isAuthorized(user, acomment)}
           />)}
-
-          <Editor
-            placeholder="Bình luận ..."
-            prompt="Gửi"
-            autoSize={{ minRows: 2, maxRows: 5 }}
-            onChange={handleChange}
+        </div>
+        <div className='d-flex'>
+          <TextArea className='flex-grow-1'
+            value={value}
+            onChange={handleChange} 
             onSubmit={handleSubmit}
             onPressEnter={handleSubmit}
-            submitting={submitting}
-            value={value}
+            autoSize={{ minRows: 1, maxRows: 5 }}
+            placeholder="Comment..."
+            className='mb-1 me-1'
           />
-        </Panel>
-      </Collapse>
+          <Button
+            loading={submitting}
+            onClick={handleSubmit}
+            type="primary">
+            <SendOutlined />
+          </Button>
+        </div>
+      </div>
     </div>
   </>);
 }

@@ -1,11 +1,14 @@
 import React from 'react';
-import { Row, Col, Typography, Button } from 'antd';
+import { Row, Col, Typography, Button, Image } from 'antd';
+import { GoogleOutlined, FacebookOutlined } from '@ant-design/icons';
 import { signInWithPopup, GoogleAuthProvider, getAuth, FacebookAuthProvider, getAdditionalUserInfo } from "firebase/auth";
 import { addDocument } from '../../firebase/service';
 import { serverTimestamp } from 'firebase/firestore';
+import logo from './logoDelta.png';
+import './index.scss';
 
 const ggProvider = new GoogleAuthProvider();
-// const fbProvider = new FacebookAuthProvider();
+const fbProvider = new FacebookAuthProvider();
 
 const { Title } = Typography;
 
@@ -30,25 +33,56 @@ export default function Login() {
       console.log(err)
     }
   }
-  // const handleFbLogin = () => {
-  //   signInWithPopup(auth, fbProvider)
-  //     .then(data => {
-  //       console.log(data);
-  //     })
-  // }
+  const handleFbLogin = () => {
+    signInWithPopup(auth, fbProvider)
+      .then(data => {
+        console.log(data);
+      })
+  }
   return (
-    <div>
-      <Row justify="center" style={{ height: '100vh' }}>
-        <Col span={8}>
-          <Title style={{ textAlign: "center" }} level={3} >DACNPM</Title>
-          <Button style={{ width: "100%", marginBottom: 5 }}
-            onClick={handleGgLogin}>
-            Đăng nhập bằng Google</Button>
-          {/* <Button style={{ width: "100%", marginBottom: 5 }}
-            onClick={handleFbLogin}>
-            Đăng nhập bằng Facebook</Button> */}
-        </Col>
-      </Row>
+    <div className="wrapper">
+      <div className="login-wrapper">
+        <div className="image-wrapper">
+          <img 
+            src={logo} 
+            style={{ 
+              borderRadius: '50%', 
+              width: '200px', 
+              height: '200px', 
+              border: '5px solid #1890ff'}}
+            />
+        </div>
+
+        <div className="btn-wrapper">  
+          <Button 
+            style={{ 
+              width: "350px",
+              height: "40px",
+              marginBottom: 7, 
+              background: '#4285f4', 
+              color: 'white',
+              fontSize: '16px' }}
+            onClick={handleGgLogin}
+          >
+            <GoogleOutlined style={{fontSize: '18px'}} />Đăng nhập bằng Google
+          </Button>
+        </div>
+
+        <div className="btn-wrapper">
+          <Button 
+            style={{ 
+              width: "350px", 
+              marginBottom: 7,
+              height: "40px",
+              background: '#3b5998', 
+              color: 'white',
+              fontSize: '16px' }}
+              onClick={handleFbLogin}
+            >
+              <FacebookOutlined style={{fontSize: '18px'}}/>Đăng nhập bằng Facebook
+            </Button>
+        </div>
+      </div>
     </div>
   )
 }

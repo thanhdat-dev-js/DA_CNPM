@@ -1,6 +1,4 @@
 import React, { useRef, useState } from 'react';
-import { useParams } from 'react-router';
-import { useHistory, Route, Link, Switch } from "react-router-dom";
 import { signOut, getAuth } from 'firebase/auth';
 import { Input, Col, Row, Button, Modal } from 'antd';
 import { DatePicker, Menu, Dropdown, message, Tag, Slider, Select } from 'antd';
@@ -11,56 +9,56 @@ import TestComment from './TestComment';
 
 const dateFormat = 'DD/MM/YYYY';
 
-let Members = [
+// Data got from DB
+const Members = [
     {name:"Hoang Lam", id: "a1"},
     {name:"Hoang Phuc", id: "a2"},
     {name:"Thanh Dat", id: "a3"},
     {name:"Dieu Ai", id: "a4"},
     {name:"Phuc Thinh", id: "a5"}
-]
+];
 
-// Data got from DB
-const initTitle = 'Hello';
-const CreateDate = '2/12/2021';
-const Deadline = '4/12/2021';
-const Name = "Dieu Ai";
-const initPrio = "Medium"
-const initTag = ['OS', 'Assignment'];
-const AssignA = ['a1', 'a3']; 
-const initProg = 40;
-const initDesc = 'Sample Text Sample Text Sample Text Sample Text Sample Text';
+const TaskInfo = {
+    taskID: "123683",
+    title: 'Hello',
+    createDate: "2/12/2021",
+    deadline: "4/12/2021",
+    Name: "Dieu Ai",
+    priority: "Medium",
+    tag: ['OS', 'Assignment'],
+    assignTo: ['a1', 'a3'],
+    progress: 40,
+    desc: "Sample Text Sample Text Sample Text Sample Text Sample Text"
+}
 
-export default function ViewTask() {
-    const nameForm = useRef(null);
-    const { taskID } = useParams();
-    const history = useHistory();
-    const { TextArea } = Input;
-    const { Option } = Select;
+const { TextArea } = Input;
+const { Option } = Select;
 
-    const [PrevTitle, setPT] = useState(initTitle);
-    const [title, setTitle] = useState(initTitle);
+export default function ViewTask({visible, close}) {
+    const [PrevTitle, setPT] = useState(TaskInfo.title);
+    const [title, setTitle] = useState(TaskInfo.title);
 
-    const [prevDl, setPDL] = useState(Deadline);
-    const [dl, setDl] = useState(Deadline);
+    const [prevDl, setPDL] = useState(TaskInfo.deadline);
+    const [dl, setDl] = useState(TaskInfo.deadline);
 
-    const [prevPrio, setPP] = useState(initPrio);
-    const [priority, setPriority] = useState(initPrio);
+    const [prevPrio, setPP] = useState(TaskInfo.priority);
+    const [priority, setPriority] = useState(TaskInfo.priority);
 
-    const [prevT, setPTag] = useState(initTag);
-    const [tags, setTags] = useState(initTag);
+    const [prevT, setPTag] = useState(TaskInfo.tag);
+    const [tags, setTags] = useState(TaskInfo.tag);
     const [visibleTagInput, setVisibleTagInput] = useState(false);
     
-    const [prevAA, setPAA] = useState(AssignA);
-    const [AA, setAA] = useState(AssignA);
+    const [prevAA, setPAA] = useState(TaskInfo.assignTo);
+    const [AA, setAA] = useState(TaskInfo.assignTo);
     
-    const [prevProg, setPProg] = useState(initProg);
-    const [prog, setProg] = useState(initProg);
+    const [prevProg, setPProg] = useState(TaskInfo.progress);
+    const [prog, setProg] = useState(TaskInfo.progress);
+
+    const [prevDesc, setPDesc] = useState(TaskInfo.desc);
+    const [desc, setDesc] = useState(TaskInfo.desc);
 
     const [visibleDBox, setVisibleDBox] = useState(false);
     const [editMode, setEditMode] = useState(false);
-
-    const [prevDesc, setPDesc] = useState(initDesc);
-    const [desc, setDesc] = useState(initDesc);
 
     const p = (
         <Menu onClick={(e) => {setPriority(e.key)}}>
@@ -71,22 +69,6 @@ export default function ViewTask() {
     );
 
     // Change Input Method
-    function getData(){
-        const form = nameForm.current;
-        if (form['task-name'].value === ''){
-            message.error('Please enter task name');
-        }
-        console.log(`Task Name: ${form['task-name'].value}`);
-        console.log(`Task Create Date: ${CreateDate}`);
-        console.log(`Task Deadline: ${form['ddate'].value}`);
-        if(AA === []){
-            message.error('Please choose the assignee(s)');
-        }
-        console.log(AA);
-        console.log(`Task Priority: ${priority}`);
-        console.log(`Task Desc: ${form['task-desc'].value}`);
-    }
-
     function titleChange(event) {    
         setTitle(event.target.value);
     }
@@ -99,8 +81,21 @@ export default function ViewTask() {
         setVisibleTagInput(false);
         const ttags = tags.filter(tag => tag !== removedTag);
         setTags(ttags);
+    }
 
-    };
+    async function makeDBox(){
+        setVisibleDBox(false);
+        return;
+    }
+
+    const closeModal = async () => {
+        await makeDBox();
+        close();
+    }
+
+    function convertIDtoName(id){
+        return Members.find(o => o.id === id).name;
+    }
 
     function showTagInput(){
         setVisibleTagInput(true);
@@ -128,17 +123,30 @@ export default function ViewTask() {
 
     //Save and Cancel
     function saveChange(e){
-        setPT(title);
-        setPDL(dl);
-        setPP(priority);
-        setPTag(tags);
-        setPAA(AA);
-        setPProg(prog);
-        setPDesc(desc);
-        setEditMode(false);
+        if (title === '' || AA === []){
+            message.error('Please enter task name');
+        }
+        else{
+            setPT(title);
+            setPDL(dl);
+            setPP(priority);
+            setPTag(tags);
+            setPAA(AA);
+            setPProg(prog);
+            setPDesc(desc);
+            setEditMode(false);
+            console.log(`Task Name: ${title}`);  
+            console.log(`Dl: ${dl}`);  
+            console.log(`Priority: ${priority}`)
+            console.log(tags);
+            console.log(AA);
+            console.log(desc);
+            setEditMode(false); 
+        }
+        
     }
 
-    function cancelChange(e){
+    function cancelChange(){
         setTitle(PrevTitle);
         setDl(prevDl);
         setPriority(prevPrio);
@@ -149,78 +157,100 @@ export default function ViewTask() {
         setEditMode(false);   
     }
 
+    function closeAbrupt(){
+        cancelChange();
+        setEditMode(false); 
+        setVisibleTagInput(false);
+        close();
+    }
+
 
     return (
-        <form className="task-container" ref={nameForm} >
+        <Modal visible={visible} width={800} onCancel={closeAbrupt} footer={
+            <div>
+                { 
+                editMode && 
+                <Button type="primary" onClick={saveChange}>Save</Button> 
+                } 
+                {
+                editMode &&
+                <Button type="secondary" onClick={() => {cancelChange(); setEditMode(false)}}>Cancel</Button>
+                }
+            </div>
+        }>
             {/* Title */}
-            <Row style={{marginTop: '10px', marginBottom: '10px'}} align={'middle'}>
+            <Row className="title-row">
                 <Col span={15}>
-                    <Input disabled={!editMode} value={title} name={'task-name'} onChange={titleChange} placeholder="Title" size="large" bordered={false} style={{paddingLeft: 0, fontSize: '25px', fontWeight:'bold'}} />
+                    <Input value={title} onChange={titleChange} placeholder="Title" size="large" bordered={false} readOnly={!editMode}/>
                 </Col>
-                {(!editMode &&
-                (<Col style={{marginLeft: '130px', marginRight: '10px'}} >
-                    <Button onClick={() => {setEditMode(true)}}><EditOutlined /></Button>
-                </Col>))}
-                {!editMode &&
-                (<Col style={{marginLeft: '10px'}}>
-                    <Button onClick={() => setVisibleDBox(true)}><DeleteOutlined /></Button>
-                </Col>)}
+
+                <div className="button-div">
+                    {(!editMode &&
+                    (<Col >
+                        <Button onClick={() => {setEditMode(true)}}><EditOutlined /></Button>
+                    </Col>))}
+                    {!editMode &&
+                    (<Col style={{marginLeft: '10px'}}>
+                        <Button onClick={() => setVisibleDBox(true)}><DeleteOutlined /></Button>
+                    </Col>)}
+                </div>
+                
             </Row>
 
             <Modal
-                title="Delete Task"
                 centered
-                visible={visibleDBox}
-                onOk={() => {
-                    setVisibleDBox(false);
-                    history.replace("/");
-                }}
+                visible={visible && visibleDBox}
+                onOk={closeModal}
                 onCancel={() => setVisibleDBox(false)}
             >
                 <h1>Do you want to delete this Task</h1>
             </Modal>
 
             {/* Date & Deadline */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                <Col span={4}>Create Date:</Col>
+            <Row className="normal-row">
+                <Col span={4} className="element-text">Create Date:</Col>
                 <Col span={5}>
-                    <DatePicker disabled= {true} name={'cdate'} defaultValue={moment(CreateDate, dateFormat)} format={dateFormat} />
+                    <input type="text" size={10} value={TaskInfo.createDate} readOnly />
                 </Col>
-                <Col span={4} style={{marginLeft: '20px'}}>Deadline:</Col>
+                <Col span={4} className="element-text align-pair">Deadline:</Col>
                 <Col span={5}>
                     {!editMode 
-                    ? <DatePicker disabled= {true} name={'ddate'} value={moment(dl, dateFormat)}  format={dateFormat}/>
-                    : <DatePicker name={'ddate'} defaultValue={moment(dl, dateFormat)} onChange={dateChange} format={dateFormat}/>
+                    ? <input type="text" size={10} value={dl} readOnly />
+                    : <DatePicker value={dl !== "" ? moment(dl,dateFormat) : null} onChange={dateChange} format={dateFormat}/>
                     }
                 </Col>
             </Row>
 
             {/* Creator & Priority */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                <Col span={4}>Create By:</Col>
-                <Col span={5}><Input value={Name} disabled={true}/></Col>  
-                <Col span={4} style={{marginLeft: '20px'}}>Priority:</Col>
+            <Row className="normal-row">
+                <Col span={4} className="element-text">Create By:</Col>
                 <Col span={5}>
-                    <Dropdown disabled= {!editMode} overlay={p}>
+                    <input type="text" size={10} value={TaskInfo.Name} readOnly /> 
+                </Col >  
+                <Col span={4} className='element-text align-pair'>Priority:</Col>
+                <Col span={5}>
+                    {!editMode 
+                    ? <input type="text" size={10} value={priority} readOnly />
+                    :   <Dropdown disabled= {!editMode} overlay={p}>
                         <Button> {priority} </Button>
-                    </Dropdown>
+                        </Dropdown>
+                    }
+                    
                 </Col>
             </Row>
 
             {/* Tag */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                <Col span={4}>Tag:</Col>
+            <Row className="normal-row">
+                <Col span={4} className="element-text">Tag:</Col>
                     {tags.map((tag) => {
-                    const isLongTag = tag.length > 7;
+                    const isLongTag = tag.length > 15;
                     const tagElem = (
                     <Tag
-                        className="edit-tag"
                         key={tag}
                         closable = {editMode}
-                        disabled={!editMode}
                         onClose = {() => tagClose(tag)}
                     >
-                    <span> {isLongTag ? `${tag.slice(0, 7)}...` : tag} </span>
+                    <span> {isLongTag ? `${tag.slice(0, 15)}...` : tag} </span>
                     </Tag>
                     );
                     return tagElem;
@@ -247,53 +277,62 @@ export default function ViewTask() {
             </Row>
 
             {/* Assigns */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                <Col span={4}>Assign to:</Col>
+            <Row className="normal-row">
+                <Col span={4} className="element-text">Assign to:</Col>
                 <Col span={15}>
-                    <Select
-                        name = {'assign'}
+                    {editMode 
+                    ? <Select
                         mode="multiple"
                         style={{ width: '100%' }}
                         placeholder="Select person/people to assign"
                         value={AA}
                         optionLabelProp="label"
                         onChange = {handleAA}
-                        disabled= {!editMode}
-                        style={{minWidth: '100px'}}
+                        style={{minWidth: '150px'}}
                     >
                         {Members.map(member => {
-                            return <Option value={member.id}>{member.name}</Option>
+                            return <Option key={member.id} value={member.id}>{member.name}</Option>
                         })}
                     </Select>
+                    : 
+                    <div>
+                    {AA.map((memberID) => {
+                        const memElem = (
+                        <Tag
+                            key={memberID}
+                            closable = {false}
+                        >
+                            {convertIDtoName(memberID)}
+                        </Tag>
+                        );
+                        return memElem;
+                        })}
+                    </div>
+                    }
                 </Col>
             </Row>
 
             {/* Progression */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                <Col span={4}>Progression:</Col>
-                <Col span={8}>
-                    <Slider disabled= {!editMode} value={prog} onChange={changeProg}  />
-                </Col>
+            <Row className="normal-row">
+                <Col span={4} className="element-text">Progression:</Col>
+                {editMode &&<Col span={8}>
+                    <Slider value={prog} onChange={changeProg}  />
+                </Col>}
                 <Col span={3}>
-                    <Input disabled= {!editMode} value={prog} suffix="%"/>
+                    {editMode ? <input type="text" size={10} value={prog + " %"} /> : <input type="text" size={10} value={prog + " %"} readOnly />}
                 </Col>
             </Row>
 
             {/* Description */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                Description:
+            <Row className="normal-row">
+                <h1 className="element-text">Description:</h1> 
             </Row>
             
             {/* DescTextArea */}
-            <Row style={{marginTop: '10px', marginBottom: '10px' }}>
-                <TextArea disabled={!editMode} name={'task-desc'} value={desc} onChange={descChange} placeholder="Description" autoSize={{ minRows: 5, maxRows: 10 }} />
+            <Row className="desc-row">
+                <TextArea readOnly={!editMode} bordered={false} name={'task-desc'} value={desc} onChange={descChange} placeholder="Description" autoSize={{ minRows: 5, maxRows: 10 }} />
             </Row>
-            <TestComment />
-            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                { editMode ? <Button type="primary" onClick={saveChange}>Save</Button> : <Button type="primary">Comment</Button> }      
-                { editMode ? <Button type="secondary"  style={{marginLeft: '30px'}} onClick={cancelChange}>Cancel</Button> : <Button type="secondary"  style={{marginLeft: '30px'}}><Link to={`/`}>Cancel</Link></Button>}
-                
-            </div>
-        </form>
+            {!editMode && <TestComment />}
+        </Modal>
     )
 }

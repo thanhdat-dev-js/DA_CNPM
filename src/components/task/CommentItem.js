@@ -1,8 +1,9 @@
+import { Modal, Comment, Avatar, Button, Input } from 'antd';
+import { EnterOutlined, ExclamationCircleOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import { Modal, Comment, Avatar, Form, Button, Input as TextArea } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import {timeSince} from './Utils'
+import { timeSince } from './Utils'
 
+const { TextArea } = Input;
 const { confirm } = Modal;
 
 function showConfirm(okCallback, cancelCallback) {
@@ -20,26 +21,7 @@ function showConfirm(okCallback, cancelCallback) {
   });
 }
 
-export const Editor = ({ onChange, onSubmit, onCancel, submitting, value, placeholder, prompt }) => (
-  <>
-    <Form.Item>
-      <TextArea rows={4} onChange={onChange} value={value} onPressEnter={onSubmit} placeholder={placeholder}/>
-    </Form.Item>
-    <Form.Item>
-      { onSubmit &&
-        <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
-          {prompt}
-        </Button>
-      }{ onCancel &&
-        <Button htmlType="submit" loading={submitting} onClick={onCancel} type="secondary">
-          Cancel
-        </Button>
-      }
-    </Form.Item>
-  </>
-);
-
-export default function CommentItem({comment, mutable=false, onDelete, onModify}) {
+export default function CommentItem({comment, mutable, onDelete, onModify}) {
   const [tempValue, setTempValue] = useState("");
   const [active, setActive] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -63,29 +45,41 @@ export default function CommentItem({comment, mutable=false, onDelete, onModify}
   const handleCancel = () => {
     setEditMode(false);
   }
-
+  
   const editModeParams = {
-    content: <Editor
-      autoSize={{ minRows: 2, maxRows: 5 }}
-      placeholder="Edit comment..."
-      prompt="Save changes"
-      value={tempValue}
-      onChange={handleChange}
-      onSubmit={handleSubmit}
-      onCancel={handleCancel}
-      onPressEnter={handleSubmit}
-    />
+    content: <div>
+      <TextArea 
+        value={tempValue}
+        onChange={handleChange}
+        onPressEnter={handleSubmit}
+        autoSize={{ minRows: 2, maxRows: 5 }}
+        placeholder='Edit comment'
+        className='my-1'
+      />
+      <Button 
+        onClick={handleCancel} 
+        htmlType="submit" type='default'
+        className='me-1'>
+        Cancel
+      </Button>
+      <Button
+        // loading={false} TODO:
+        onClick={handleSubmit} 
+        htmlType="submit" type="primary">
+        Save <EnterOutlined />
+      </Button>
+    </div>
   } 
-
+  
   const displayModeParams = {
-    author: <a className="font-weight-bold">{comment.person.name}</a>,
-    datetime: timeSince(new Date(comment.timestamp)) + " ago",
+    author: <h4 className='text-secondary'>{comment.person.name}</h4>,
+    datetime: <span className='text-secondary'>{timeSince(new Date(comment.timestamp)) + " ago"}</span>,
     content: <p>{comment.content}</p>,
   }
 
   return (
     <div className={"container-fluid position-relative " + (
-      active? "bg bg-secondary": "bg bg-light")}
+      active? "bg bg-dark": "bg bg-light")}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
       onMouseOver={() => setActive(true)}
@@ -96,10 +90,15 @@ export default function CommentItem({comment, mutable=false, onDelete, onModify}
       >
       </Comment>
       <div className={"position-absolute top-0 end-0 translate-middle " + (
-        (active && mutable)? "": "d-none")}
-      >
-        <Button onClick={onDeleteClick}>Xoá</Button>
-        <Button onClick={handleEditClick}>Sửa</Button>
+        (active && mutable)? "": "d-none")}>
+        <Button
+          onClick={onDeleteClick}
+          icon={<DeleteOutlined />}
+        />
+        <Button
+          onClick={handleEditClick}
+          icon={<EditOutlined />}
+        />
       </div>
     </div>
   );

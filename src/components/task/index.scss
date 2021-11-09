@@ -1,13 +1,66 @@
-$bg: #987;
-.roundedborder {
-    border-radius: .2em;
-    border: 2px solid darken($bg, 10%);
+.ant-modal-content{
+    border-radius: 15px;
+    .button-div{
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+    
+    .element-text{
+        font-size: 18px; 
+        font-weight: 600;
+        user-select: none;
+    }
+
+    input{
+        border: none;
+    }
+
+    .title-row input{
+        border: none;
+        font-size: 30px; 
+        font-weight: bold;
+    }
+
+    .input:focus{
+        outline: none !important;
+    }
+
+    .ant-modal-body{
+        padding: 50px;
+        .title-row{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            .ant-col{
+                .ant-input{
+                    padding-left: 0; 
+                    font-size: 30px; 
+                    font-weight: bold;
+                }
+            }
+            .button-div{
+                margin-left: auto; 
+                margin-right: 20px;
+            }
+
+        }
+
+        .normal-row{
+            margin-top: 10px;
+            margin-bottom: 10px ;
+            .align-pair{
+                margin-left: 20px;
+            }
+            height: 32px;
+        }
+
+        .desc-row{
+            margin-top: 10px;
+            margin-bottom: 10px ;
+            .align-pair{
+                margin-left: 20px;
+            }
+        }
+    }
 }
 
-.task-container{
-    font-size:1.2em; 
-    margin: 2em auto;
-    @extend .roundedborder;
-    padding: 2em;
-    width: 55%;
-}

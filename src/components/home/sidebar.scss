@@ -63,6 +63,14 @@
       padding: 2px 16px;
       padding-left: 28px;
       width: 100%;
+      display: flex;
+      justify-content: space-between;
+      .anticon.anticon-edit {
+        font-size: 16px;
+        position: relative;
+        top: -2px;
+        opacity: 0.8;
+      }
     }
   }
   .active-border {
