@@ -1,30 +1,63 @@
 .header{
   display: flex;
-  justify-content: space-between;
-  background-color: #FFFFFF;
-  font-size: 0.9em;
-  border-radius: 10px;
-  border-style: groove;
-  border-color: #F7F7F4;
-  margin: 10px 10px 10px;
-  box-shadow: inset 10px 10px 5px #F7F7F4;
+  background-color: white;
+  border-radius: 20px;
+  align-items: center;
+  margin-bottom: 10px;
+  height: 60px;
+  .header-left h1{
+    font-family: arial;
+    font-weight: bold;
+    margin-left:	20px;
+    margin-top: 10px;
+    align-items: center;
+  }
+  .header-center{
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+  }
+  .header-right{
+    align-items: center;
+    position: absolute;
+    right: 0px;
+    margin-right: 30px;
+    display: flex;
+  }
 }
-.header >* >*{
-  padding: 0 15px;
-}
-.header-left{
-  font-family: nunito;
-  font-weight: bold;
-  //display: flex;
-  //align-items: center;
-}
-.header-center{
-  margin: 5px 10px 5px;
 
-  display: flex;
-  align-items: center;
+@media only screen and (max-width: 1100px) {
+
+  .header .header-right input {
+      display: none;
+  }
+  .header .header-right button {
+      display: none;
+  }
 }
-.header-right{
-  display: flex;
-  align-items: center;
+@media only screen and (max-width: 750px) {
+  .header .header-center button{
+      display: none;
+  }
+  .header .header-right input {
+      display: none;
+  }
+  .header .header-right button {
+      display: none;
+  }
 }
+ 
+@media only screen and (max-width: 600px) {
+  .header .header-center {
+      display: none;
+  }
+  .header .header-right input {
+      display: none;
+  }
+  .header .header-right button {
+      display: none;
+  }
+}
+ 
+
+
