@@ -26,8 +26,6 @@ export default function Home() {
           {status !== 'dashboard' && <Workspace />}
         </Col>
       </Row>
-      <button onClick={() => signOut(getAuth())}>Dang xuat </button>
-
     </div>
   )
 }

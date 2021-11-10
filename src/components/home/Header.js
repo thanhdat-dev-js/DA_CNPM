@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { getAuth, signOut } from '@firebase/auth';
 import { Avatar, Image, Divider, Tooltip, Button, Modal, Form, Input, Radio } from 'antd';
-import { SearchOutlined , UserOutlined, AntDesignOutlined } from '@ant-design/icons';
+import { SearchOutlined , UserOutlined, AntDesignOutlined, ExportOutlined } from '@ant-design/icons';
 
 import './header.scss';
 
@@ -38,7 +39,7 @@ export default function Header( {name} ) {
   return (
     <div className="header">
         <div  className="header-left">
-          <h1>Team</h1>
+          <h1>Team 1</h1>
         </div>
         <div className="header-center">
             <Avatar.Group maxCount={2} size="large" maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
@@ -73,6 +74,9 @@ export default function Header( {name} ) {
             />
   
           <Avatar size ="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf',  marginLeft: "10px"}}>A</Avatar>
+          <Tooltip title="Log Out" placement="top">
+          <ExportOutlined  style={{ marginLeft: "10px", fontSize: '200%'}} onClick={() => signOut(getAuth())}/>
+          </Tooltip>
         </div>
     </div>
   )
