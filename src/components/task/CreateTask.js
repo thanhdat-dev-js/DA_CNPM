@@ -25,7 +25,11 @@ const Members = [
     { name: "Hoang Phuc", id: "a2" },
     { name: "Thanh Dat", id: "a3" },
     { name: "Dieu Ai", id: "a4" },
-    { name: "Phuc Thinh", id: "a5" }
+    { name: "Phuc Thinh", id: "a5" },
+    {name:"Phuc Thinh", id: "a5"},
+    {name:"Phuc Thinh", id: "a6"},
+    {name:"Phuc Thinh", id: "a7"},
+    {name:"Phuc Thinh", id: "a8"}
 ]
 
 const { TextArea } = Input;
@@ -115,14 +119,14 @@ export default function CreateTask({ visible, close }) {
     }
 
     return (
-        <Modal visible={visible} width={800} onCancel={() => { resetInput(); close(); }} footer={
+            <Modal className="TaskModal" visible={visible} width={700} onCancel={() => { resetInput(); close(); }} footer={
             <div>
                 <Button type="primary" onClick={queryData}>Create</Button>
             </div>
         }>
             {/* Title */}
             <Row className="title-row">
-                <Col span={14}>
+                <Col span={15}>
                     <Input value={title} onChange={titleChange}
                         placeholder="Title" size="large" bordered={false} />
                 </Col>
@@ -130,24 +134,24 @@ export default function CreateTask({ visible, close }) {
 
             {/* Date & Deadline */}
             <Row className="normal-row">
-                <Col span={4} className='element-text'>Create Date:</Col>
-                <Col span={5}>
+                <Col span={5} className='element-text'>Create Date:</Col>
+                <Col span={6}>
                     <input type="text" size={10} value={CreateDate} readOnly />
                 </Col>
-                <Col span={4} className='element-text align-pair' >Deadline:</Col>
-                <Col span={5}>
+                <Col span={5} className='element-text align-pair' >Deadline:</Col>
+                <Col span={6}>
                     <DatePicker value={dl !== "" ? moment(dl, dateFormat) : null} onChange={dateChange} format={dateFormat} />
                 </Col>
             </Row>
 
             {/* Creator & Priority */}
             <Row className="normal-row">
-                <Col span={4} className='element-text'>Create By:</Col>
-                <Col span={5}>
+                <Col span={5} className='element-text'>Create By:</Col>
+                <Col span={6}>
                     <input type="text" size={10} value={Author} readOnly />
                 </Col>
-                <Col span={4} className='element-text align-pair'>Priority:</Col>
-                <Col span={5}>
+                <Col span={5} className='element-text align-pair'>Priority:</Col>
+                <Col span={6}>
                     <Dropdown overlay={p}>
                         <Button> {priority} </Button>
                     </Dropdown>
@@ -156,7 +160,7 @@ export default function CreateTask({ visible, close }) {
 
             {/* Tag */}
             <Row className="normal-row">
-                <Col span={4} className='element-text'>Tag:</Col>
+                <Col span={5} className='element-text'>Tag:</Col>
                 {tags.map((tag) => {
                     const isLongTag = tag.length > 15;
                     const tagElem = (
@@ -193,30 +197,30 @@ export default function CreateTask({ visible, close }) {
 
             {/* Assigns */}
             <Row className="normal-row">
-                <Col span={4} className="element-text">Assign to:</Col>
-                <Col span={15}>
-                    <Select
-                        name={'assign'}
-                        mode="multiple"
-                        style={{ width: '100%' }}
-                        placeholder="Select person/people to assign"
-                        value={AA}
-                        optionLabelProp="label"
-                        onChange={handleAA}
-                        style={{ minWidth: '150px' }}
-                    >
-                        {Members.map(member => {
-                            return <Option value={member.name}>{member.name}</Option>
-                        })}
-                    </Select>
-                </Col>
+                <Col span={5} className="element-text">Assign to:</Col>
+            </Row>
+
+            <Row className="normal-row">
+                <Select
+                    mode="multiple"
+                    style={{ width: '100%' }}
+                    placeholder="Select person/people to assign"
+                    value={AA}
+                    optionLabelProp="label"
+                    onChange={handleAA}
+                    style={{ minWidth: '150px' }}
+                >
+                    {Members.map(member => {
+                        return <Option key={member.id} value={member.id} label={member.name}>{member.name}</Option>
+                    })}
+                </Select>
             </Row>
 
             {/* Progression */}
             <Row className="normal-row">
-                <Col span={4} className="element-text">Progression:</Col>
-                <Col span={3}>
-                    <input type="text" size={10} value={0} readOnly />
+                <Col span={5} className="element-text">Progression:</Col>
+                <Col span={5}>
+                    <input type="text" size={10} value={0  + " %"} readOnly />
                 </Col>
             </Row>
 
@@ -227,8 +231,8 @@ export default function CreateTask({ visible, close }) {
 
             {/* DescTextArea */}
             <Row className="desc-row">
-                <TextArea value={desc} bordered={false} onChange={descChange} placeholder="Description" autoSize={{ minRows: 5, maxRows: 10 }} />
+                <TextArea value={desc} onChange={descChange} placeholder="Description" autoSize={{ minRows: 5, maxRows: 10 }} />
             </Row>
-        </Modal>
+            </Modal>
     )
 }

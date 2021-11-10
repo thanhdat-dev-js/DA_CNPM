@@ -15,7 +15,10 @@ const Members = [
     {name:"Hoang Phuc", id: "a2"},
     {name:"Thanh Dat", id: "a3"},
     {name:"Dieu Ai", id: "a4"},
-    {name:"Phuc Thinh", id: "a5"}
+    {name:"Phuc Thinh", id: "a5"},
+    {name:"Phuc Thinh", id: "a6"},
+    {name:"Phuc Thinh", id: "a7"},
+    {name:"Phuc Thinh", id: "a8"}
 ];
 
 const TaskInfo = {
@@ -166,7 +169,7 @@ export default function ViewTask({visible, close}) {
 
 
     return (
-        <Modal visible={visible} width={800} onCancel={closeAbrupt} footer={
+        <Modal className="TaskModal" visible={visible} width={700} onCancel={closeAbrupt} footer={
             <div>
                 { 
                 editMode && 
@@ -208,12 +211,12 @@ export default function ViewTask({visible, close}) {
 
             {/* Date & Deadline */}
             <Row className="normal-row">
-                <Col span={4} className="element-text">Create Date:</Col>
-                <Col span={5}>
+                <Col span={5} className="element-text">Create Date:</Col>
+                <Col span={6}>
                     <input type="text" size={10} value={TaskInfo.createDate} readOnly />
                 </Col>
-                <Col span={4} className="element-text align-pair">Deadline:</Col>
-                <Col span={5}>
+                <Col span={5} className="element-text align-pair">Deadline:</Col>
+                <Col span={6}>
                     {!editMode 
                     ? <input type="text" size={10} value={dl} readOnly />
                     : <DatePicker value={dl !== "" ? moment(dl,dateFormat) : null} onChange={dateChange} format={dateFormat}/>
@@ -223,12 +226,12 @@ export default function ViewTask({visible, close}) {
 
             {/* Creator & Priority */}
             <Row className="normal-row">
-                <Col span={4} className="element-text">Create By:</Col>
-                <Col span={5}>
+                <Col span={5} className="element-text">Create By:</Col>
+                <Col span={6}>
                     <input type="text" size={10} value={TaskInfo.Name} readOnly /> 
                 </Col >  
-                <Col span={4} className='element-text align-pair'>Priority:</Col>
-                <Col span={5}>
+                <Col span={5} className='element-text align-pair'>Priority:</Col>
+                <Col span={6}>
                     {!editMode 
                     ? <input type="text" size={10} value={priority} readOnly />
                     :   <Dropdown disabled= {!editMode} overlay={p}>
@@ -241,7 +244,7 @@ export default function ViewTask({visible, close}) {
 
             {/* Tag */}
             <Row className="normal-row">
-                <Col span={4} className="element-text">Tag:</Col>
+                <Col span={5} className="element-text">Tag:</Col>
                     {tags.map((tag) => {
                     const isLongTag = tag.length > 15;
                     const tagElem = (
@@ -276,22 +279,26 @@ export default function ViewTask({visible, close}) {
                 </Col>}
             </Row>
 
+
             {/* Assigns */}
             <Row className="normal-row">
-                <Col span={4} className="element-text">Assign to:</Col>
-                <Col span={15}>
+                <Col span={5} className="element-text">Assign to:</Col>
+            </Row>
+
+            <Row className="normal-row">
                     {editMode 
                     ? <Select
                         mode="multiple"
                         style={{ width: '100%' }}
                         placeholder="Select person/people to assign"
                         value={AA}
+                        closable = {false}
                         optionLabelProp="label"
                         onChange = {handleAA}
                         style={{minWidth: '150px'}}
                     >
                         {Members.map(member => {
-                            return <Option key={member.id} value={member.id}>{member.name}</Option>
+                            return <Option key={member.id} value={member.id} label={member.name}>{member.name}</Option>
                         })}
                     </Select>
                     : 
@@ -309,20 +316,19 @@ export default function ViewTask({visible, close}) {
                         })}
                     </div>
                     }
-                </Col>
             </Row>
 
             {/* Progression */}
             <Row className="normal-row">
-                <Col span={4} className="element-text">Progression:</Col>
+                <Col span={5} className="element-text">Progression:</Col>
                 {editMode &&<Col span={8}>
                     <Slider value={prog} onChange={changeProg}  />
                 </Col>}
-                <Col span={3}>
+                <Col span={4}>
                     {editMode ? <input type="text" size={10} value={prog + " %"} /> : <input type="text" size={10} value={prog + " %"} readOnly />}
                 </Col>
             </Row>
-
+            
             {/* Description */}
             <Row className="normal-row">
                 <h1 className="element-text">Description:</h1> 
@@ -330,7 +336,7 @@ export default function ViewTask({visible, close}) {
             
             {/* DescTextArea */}
             <Row className="desc-row">
-                <TextArea readOnly={!editMode} bordered={false} name={'task-desc'} value={desc} onChange={descChange} placeholder="Description" autoSize={{ minRows: 5, maxRows: 10 }} />
+                <TextArea readOnly={!editMode} value={desc} onChange={descChange} placeholder="Description" autoSize={{ minRows: 5, maxRows: 10 }} />
             </Row>
             {!editMode && <TestComment />}
         </Modal>
