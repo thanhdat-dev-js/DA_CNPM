@@ -63,7 +63,7 @@ export default function Sidebar() {
   return (
     <div className="sidebar">
       <ul>
-        <li onClick={() => setStatus('dashboard')} className={status === 'dashboard' && "active-border"}>
+        <li onClick={() => setStatus('dashboard')} className={(status === 'dashboard') ? "active-border" : ""}>
           <AppstoreTwoTone className="icon" />
           <Typography.Link >DashBoard</Typography.Link>
         </li>
@@ -72,7 +72,7 @@ export default function Sidebar() {
             <Panel header="Workspace" >
               {workspaceList?.map(item => (
                 <Typography.Link
-                  className={status === item.workspaceId && "active-border"}
+                  className={(status === item.workspaceId) ? "active-border" : ""}
                   key={item.workspaceId}
                   onClick={() => setStatus(item.workspaceId)}
                 > {item.name}
