@@ -29,12 +29,6 @@ export default function Header( {name} ) {
     setIsModalVisible(false);
   };
 
-  const [keyword, setKeyword] = useState('');
-    
-    function handleInputChange(e) {
-        setKeyword(e.target.value)
-    }
-
 
   return (
     <div className="header">
@@ -66,13 +60,6 @@ export default function Header( {name} ) {
         </div>
         
         <div className="header-right">
-          <Input.Search
-            value={keyword}
-            onChange={handleInputChange}
-            style={{ width: 200 }}
-            placeholder="Search"
-            />
-  
           <Avatar size ="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf',  marginLeft: "10px"}}>A</Avatar>
           <Tooltip title="Log Out" placement="top">
           <ExportOutlined  style={{ marginLeft: "10px", fontSize: '200%'}} onClick={() => signOut(getAuth())}/>
