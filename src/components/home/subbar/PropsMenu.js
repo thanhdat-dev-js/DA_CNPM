@@ -23,7 +23,7 @@ export default function PropsMenu({ dataFields, setDataFields }) {
   return (
     <div className="container">
       <Menu>
-        <Menu.Item key="all-in">
+        <Menu.Item key="hello-sa">
           <ToggleAllItem onChange={handleChangeAll} />
         </Menu.Item>
         {fields.map((f) => (

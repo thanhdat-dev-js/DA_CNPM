@@ -1,7 +1,88 @@
 import { useState } from "react";
-import { Dropdown, Input } from "antd";
+import { Menu, Dropdown, Input } from "antd";
 import PropsMenu from "./PropsMenu";
 import "./subbar.scss";
+
+import { Select, Button } from 'antd';
+import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
+const { Option } = Select;
+
+const defaultSortRules = [
+  { id: 'name', name: 'Name', value: 'ascending' },
+  { id: 'deadline', name: 'Due date', value: null },
+];
+
+const OptionList = (<> 
+  {defaultSortRules.map(option => (
+    <Option value={option.id}>{option.name}</Option>
+  ))}
+</>)
+
+function SortMenu() {
+  const [sortRules, setSortRules] = useState(defaultSortRules);
+  
+  const handleChange = (victimId, value) => {
+    console.log(`selected ${value}`);
+    const temp = [...sortRules].map(rule => {
+      if (rule.id === victimId)
+        rule.value = value;
+      return rule;
+    });
+    setSortRules(temp);    
+  }
+  
+  const handleRemoveRule = (victimId) => {
+    console.log('called');
+    const temp = [...sortRules].map(rule => {
+      if (rule.id === victimId)
+        rule.value = null;
+      return rule;
+    });
+    setSortRules(temp);
+  }
+  
+  const handleAddRule = () => {
+    const temp = [...sortRules];
+    for (let i = 0; i < temp.length; i++) {
+      if ((temp[i].value) === null) {
+        temp[i].value = 'ascending';
+        break;
+      }
+    }
+    setSortRules(temp);
+  }
+  
+  console.log(sortRules.map((f) => (f.value ? (f.name + ': ' + f.value) : null)));
+  return (<Menu>
+    {sortRules.map(sortRule => (sortRule.value === null) ? null :
+    <Menu.Item key={sortRule.id}>
+      <div className="row">
+        <div className="col">
+          <Select 
+            defaultValue={sortRule.name} style={{ width: '7rem' }} 
+            // onChange={(e) => handleChange(sortRule.id, value)} // TODO: handle change
+          >
+            {OptionList}
+          </Select>
+          <Select defaultValue={sortRule.value} style={{ width: '8rem' }}
+            onChange={(value) => handleChange(sortRule.id, value)}
+          >
+            <Option value="ascending">Ascending</Option>
+            <Option value="descending">Descending</Option>
+          </Select>
+        </div>
+        <div className="col">
+          <CloseOutlined onClick={() => handleRemoveRule(sortRule.id)}/> 
+        </div>
+      </div>
+    </Menu.Item>)}
+    <Menu.Item key='_addsort'>
+      <div onClick={handleAddRule}>
+        <PlusOutlined /> Add a sort
+      </div>
+    </Menu.Item>
+  </Menu>);
+}
 
 // TODO: useContext instead
 const defaultFields = [
@@ -42,17 +123,19 @@ export default function Subbar() {
           <div className="subbar-title">#By Status</div>
         </div>
         <div className="right col d-flex justify-content-between">
-          <Dropdown overlay={<PropsMenu dataFields={dataFields} setDataFields={setDataFields}/>} placement="bottomCenter">
+          <Dropdown placement="bottomCenter" destroyPopupOnHide
+            overlay={<PropsMenu dataFields={dataFields} setDataFields={setDataFields}/>}
+          >
             <div className="subbar-title" onClick={(e) => e.preventDefault()}>
               Properties
             </div>
           </Dropdown>
-          <Dropdown overlay={<PropsMenu />} placement="bottomCenter">
+          <Dropdown overlay={<SortMenu />} placement="bottomCenter" destroyPopupOnHide>
             <div className="subbar-title" onClick={(e) => e.preventDefault()}>
               Sort
             </div>
           </Dropdown>
-          <Dropdown overlay={<PropsMenu />}>
+          <Dropdown overlay={<FilterMenu />} destroyPopupOnHide>
             <div className="subbar-title" onClick={(e) => e.preventDefault()}>
               Filter
             </div>
@@ -67,4 +150,12 @@ export default function Subbar() {
       </div>
     </div>
   );
+}
+
+function FilterMenu() {
+  return (<Menu>
+    <Menu.Item key="another life">
+      <h1>Filter menu</h1>
+    </Menu.Item>
+  </Menu>);
 }
