@@ -8,6 +8,8 @@ import { addDocument } from '../../firebase/service';
 import { serverTimestamp } from 'firebase/firestore';
 import { AuthContext } from '../../context/AuthProvider';
 import { Menu, Dropdown } from 'antd';
+import { deleteDocumentById, editDocumentById } from '../../firebase/service';
+import { getAuth, signOut } from '@firebase/auth';
 import './sidebar.scss';
 
 const { Panel } = Collapse;
@@ -27,20 +29,12 @@ export default function Sidebar() {
   const showModal = () => {
     setIsModalVisible(true);
   };
-  const showModalMenu = () => {
-    setModalMenu({
-      ...modalMenu,
-      isModalVisible: true
-    })
-  }
   const handleOk = () => {
     addDocument('workspace', {
       name: input,
-      leaderIdList: [uid],
       memberIdList: [uid],
       createdById: [uid],
       createdAt: serverTimestamp(),
-      status: "on"
     })
     setIsModalVisible(false);
     setInput('');
@@ -52,7 +46,18 @@ export default function Sidebar() {
   };
 
   const handleOkMenu = () => {
-
+    if (modalMenu.type === 'delete') {
+      deleteDocumentById('workspace', status);
+    }
+    else {
+      editDocumentById('workspace', status, {
+        name: modalMenu.input
+      })
+    }
+    setModalMenu({
+      ...modalMenu,
+      isModalVisible: false
+    })
   }
   const handleCancelMenu = () => {
     setModalMenu({
@@ -126,6 +131,7 @@ export default function Sidebar() {
           </Modal>
         </li>
       </ul>
+      <Button type="primary" onClick={() => signOut(getAuth())} >Đăng xuất</Button>
     </div>
   )
 }

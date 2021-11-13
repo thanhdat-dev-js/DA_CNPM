@@ -1,25 +1,25 @@
-.header{
+.header {
   display: flex;
   background-color: white;
   border-radius: 15px;
   align-items: center;
   margin-bottom: 10px;
-  margin-top: 15px;
+  margin-top: 20px;
   height: 60px;
-  .header-left h1{
+  .header-left h1 {
     font-family: arial;
     font-weight: bold;
-    margin-left:	20px;
+    margin-left: 20px;
     margin-top: 10px;
     align-items: center;
   }
-  .header-center{
+  .header-center {
     margin: 0 auto;
     //margin-left:	400px;
     display: flex;
     align-items: center;
   }
-  .header-right{
+  .header-right {
     align-items: center;
     position: absolute;
     right: 0px;
@@ -28,13 +28,8 @@
   }
 }
 
-
 @media only screen and (max-width: 550px) {
-  .header .header-center button{
-      display: none;
+  .header .header-center button {
+    display: none;
   }
 }
- 
- 
-
-

@@ -1,23 +1,25 @@
 .dashboard {
-  .site-calendar {
-    max-width: 300px;
-    border: 1px solid #f0f0f0;
-    border-radius: 2px;
-  }
-  .wrapper {
+  padding: 20px;
+  width: 100%;
+  &-header {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    background-color: #fff;
+    border-radius: 20px;
+  }
+  &-wrapper {
     overflow: auto;
-    .content {
-      margin-right: 20px;
-      min-width: 860px;
-    }
   }
-  .ant-col.ant-col-8 {
-    min-width: 280px;
+  .content {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    min-width: 900px;
   }
-  .site-calendar {
-    @media (max-width: 1200px) {
-      display: none;
-    }
+  .task-wrapper {
+    width: 300px;
+    margin: 3px 6px;
   }
 }

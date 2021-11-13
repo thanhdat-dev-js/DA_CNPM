@@ -5,6 +5,13 @@
   margin: 16px;
   min-width: 200px;
   max-width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 40px;
+  > Button {
+    margin: 0 30px;
+  }
   ul {
     list-style: none;
     padding: 0;
