@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { collection, getFirestore, query, where, onSnapshot } from "firebase/firestore";
 
-export default function useFirebase(collectionParam, condition, convertFunc) {
+export default function useFirebase(collectionParam, condition) {
   const [document, setDocument] = useState([]);
   const db = getFirestore();
   useEffect(() => {
@@ -15,15 +15,16 @@ export default function useFirebase(collectionParam, condition, convertFunc) {
     try {
       q = query(collectionRef, where(condition.fieldName, condition.operator, condition.compareValue));
     } catch (error) {
+      setDocument([]);
       // console.log(error);
       return;
     }
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const documents = [];
       querySnapshot.forEach(doc => {
-        var temp = convertFunc(doc);
         documents.push({
-          ...temp
+          ...doc.data(),
+          id: doc.id
         })
       })
       setDocument(documents);

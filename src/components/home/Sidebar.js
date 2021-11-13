@@ -35,6 +35,7 @@ export default function Sidebar() {
       memberIdList: [uid],
       createdById: [uid],
       createdAt: serverTimestamp(),
+      columnIdList: []
     })
     setIsModalVisible(false);
     setInput('');
@@ -77,9 +78,10 @@ export default function Sidebar() {
             <Panel header="Workspace" >
               {workspaceList?.map(item => (
                 <Typography.Link
-                  className={(status === item.workspaceId) ? "active-border" : ""}
-                  key={item.workspaceId}
-                  onClick={() => setStatus(item.workspaceId)}
+                  style={{ width: "100%" }}
+                  className={(status === item.id) ? "active-border" : ""}
+                  key={item.id}
+                  onClick={() => setStatus(item.id)}
                 > {item.name}
                   <Dropdown overlay={(
                     <Menu>

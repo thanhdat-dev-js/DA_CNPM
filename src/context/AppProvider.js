@@ -1,3 +1,4 @@
+import { documentId } from '@firebase/firestore';
 import React, { useState, useEffect } from 'react';
 import useFirebase from '../hook/useFirebase';
 import { AuthContext } from './AuthProvider';
@@ -6,27 +7,6 @@ export const AppContext = React.createContext();
 
 export default function AppProvider({ children }) {
   const [status, setStatus] = useState('dashboard');
-  // status = {
-  //   name: "asd",
-  //   workspaceId : "asdasdas"
-  // }
-  const [memberList, setMemberList] = useState([]);
-  // memberList = [
-  //   {
-  //     avaURL: "asdas",
-  //     name: "asda",
-  //     uid: "asdasd"
-  //   }, {
-  //     avaURL: "asdas",
-  //     name: "asda",
-  //     uid: "asdasd"
-  //   }
-  // ]
-
-
-
-  // Tat ca state cua app duoc luu o day
-  // useEffect 
   const {
     user: { uid },
   } = React.useContext(AuthContext);
@@ -38,18 +18,48 @@ export default function AppProvider({ children }) {
       compareValue: uid
     }
   }, [uid]);
-
-  const workspaceList = useFirebase('workspace', workspaceCondition, (doc) => ({
-    name: doc.data().name,
-    workspaceId: doc.id
-  }));
-
+  const workspaceList = useFirebase('workspace', workspaceCondition);
+  const selectWorkspace = React.useMemo(
+    () => workspaceList.find(item => item.id == status) || {}
+    , [workspaceList, status]);
+  const memberListCondition = React.useMemo(() => (
+    {
+      fieldName: "uid",
+      operator: "in",
+      compareValue: selectWorkspace.memberIdList
+    }
+  ),
+    [selectWorkspace.memberIdList]);
+  const memberList = useFirebase('person', memberListCondition);
+  const columnsCondition = React.useMemo(() => (
+    {
+      fieldName: documentId(),
+      operator: "in",
+      compareValue: selectWorkspace.columnIdList
+    }
+  ),
+    [selectWorkspace.columnIdList]);
+  const columns = useFirebase('column', columnsCondition);
+  const taskIdList = React.useMemo(
+    () => columns.reduce((prev, cur) => (prev.concat(cur.taskIdList)), [])
+    , [columns]);
+  const tasksCondition = React.useMemo(
+    () => ({
+      fieldName: documentId(),
+      operator: "in",
+      compareValue: taskIdList
+    })
+    , [taskIdList])
+  const tasks = useFirebase('task', tasksCondition);
   return (
     <AppContext.Provider
       value={{
         status,
         workspaceList,
-        setStatus
+        setStatus,
+        selectWorkspace,
+        tasks,
+        columns
       }}>
       {children}
     </AppContext.Provider>

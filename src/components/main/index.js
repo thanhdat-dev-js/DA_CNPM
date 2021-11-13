@@ -2,8 +2,11 @@ import React from 'react';
 import "./main.scss";
 import Column from './Column';
 import { Button } from 'antd';
+import { AppContext } from '../../context/AppProvider';
+import { documentId } from '@firebase/firestore';
+import useFirebase from '../../hook/useFirebase';
 
-const columns = [
+const columnmms = [
   {
     id: '1',
     name: "On Plan",
@@ -61,11 +64,12 @@ const tasks = [
 ]
 
 export default function Main() {
+  const { columns, tasks } = React.useContext(AppContext);
   return (
     <div className="main">
       {columns.map((column) => {
         return (
-          <Column key={column.id} name={column.name} taskIdList={column.taskIdList} tasks={tasks}/>
+          <Column key={column.id} name={column.name} taskIdList={column.taskIdList} tasks={tasks} />
         )
       })}
       <div className="button-wrapper">
