@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { signOut, getAuth } from 'firebase/auth';
 import { Input, Col, Row, Button } from 'antd';
 import { DatePicker, Menu, Dropdown, message, Tag, Slider, Select, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
@@ -26,10 +25,10 @@ const Members = [
     { name: "Thanh Dat", id: "a3" },
     { name: "Dieu Ai", id: "a4" },
     { name: "Phuc Thinh", id: "a5" },
-    {name:"Phuc Thinh", id: "a5"},
-    {name:"Phuc Thinh", id: "a6"},
-    {name:"Phuc Thinh", id: "a7"},
-    {name:"Phuc Thinh", id: "a8"}
+    { name: "Phuc Thinh", id: "a5" },
+    { name: "Phuc Thinh", id: "a6" },
+    { name: "Phuc Thinh", id: "a7" },
+    { name: "Phuc Thinh", id: "a8" }
 ]
 
 const { TextArea } = Input;
@@ -119,7 +118,7 @@ export default function CreateTask({ visible, close }) {
     }
 
     return (
-            <Modal className="TaskModal" visible={visible} width={700} onCancel={() => { resetInput(); close(); }} footer={
+        <Modal className="TaskModal" visible={visible} width={700} onCancel={() => { resetInput(); close(); }} footer={
             <div>
                 <Button type="primary" onClick={queryData}>Create</Button>
             </div>
@@ -220,7 +219,7 @@ export default function CreateTask({ visible, close }) {
             <Row className="normal-row">
                 <Col span={5} className="element-text">Progression:</Col>
                 <Col span={5}>
-                    <input type="text" size={10} value={0  + " %"} readOnly />
+                    <input type="text" size={10} value={0 + " %"} readOnly />
                 </Col>
             </Row>
 
@@ -233,6 +232,6 @@ export default function CreateTask({ visible, close }) {
             <Row className="desc-row">
                 <TextArea value={desc} onChange={descChange} placeholder="Description" autoSize={{ minRows: 5, maxRows: 10 }} />
             </Row>
-            </Modal>
+        </Modal>
     )
 }
