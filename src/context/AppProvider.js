@@ -51,15 +51,28 @@ export default function AppProvider({ children }) {
     })
     , [taskIdList])
   const tasks = useFirebase('task', tasksCondition);
+  const [visible, setVisible] = useState(false);
+  const [curColumn, setCurColumn] = useState('');
+  const [curTask, setCurTask] = useState({});
+  const [visibleTask, setVisibleTask] = useState(false);
   return (
     <AppContext.Provider
       value={{
         status,
         workspaceList,
         setStatus,
+        memberList,
         selectWorkspace,
         tasks,
-        columns
+        columns,
+        visible,
+        setVisible,
+        curColumn,
+        setCurColumn,
+        curTask,
+        setCurTask,
+        visibleTask,
+        setVisibleTask
       }}>
       {children}
     </AppContext.Provider>

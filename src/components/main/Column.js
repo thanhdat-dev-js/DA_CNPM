@@ -12,7 +12,7 @@ export default function Column(props) {
     input: '',
     type: 'delete'
   });
-  const { selectWorkspace } = React.useContext(AppContext);
+  const { selectWorkspace, setVisible, setCurColumn } = React.useContext(AppContext);
   const handleOkMenu = () => {
     if (modalMenu.type === 'delete') {
       deleteDocumentById('column', props.id);
@@ -66,14 +66,17 @@ export default function Column(props) {
               <Dropdown overlay={menu} placement="bottomRight">
                 <EllipsisOutlined style={{ fontSize: '125%', padding: '0 5px' }} />
               </Dropdown>
-              <PlusOutlined style={{ fontSize: '125%', padding: '0 5px' }} />
+              <PlusOutlined style={{ fontSize: '125%', padding: '0 5px' }} onClick={() => {
+                setVisible(true);
+                setCurColumn(props.id);
+              }} />
             </div>
           </div>
           <div className="task-wrapper">
             {props.tasks.map((task) => {
               if (props.taskIdList.includes(task.id))
                 return (
-                  <Task key={task.id} name={task.name} progression={task.progression} deadline={task.deadline} />
+                  <Task key={task.id} task={task} name={task.name} progression={task.progression} deadline={task.deadline} />
                 )
             })}
           </div>

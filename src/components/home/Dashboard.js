@@ -91,10 +91,10 @@ export default function Dashboard() {
       </div>
       <div className="dashboard-wrapper">
         <div className="content">
-          {tasks.map((task) => {
+          {tasks.map((task, idx) => {
             return (
-              <div className="task-wrapper">
-                <Task key={task.id} name={task.name} progression={task.progression} deadline={task.deadline} />
+              <div className="task-wrapper" key={idx}>
+                <Task name={task.name} progression={task.progression} deadline={task.deadline} />
               </div>
             )
           })}
@@ -103,14 +103,3 @@ export default function Dashboard() {
     </div>
   )
 }
-// export default function Dashboard({ openCTV, openVTV }) {
-//   return (
-//     <div className="dashboard">
-//       <h1>This is a dashboard</h1>
-//       <Button onClick={openCTV}>Create Task</Button>
-//       <Button onClick={openVTV}>View Task</Button>
-//       <br />
-//     </div>
-//   )
-// }
-
