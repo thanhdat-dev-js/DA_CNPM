@@ -39,18 +39,20 @@ export default function Column(props) {
   }
   const menu = (
     <Menu>
-      <Menu.Item key="1" onClick={() => setModalMenu({
-        ...modalMenu,
-        isModalVisible: true,
-        type: 'edit'
-      })} icon={<EditOutlined />}>
+      <Menu.Item key="1"
+        onClick={() => setModalMenu({
+          ...modalMenu,
+          isModalVisible: true,
+          type: 'edit'
+        })} icon={<EditOutlined />}>
         Edit Name
       </Menu.Item>
-      <Menu.Item key="2" onClick={() => setModalMenu({
-        ...modalMenu,
-        isModalVisible: true,
-        type: 'delete'
-      })}
+      <Menu.Item key="2"
+        onClick={() => setModalMenu({
+          ...modalMenu,
+          isModalVisible: true,
+          type: 'delete'
+        })}
         icon={<DeleteOutlined />}>
         Delete Column
       </Menu.Item>
@@ -66,10 +68,11 @@ export default function Column(props) {
               <Dropdown overlay={menu} placement="bottomRight">
                 <EllipsisOutlined style={{ fontSize: '125%', padding: '0 5px' }} />
               </Dropdown>
-              <PlusOutlined style={{ fontSize: '125%', padding: '0 5px' }} onClick={() => {
-                setVisible(true);
-                setCurColumn(props.id);
-              }} />
+              <PlusOutlined style={{ fontSize: '125%', padding: '0 5px' }}
+                onClick={() => {
+                  setVisible(true);
+                  setCurColumn(props.id);
+                }} />
             </div>
           </div>
           <div className="task-wrapper">

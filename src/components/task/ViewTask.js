@@ -7,7 +7,7 @@ import moment from 'moment';
 import './index.scss';
 import { AppContext } from '../../context/AppProvider';
 import TestComment from './TestComment';
-import { addDocument, editDocumentById } from '../../firebase/service';
+import { deleteDocumentById, editDocumentById } from '../../firebase/service';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -29,7 +29,7 @@ const TaskInfo = {
 const { TextArea } = Input;
 const { Option } = Select;
 
-export default function ViewTask({ visible}) {
+export default function ViewTask({ }) {
     const { visibleTask, setVisibleTask, curTask, memberList, tasks } = React.useContext(AppContext);
     const [PrevTitle, setPT] = useState(curTask.name);
     const [title, setTitle] = useState(curTask.name);
@@ -88,6 +88,8 @@ export default function ViewTask({ visible}) {
     }
 
     const closeModal = async () => {
+        await deleteDocumentById('task', curTask.id);
+
         await makeDBox();
         setVisibleTask(false);
     }
@@ -202,7 +204,7 @@ export default function ViewTask({ visible}) {
 
             <Modal
                 centered
-                visible={visible && visibleDBox}
+                visible={visibleTask && visibleDBox}
                 onOk={closeModal}
                 onCancel={() => setVisibleDBox(false)}
             >

@@ -51,7 +51,6 @@ export default function AppProvider({ children }) {
     })
     , [taskIdList])
   const tasks = useFirebase('task', tasksCondition);
-  
   const [visible, setVisible] = useState(false);
   const [curColumn, setCurColumn] = useState('');
   const [curTask, setCurTask] = useState({});
