@@ -7,8 +7,8 @@ import { addDocument, editDocumentById } from '../../firebase/service';
 
 export default function Main() {
   const { columns, tasks } = React.useContext(AppContext);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [input, setInput] = useState('');
+  const [ isModalVisible, setIsModalVisible] = useState(false);
+  const [ input, setInput] = useState('');
   const { selectWorkspace } = React.useContext(AppContext);
   const showModal = () => {
     setIsModalVisible(true);

@@ -24,8 +24,7 @@ const { Option } = Select;
 export default function CreateTask({ children }) {
     // For saving input
     const { visible, setVisible, memberList, curColumn, columns } = React.useContext(AppContext);
-    const { user: { uid, displayName }
-    } = React.useContext(AuthContext);
+    const { user: { uid, displayName } } = React.useContext(AuthContext);
     const [title, setTitle] = useState('');
     const CreateDate = getDay();
     const [dl, setDl] = useState('');
@@ -33,6 +32,7 @@ export default function CreateTask({ children }) {
     const [tags, setTags] = useState([]);
     const [AA, setAA] = useState([]);
     const [desc, setDesc] = useState('');
+
     //Variable for make visible
     const [visibleTagInput, setVisibleTagInput] = useState(false);
     function tagClose(removedTag) {
@@ -100,8 +100,9 @@ export default function CreateTask({ children }) {
                 commentIdList: [],
                 progression: 0,
                 tag: tags,
-                createdBy: uid
-            })
+                createdBy: uid,
+                createDate: getDay()
+            });
             columns.map(item => {
                 if (item.id == curColumn) {
                     if (Array.isArray(item.taskIdList)) {
@@ -140,11 +141,11 @@ export default function CreateTask({ children }) {
                 {/* Date & Deadline */}
                 <Row className="normal-row">
                     <Col span={5} className='element-text'>Create Date:</Col>
-                    <Col span={6}>
-                        <input type="text" size={10} value={CreateDate} readOnly />
+                    <Col span={7}>
+                        <input type="text" size={20} value={CreateDate} readOnly />
                     </Col>
                     <Col span={5} className='element-text align-pair' >Deadline:</Col>
-                    <Col span={6}>
+                    <Col span={5}>
                         <DatePicker value={dl !== "" ? moment(dl, dateFormat) : null} onChange={dateChange} format={dateFormat} />
                     </Col>
                 </Row>
@@ -152,11 +153,11 @@ export default function CreateTask({ children }) {
                 {/* Creator & Priority */}
                 <Row className="normal-row">
                     <Col span={5} className='element-text'>Create By:</Col>
-                    <Col span={6}>
-                        <input type="text" size={10} value={displayName} readOnly />
+                    <Col span={7}>
+                        <input type="text" size={20} value={displayName} readOnly />
                     </Col>
                     <Col span={5} className='element-text align-pair'>Priority:</Col>
-                    <Col span={6}>
+                    <Col span={5}>
                         <Dropdown overlay={p}>
                             <Button> {priority} </Button>
                         </Dropdown>

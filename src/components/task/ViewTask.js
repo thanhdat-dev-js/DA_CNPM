@@ -5,21 +5,13 @@ import { DatePicker, Menu, Dropdown, message, Tag, Slider, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import moment from 'moment';
 import './index.scss';
+import { AppContext } from '../../context/AppProvider';
 import TestComment from './TestComment';
+import { addDocument, editDocumentById } from '../../firebase/service';
 
 const dateFormat = 'DD/MM/YYYY';
 
 // Data got from DB
-const Members = [
-    { name: "Hoang Lam", id: "a1" },
-    { name: "Hoang Phuc", id: "a2" },
-    { name: "Thanh Dat", id: "a3" },
-    { name: "Dieu Ai", id: "a4" },
-    { name: "Phuc Thinh", id: "a5" },
-    { name: "Phuc Thinh", id: "a6" },
-    { name: "Phuc Thinh", id: "a7" },
-    { name: "Phuc Thinh", id: "a8" }
-];
 
 const TaskInfo = {
     taskID: "123683",
@@ -37,28 +29,32 @@ const TaskInfo = {
 const { TextArea } = Input;
 const { Option } = Select;
 
-export default function ViewTask({ visible, close }) {
-    const [PrevTitle, setPT] = useState(TaskInfo.title);
-    const [title, setTitle] = useState(TaskInfo.title);
+export default function ViewTask({ visible}) {
+    const { visibleTask, setVisibleTask, curTask, memberList, tasks } = React.useContext(AppContext);
+    const [PrevTitle, setPT] = useState(curTask.name);
+    const [title, setTitle] = useState(curTask.name);
 
-    const [prevDl, setPDL] = useState(TaskInfo.deadline);
-    const [dl, setDl] = useState(TaskInfo.deadline);
+    const Author = memberList.find(member => member.uid === curTask.createdBy).name;
+    const createDate = curTask.createDate;
 
-    const [prevPrio, setPP] = useState(TaskInfo.priority);
-    const [priority, setPriority] = useState(TaskInfo.priority);
+    const [prevDl, setPDL] = useState(curTask.deadline);
+    const [dl, setDl] = useState(curTask.deadline);
 
-    const [prevT, setPTag] = useState(TaskInfo.tag);
-    const [tags, setTags] = useState(TaskInfo.tag);
+    const [prevPrio, setPP] = useState(curTask.priority);
+    const [priority, setPriority] = useState(curTask.priority);
+
+    const [prevT, setPTag] = useState(curTask.tag);
+    const [tags, setTags] = useState(curTask.tag);
     const [visibleTagInput, setVisibleTagInput] = useState(false);
 
-    const [prevAA, setPAA] = useState(TaskInfo.assignTo);
-    const [AA, setAA] = useState(TaskInfo.assignTo);
+    const [prevAA, setPAA] = useState(curTask.memberIdList);
+    const [AA, setAA] = useState(curTask.memberIdList);
 
-    const [prevProg, setPProg] = useState(TaskInfo.progress);
-    const [prog, setProg] = useState(TaskInfo.progress);
+    const [prevProg, setPProg] = useState(curTask.progression);
+    const [prog, setProg] = useState(curTask.progression);
 
-    const [prevDesc, setPDesc] = useState(TaskInfo.desc);
-    const [desc, setDesc] = useState(TaskInfo.desc);
+    const [prevDesc, setPDesc] = useState(curTask.description);
+    const [desc, setDesc] = useState(curTask.description);
 
     const [visibleDBox, setVisibleDBox] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -93,11 +89,11 @@ export default function ViewTask({ visible, close }) {
 
     const closeModal = async () => {
         await makeDBox();
-        close();
+        setVisibleTask(false);
     }
 
     function convertIDtoName(id) {
-        return Members.find(o => o.id === id).name;
+        return memberList.find(o => o.id === id).name;
     }
 
     function showTagInput() {
@@ -125,11 +121,23 @@ export default function ViewTask({ visible, close }) {
     }
 
     //Save and Cancel
-    function saveChange(e) {
+    async function saveChange(e) {
         if (title === '' || AA === []) {
-            message.error('Please enter task name');
+            message.error('Not Enough Information');
         }
         else {
+            await editDocumentById('task', curTask.id, {
+                name: title,
+                description: desc,
+                priority: priority,
+                deadline: dl,
+                memberIdList: AA,
+                commentIdList: curTask.commentIdList,
+                progression: prog,
+                tag: tags,
+                createdBy: curTask.createdBy,
+                createDate: curTask.createDate
+            });
             setPT(title);
             setPDL(dl);
             setPP(priority);
@@ -137,13 +145,6 @@ export default function ViewTask({ visible, close }) {
             setPAA(AA);
             setPProg(prog);
             setPDesc(desc);
-            setEditMode(false);
-            console.log(`Task Name: ${title}`);
-            console.log(`Dl: ${dl}`);
-            console.log(`Priority: ${priority}`)
-            console.log(tags);
-            console.log(AA);
-            console.log(desc);
             setEditMode(false);
         }
 
@@ -164,12 +165,11 @@ export default function ViewTask({ visible, close }) {
         cancelChange();
         setEditMode(false);
         setVisibleTagInput(false);
-        close();
+        setVisibleTask(false);
     }
 
-
     return (
-        <Modal className="TaskModal" visible={visible} width={700} onCancel={closeAbrupt} footer={
+        <Modal className="TaskModal" visible={visibleTask} width={700} onCancel={closeAbrupt} footer={
             <div>
                 {
                     editMode &&
@@ -212,13 +212,13 @@ export default function ViewTask({ visible, close }) {
             {/* Date & Deadline */}
             <Row className="normal-row">
                 <Col span={5} className="element-text">Create Date:</Col>
-                <Col span={6}>
-                    <input type="text" size={10} value={TaskInfo.createDate} readOnly />
+                <Col span={7}>
+                    <input type="text" size={20} value={createDate} readOnly />
                 </Col>
                 <Col span={5} className="element-text align-pair">Deadline:</Col>
-                <Col span={6}>
+                <Col span={5}>
                     {!editMode
-                        ? <input type="text" size={10} value={dl} readOnly />
+                        ? <input type="text" size={15} value={dl == "" ? "None" : dl} readOnly />
                         : <DatePicker value={dl !== "" ? moment(dl, dateFormat) : null} onChange={dateChange} format={dateFormat} />
                     }
                 </Col>
@@ -227,11 +227,11 @@ export default function ViewTask({ visible, close }) {
             {/* Creator & Priority */}
             <Row className="normal-row">
                 <Col span={5} className="element-text">Create By:</Col>
-                <Col span={6}>
-                    <input type="text" size={10} value={TaskInfo.Name} readOnly />
+                <Col span={7}>
+                    <input type="text" size={20} value={Author} readOnly />
                 </Col >
                 <Col span={5} className='element-text align-pair'>Priority:</Col>
-                <Col span={6}>
+                <Col span={5}>
                     {!editMode
                         ? <input type="text" size={10} value={priority} readOnly />
                         : <Dropdown disabled={!editMode} overlay={p}>
@@ -250,7 +250,6 @@ export default function ViewTask({ visible, close }) {
                     const tagElem = (
                         <Tag
                             key={tag}
-                            closable={editMode}
                             onClose={() => tagClose(tag)}
                         >
                             <span> {isLongTag ? `${tag.slice(0, 15)}...` : tag} </span>
@@ -297,7 +296,7 @@ export default function ViewTask({ visible, close }) {
                         onChange={handleAA}
                         style={{ minWidth: '150px' }}
                     >
-                        {Members.map(member => {
+                        {memberList.map(member => {
                             return <Option key={member.id} value={member.id} label={member.name}>{member.name}</Option>
                         })}
                     </Select>

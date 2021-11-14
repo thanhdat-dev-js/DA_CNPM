@@ -3,10 +3,11 @@ import Header from './Header';
 import Main from '../main/index';
 import Subbar from './subbar/index';
 import CreateTask from '../task/CreateTask';
+import ViewTask from '../task/ViewTask';
 import { AppContext } from '../../context/AppProvider';
 
 export default function Workspace() {
-  const { workspaceList } = React.useContext(AppContext);
+  const { workspaceList, visibleTask } = React.useContext(AppContext);
   return (
     <div style={{
       paddingRight: '16px'
@@ -17,6 +18,7 @@ export default function Workspace() {
         <Main></Main>
       }
       <CreateTask></CreateTask>
+      {visibleTask && <ViewTask></ViewTask>}
     </div >
   )
 }

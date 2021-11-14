@@ -5,7 +5,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { AppContext } from '../../context/AppProvider';
 
 export default function Task(props) {
-  const { setCurTask, setVisibleTask } = React.useContext(AppContext);
+  const { curTask, setCurTask, setVisibleTask } = React.useContext(AppContext);
   return (
     <div className="task-card-container">
       <Card
@@ -13,8 +13,9 @@ export default function Task(props) {
         bordered={true}
         style={{ cursor: 'pointer', borderRadius: '5px' }}
         bodyStyle={{ padding: '4%', height: '133px' }}
-        onClick={() => {
-          setCurTask({ ...props.task });
+        onClick={async () => {
+          await setCurTask({ ...props.task });
+          console.log(curTask);
           setVisibleTask(true);
         }}
       >
