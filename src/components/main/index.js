@@ -4,11 +4,12 @@ import Column from './Column';
 import { Modal, Button, Input } from 'antd';
 import { AppContext } from '../../context/AppProvider';
 import { addDocument, editDocumentById } from '../../firebase/service';
+import { serverTimestamp } from 'firebase/firestore';
 
 export default function Main() {
   const { columns, tasks } = React.useContext(AppContext);
-  const [ isModalVisible, setIsModalVisible] = useState(false);
-  const [ input, setInput] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [input, setInput] = useState('');
   const { selectWorkspace } = React.useContext(AppContext);
   const showModal = () => {
     setIsModalVisible(true);
@@ -16,7 +17,8 @@ export default function Main() {
   const handleOk = async () => {
     const id = await addDocument('column', {
       name: input,
-      taskIdList: []
+      taskIdList: [],
+      createdAt: serverTimestamp()
     })
     if (id) {
       console.log(selectWorkspace.columnIdList)

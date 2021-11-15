@@ -30,6 +30,7 @@ export default function Sidebar() {
     setIsModalVisible(true);
   };
   const handleOk = () => {
+    if (input == '') return;
     addDocument('workspace', {
       name: input,
       memberIdList: [uid],

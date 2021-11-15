@@ -7,6 +7,7 @@ import './index.scss';
 import { AppContext } from '../../context/AppProvider';
 import { AuthContext } from "../../context/AuthProvider";
 import { addDocument, editDocumentById } from '../../firebase/service';
+import { serverTimestamp } from "firebase/firestore";
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -101,7 +102,8 @@ export default function CreateTask({ children }) {
                 progression: 0,
                 tag: tags,
                 createdBy: uid,
-                createDate: getDay()
+                createDate: getDay(),
+                createdAt: serverTimestamp()
             });
             columns.map(item => {
                 if (item.id == curColumn) {

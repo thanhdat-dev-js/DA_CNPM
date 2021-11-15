@@ -27,9 +27,9 @@ export default function useFirebase(collectionParam, condition) {
           id: doc.id
         })
       })
+      documents.sort((item1, item2) => item1.createdAt - item2.createdAt);
       setDocument(documents);
     });
-
     return () => {
       unsubscribe();
     }
