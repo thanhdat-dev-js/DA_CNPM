@@ -14,7 +14,7 @@ export default function Workspace() {
     }}>
       <Header></Header>
       <Subbar></Subbar>
-      {workspaceList.length != 0 &&
+      {workspaceList.length !== 0 &&
         <Main></Main>
       }
       <CreateTask></CreateTask>

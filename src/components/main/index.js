@@ -22,7 +22,7 @@ export default function Main() {
     })
     if (id) {
       console.log(selectWorkspace.columnIdList)
-      if (selectWorkspace.columnIdList == undefined || selectWorkspace.columnIdList == []) {
+      if (selectWorkspace.columnIdList === undefined || selectWorkspace.columnIdList === []) {
         editDocumentById('workspace', selectWorkspace.id, {
           columnIdList: [id]
         })

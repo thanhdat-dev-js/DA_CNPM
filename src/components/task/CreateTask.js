@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Input, Col, Row, Button } from 'antd';
-import { DatePicker, Menu, Dropdown, message, Tag, Slider, Select, Modal } from 'antd';
+import { DatePicker, Menu, Dropdown, message, Tag, Select, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
 import moment from 'moment';
 import './index.scss';
@@ -109,7 +109,7 @@ export default function CreateTask({ children }) {
                 createdAt: serverTimestamp()
             });
             columns.map(item => {
-                if (item.id == curColumn) {
+                if (item.id === curColumn) {
                     if (Array.isArray(item.taskIdList)) {
                         editDocumentById('column', curColumn, {
                             taskIdList: [...item.taskIdList, id]
@@ -121,6 +121,7 @@ export default function CreateTask({ children }) {
                         })
                     }
                 }
+                return null;
             })
             resetInput();
             setVisible(false);
@@ -214,12 +215,11 @@ export default function CreateTask({ children }) {
                 <Row className="normal-row">
                     <Select
                         mode="multiple"
-                        style={{ width: '100%' }}
+                        style={{ width: '100%', minWidth: '150px' }}
                         placeholder="Select person/people to assign"
                         value={AA}
                         optionLabelProp="label"
                         onChange={handleAA}
-                        style={{ minWidth: '150px' }}
                     >
                         {memberList?.map(member => {
                             return <Option key={member.id} value={member.id} label={member.name}>{member.name}</Option>

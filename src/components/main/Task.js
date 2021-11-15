@@ -1,7 +1,6 @@
 import React from 'react';
 import "./task.scss";
 import { Card, Avatar, Progress, Tag } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
 import { AppContext } from '../../context/AppProvider';
 
 export default function Task(props) {

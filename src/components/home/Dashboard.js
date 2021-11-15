@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Avatar, Row, Col, Button } from 'antd';
+import { Input, Avatar } from 'antd';
 import "./dashboard.scss";
 import Task from '../main/Task';
 import { UserOutlined } from '@ant-design/icons';

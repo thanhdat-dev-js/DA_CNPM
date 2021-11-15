@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { getAuth, signOut } from '@firebase/auth';
-import { Avatar, Image, Divider, Tooltip, Button, Modal, Form, Input, Radio } from 'antd';
-import { SearchOutlined, UserOutlined, AntDesignOutlined, ExportOutlined } from '@ant-design/icons';
+import { Avatar, Tooltip, Button, Modal, Input } from 'antd';
 
 import './header.scss';
 

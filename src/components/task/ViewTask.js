@@ -1,5 +1,4 @@
-import React, { useRef, useState } from 'react';
-import { signOut, getAuth } from 'firebase/auth';
+import React, { useState } from 'react';
 import { Input, Col, Row, Button, Modal } from 'antd';
 import { DatePicker, Menu, Dropdown, message, Tag, Slider, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
@@ -13,24 +12,24 @@ const dateFormat = 'DD/MM/YYYY';
 
 // Data got from DB
 
-const TaskInfo = {
-    taskID: "123683",
-    title: 'Hello',
-    createDate: "2/12/2021",
-    deadline: "4/12/2021",
-    Name: "Dieu Ai",
-    priority: "Medium",
-    tag: ['OS', 'Assignment'],
-    assignTo: ['a1', 'a3'],
-    progress: 40,
-    desc: "Sample Text Sample Text Sample Text Sample Text Sample Text"
-}
+// const TaskInfo = {
+//     taskID: "123683",
+//     title: 'Hello',
+//     createDate: "2/12/2021",
+//     deadline: "4/12/2021",
+//     Name: "Dieu Ai",
+//     priority: "Medium",
+//     tag: ['OS', 'Assignment'],
+//     assignTo: ['a1', 'a3'],
+//     progress: 40,
+//     desc: "Sample Text Sample Text Sample Text Sample Text Sample Text"
+// }
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-export default function ViewTask({ }) {
-    const { visibleTask, setVisibleTask, curTask, memberList, tasks } = React.useContext(AppContext);
+export default function ViewTask() {
+    const { visibleTask, setVisibleTask, curTask, memberList } = React.useContext(AppContext);
     const [PrevTitle, setPT] = useState(curTask.name);
     const [title, setTitle] = useState(curTask.name);
 
@@ -220,7 +219,7 @@ export default function ViewTask({ }) {
                 <Col span={5} className="element-text align-pair">Deadline:</Col>
                 <Col span={5}>
                     {!editMode
-                        ? <input type="text" size={15} value={dl == "" ? "None" : dl} readOnly />
+                        ? <input type="text" size={15} value={dl === "" ? "None" : dl} readOnly />
                         : <DatePicker value={dl !== "" ? moment(dl, dateFormat) : null} onChange={dateChange} format={dateFormat} />
                     }
                 </Col>
@@ -290,13 +289,12 @@ export default function ViewTask({ }) {
                 {editMode
                     ? <Select
                         mode="multiple"
-                        style={{ width: '100%' }}
+                        style={{ width: '100%', minWidth: '150px' }}
                         placeholder="Select person/people to assign"
                         value={AA}
                         closable={false}
                         optionLabelProp="label"
                         onChange={handleAA}
-                        style={{ minWidth: '150px' }}
                     >
                         {memberList.map(member => {
                             return <Option key={member.id} value={member.id} label={member.name}>{member.name}</Option>

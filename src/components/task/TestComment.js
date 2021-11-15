@@ -75,7 +75,7 @@ export default function TestComment() {
 
   const [collapse, setCollapse] = useState(true);
   return (<>
-    <div className="container">
+    <div className="container-fluid comment-section">
       <Button
         onClick={() => setCollapse(!collapse)}
         type="primary"
@@ -97,14 +97,13 @@ export default function TestComment() {
           />)}
         </div>
         <div className='d-flex'>
-          <TextArea className='flex-grow-1'
+          <TextArea className='flex-grow-1 mb-1 me-1'
             value={value}
             onChange={handleChange} 
             onSubmit={handleSubmit}
             onPressEnter={handleSubmit}
             autoSize={{ minRows: 1, maxRows: 5 }}
             placeholder="Comment..."
-            className='mb-1 me-1'
           />
           <Button
             loading={submitting}
