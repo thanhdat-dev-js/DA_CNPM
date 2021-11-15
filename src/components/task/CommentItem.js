@@ -6,6 +6,18 @@ import { timeSince } from './Utils'
 const { TextArea } = Input;
 const { confirm } = Modal;
 
+// const comment = {
+//   id,
+//   content,
+//   timestamp,
+//   uid,
+//   person { 
+//     uid,
+//     name,
+//     avaUrl
+//   }
+// }
+
 function showConfirm(okCallback, cancelCallback) {
   confirm({
     title: 'Do you want to delete this comment?',

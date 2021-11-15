@@ -6,29 +6,43 @@ import CommentItem from './CommentItem';
 const { TextArea } = Input;
 
 // TODO: remove default value
-const defaultUser = {
-  personId: 119,
-  avaUrl: "https://picsum.photos/300",
-  name: "Sa"
-}
 
-const defaultComment = {
-  person: {
-    personId: 911,
-    avaUrl: "https://picsum.photos/200",
-    name: "Nguyễn Hữu Phúc"
-  },
-  commentId: 123,
-  content: "Làm lẹ cho xong cái comment đi",
-  personId: 911,
-  timestamp: "Fri Nov 05 2021 15:00:33 GMT+0700 (Indochina Time)"
-}
+// const comment = { // Expected data model
+//   id,
+//   content,
+//   timestamp,
+//   uid,
+//   person { 
+//     uid,
+//     name,
+//     avaUrl
+//   }
+// }
 
 function isAuthorized(auser, acomment) {
-  return auser.personId === acomment.personId;
+  return true;
+  return auser.uid === acomment.uid;
 }
 
 export default function TestComment() {
+  const defaultUser = {
+    uid: 119,
+    avaUrl: "https://picsum.photos/300",
+    name: "Sa"
+  }
+
+  const defaultComment = {
+    person: {
+      uid: 911,
+      avaUrl: "https://picsum.photos/200",
+      name: "Nguyễn Hữu Phúc"
+    },
+    id: 123,
+    content: "Làm lẹ cho xong cái comment đi",
+    uid: 911,
+    timestamp: "Fri Nov 05 2021 15:00:33 GMT+0700 (Indochina Time)"
+  }
+  
   // TODO: fetch current User
   const user = defaultUser;
   const [value, setValue] = useState("");
@@ -37,23 +51,23 @@ export default function TestComment() {
 
   const newComment = {
     person: user,
-    commentId: Date.now(),
-    personId: user.personId,
+    id: Date.now(),
+    uid: user.uid,
     content: value,
     timestamp: Date(),
   }
 
   const handleDelete = (victim) => {
-    if (victim.personId !== user.personId) // recheck at serverside
+    if (victim.uid !== user.uid) // TODO: delete from DB
       return;
-    setComments(comments.filter(c => c.commentId !== victim.commentId))
+    setComments(comments.filter(c => c.id !== victim.id))
     console.log("Delete " + victim);
   }
   const handleModify = (victim, newContent) => {
-    if (victim.personId !== user.personId) // recheck at serverside
+    if (victim.uid !== user.uid) // TODO: update DB
       return;
     setComments(comments.map(c =>
-      (c.commentId === victim.commentId) ? Object.assign(c, { content: newContent }) : c
+      (c.id === victim.id) ? Object.assign(c, { content: newContent }) : c
     ))
     console.log("Edit " + newContent);
   }
@@ -70,6 +84,7 @@ export default function TestComment() {
       console.log("Submitting to server: " + value);
       setComments([...comments, newComment]);
       setValue("");
+      setSubmitting(false);
     }, 500);
   }
 
@@ -89,7 +104,7 @@ export default function TestComment() {
       <div className={collapse ? "d-none" : ""}>
         <div className='mb-2'>
           {comments.map((acomment) => <CommentItem
-            key={acomment.commentId}
+            key={acomment.id}
             comment={acomment}
             onDelete={handleDelete}
             onModify={handleModify}
