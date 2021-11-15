@@ -5,7 +5,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { AppContext } from '../../context/AppProvider';
 
 export default function Task(props) {
-  const { curTask, setCurTask, setVisibleTask } = React.useContext(AppContext);
+  const { curTask, setCurTask, setVisibleTask, memberList } = React.useContext(AppContext);
   return (
     <div className="task-card-container">
       <Card
@@ -22,9 +22,11 @@ export default function Task(props) {
         <div style={{ display: 'flex' }}>
           <p className="title">{props.name}</p>
           <Avatar.Group style={{ marginLeft: 'auto', marginRight: 0 }}>
-            <Avatar src="https://joeschmoe.io/api/v1/random" />
-            <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
-            <Avatar style={{ backgroundColor: '#1890ff' }} icon={<UserOutlined />} />
+            {memberList.map((member) => {
+              return (
+                <Avatar key={member.uid} src={member.avaURL} />
+              )
+            })}
           </Avatar.Group>
         </div>
         <div style={{ marginTop: '-15px' }}>
@@ -36,6 +38,8 @@ export default function Task(props) {
             trailColor="#c4c4c4"
             style={{ width: '65%' }}
           />
+        </div>
+        <div>
           <p className="date">{props.deadline}</p>
         </div>
         <div style={{ marginTop: '-20px', float: 'right' }}>

@@ -91,6 +91,9 @@ export default function CreateTask({ children }) {
         if (title === '') {
             message.error('Please enter task name');
         }
+        else if (dl === '') {
+            message.error('Please enter due date');
+        }
         else {
             const id = await addDocument('task', {
                 name: title,
@@ -146,7 +149,7 @@ export default function CreateTask({ children }) {
                     <Col span={7}>
                         <input type="text" size={20} value={CreateDate} readOnly />
                     </Col>
-                    <Col span={5} className='element-text align-pair' >Deadline:</Col>
+                    <Col span={5} className='element-text align-pair' >Due Date:</Col>
                     <Col span={5}>
                         <DatePicker value={dl !== "" ? moment(dl, dateFormat) : null} onChange={dateChange} format={dateFormat} />
                     </Col>

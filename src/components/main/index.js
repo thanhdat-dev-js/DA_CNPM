@@ -48,10 +48,10 @@ export default function Main() {
         )
       })}
       <div className="button-wrapper">
-        <Button type="dashed" size="large" onClick={showModal}> + Add Column</Button>
+        <Button type="dashed" size="large" onClick={showModal} style={{color: "#1890ff"}}> + Create Column</Button>
       </div>
-      <Modal title="Tạo column mới" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        <Input value={input} placeholder="Hãy nhập tên column" onChange={(e) => setInput(e.target.value)} />
+      <Modal title="Create new column" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <Input value={input} placeholder="Enter column name" onChange={(e) => setInput(e.target.value)} />
       </Modal>
     </div>
 

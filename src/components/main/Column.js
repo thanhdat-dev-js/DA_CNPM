@@ -85,10 +85,10 @@ export default function Column(props) {
           </div>
         </div>
       </div>
-      <Modal title={modalMenu.type === 'delete' ? 'Xóa column' : 'Chỉnh sửa tên column'} visible={modalMenu.isModalVisible} onOk={handleOkMenu} onCancel={handleCancelMenu}>
+      <Modal title={modalMenu.type === 'delete' ? 'Delete column' : 'Change column name'} visible={modalMenu.isModalVisible} onOk={handleOkMenu} onCancel={handleCancelMenu}>
         {
           modalMenu.type === 'edit' &&
-          <Input placeholder="Nhập tên column" value={modalMenu.input} onChange={(e) => setModalMenu({
+          <Input placeholder="Enter new column name" value={modalMenu.input} onChange={(e) => setModalMenu({
             ...modalMenu,
             input: e.target.value
           })} />
@@ -96,7 +96,7 @@ export default function Column(props) {
         {modalMenu.type === 'delete' &&
           <strong>
             <p>
-              Bạn có chắc chắc xóa column này
+              Do you want to delete this column?
             </p>
           </strong>
         }

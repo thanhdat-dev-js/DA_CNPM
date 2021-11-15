@@ -92,7 +92,7 @@ export default function Sidebar() {
                           isModalVisible: true,
                           type: 'edit'
                         })}>
-                        Chỉnh sửa tên
+                        Edit name
                       </Menu.Item>
                       <Menu.Item key="1" value='delete'
                         onClick={() => setModalMenu({
@@ -100,7 +100,7 @@ export default function Sidebar() {
                           isModalVisible: true,
                           type: 'delete'
                         })}>
-                        Xóa
+                        Delete
                       </Menu.Item>
                     </Menu>
                   )} trigger={['click']}>
@@ -110,16 +110,16 @@ export default function Sidebar() {
                   </Dropdown>
                 </Typography.Link>
               ))}
-              <Button type="dashed" onClick={showModal}  >+  Tạo workspace</Button>
+              <Button type="dashed" onClick={showModal}  >+  Create workspace</Button>
             </Panel>
           </Collapse>
-          <Modal title="Tạo workspace mới" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-            <Input placeholder="Nhập tên workspace" value={input} onChange={(e) => setInput(e.target.value)} />
+          <Modal title="Create new workspace" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            <Input placeholder="Enter workspace name" value={input} onChange={(e) => setInput(e.target.value)} />
           </Modal>
-          <Modal title={modalMenu.type === 'delete' ? 'Xóa workspace' : 'Chỉnh sửa tên workspace'} visible={modalMenu.isModalVisible} onOk={handleOkMenu} onCancel={handleCancelMenu}>
+          <Modal title={modalMenu.type === 'delete' ? 'Delete workspace' : 'Change workspace name'} visible={modalMenu.isModalVisible} onOk={handleOkMenu} onCancel={handleCancelMenu}>
             {
               modalMenu.type === 'edit' &&
-              <Input placeholder="Nhập tên workspace" value={modalMenu.input} onChange={(e) => setModalMenu({
+              <Input placeholder="Enter new workspace name" value={modalMenu.input} onChange={(e) => setModalMenu({
                 ...modalMenu,
                 input: e.target.value
               })} />
@@ -127,14 +127,14 @@ export default function Sidebar() {
             {modalMenu.type === 'delete' &&
               <strong>
                 <p>
-                  Bạn có chắc chắc xóa workspace này
+                  Do you want to delete this workspace?
                 </p>
               </strong>
             }
           </Modal>
         </li>
       </ul>
-      <Button type="primary" onClick={() => signOut(getAuth())} >Đăng xuất</Button>
+      <Button type="primary" onClick={() => signOut(getAuth())} >Log out</Button>
     </div>
   )
 }
