@@ -1,8 +1,9 @@
 import React from 'react';
-import { Input, Avatar, Row, Col, Button } from 'antd';
+import { Input, Avatar, Row, Col, Button, Tooltip } from 'antd';
 import "./dashboard.scss";
 import Task from '../main/Task';
 import { UserOutlined } from '@ant-design/icons';
+import { AuthContext } from '../../context/AuthProvider';
 import "../main/task.scss";
 
 const tasks = [
@@ -80,6 +81,8 @@ const tasks = [
 ]
 
 export default function Dashboard() {
+  const { user } = React.useContext(AuthContext);
+
   return (
     <div className="dashboard">
       <div className="dashboard-header">
@@ -87,7 +90,9 @@ export default function Dashboard() {
           style={{ width: 200 }}
           placeholder="Search"
         />
-        <Avatar size={40} icon={<UserOutlined />} />
+      <Tooltip title={user.displayName} placement="top">
+        <Avatar size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf', marginLeft: "10px" }} key={user.uid} src={user.photoURL}/>
+      </Tooltip>
       </div>
       <div className="dashboard-wrapper">
         <div className="content">
