@@ -7,6 +7,10 @@ export const AppContext = React.createContext();
 
 export default function AppProvider({ children }) {
   const [status, setStatus] = useState('dashboard');
+  const [visible, setVisible] = useState(false);
+  const [curColumn, setCurColumn] = useState('');
+  const [curTask, setCurTask] = useState({});
+  const [visibleTask, setVisibleTask] = useState(false);
   const { user: { uid }, } = React.useContext(AuthContext);
 
   const workspaceCondition = React.useMemo(() => {
@@ -49,12 +53,8 @@ export default function AppProvider({ children }) {
       operator: "in",
       compareValue: taskIdList
     })
-    , [taskIdList])
+    , [taskIdList]);
   const tasks = useFirebase('task', tasksCondition);
-  const [visible, setVisible] = useState(false);
-  const [curColumn, setCurColumn] = useState('');
-  const [curTask, setCurTask] = useState({});
-  const [visibleTask, setVisibleTask] = useState(false);
   return (
     <AppContext.Provider
       value={{

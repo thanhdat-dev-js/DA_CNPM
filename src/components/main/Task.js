@@ -3,6 +3,8 @@ import "./task.scss";
 import { Card, Avatar, Progress, Tag } from 'antd';
 import { AppContext } from '../../context/AppProvider';
 
+const ColorPallet = ["#f0f8ef", "#f4f8af","#f0f8ef", "#f0f8ef"];
+
 export default function Task(props) {
   const { curTask, setCurTask, setVisibleTask, memberList } = React.useContext(AppContext);
   return (
@@ -10,11 +12,11 @@ export default function Task(props) {
       <Card
         hoverable
         bordered={true}
-        style={{ cursor: 'pointer', borderRadius: '5px' }}
-        bodyStyle={{ padding: '4%', height: '133px' }}
+        style={{ cursor: 'pointer', borderRadius: '5px',
+        borderRight: props.priority === 'Low' ? '6px solid green' : ( props.priority === 'Medium' ? '6px solid orange' : '6px solid red')  }}
+        bodyStyle={{ padding: '4%', height: '150px'}}
         onClick={async () => {
           await setCurTask({ ...props.task });
-          console.log(curTask);
           setVisibleTask(true);
         }}
       >
@@ -35,15 +37,22 @@ export default function Task(props) {
             showInfo={false}
             strokeColor="#805454"
             trailColor="#c4c4c4"
-            style={{ width: '65%' }}
+            style={{ width: '100%' }}
           />
         </div>
-        <div>
-          <p className="date">{props.deadline}</p>
-        </div>
-        <div style={{ marginTop: '-20px', float: 'right' }}>
-          <Tag color="#f0f8ef" style={{ color: '#60B158', fontFamily: 'arial', fontWeight: 'bold', fontSize: '14px' }}>IOS APP</Tag>
-          <Tag color="#E6F2FF" style={{ color: '#007AFF', fontFamily: 'arial', fontWeight: 'bold', fontSize: '14px' }}>UX/UI</Tag>
+        {
+          props.deadline !== "" &&
+          <div style={{ marginTop: '5px'}}>
+            <p className="date">{props.deadline}</p>
+          </div>
+        }
+        
+        <div style={{ marginTop: '-10px', float: 'right' }}>
+          {props.tags.map((T, idx) => {
+            return(
+              <Tag color={ColorPallet[idx]} style={{ color: '#60B158', fontFamily: 'arial', fontWeight: 'bold', fontSize: '14px' }}>{T}</Tag>
+            )
+          })}
         </div>
       </Card>
     </div>
