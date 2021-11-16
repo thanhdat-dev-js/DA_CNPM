@@ -1,7 +1,32 @@
 import { useState } from "react";
 import { Menu, Checkbox, Button } from "antd";
 
-export default function PropsMenu({ dataFields, setDataFields }) {
+// TODO: useContext instead
+const defaultFields = [
+  {
+    id: "deadline",
+    name: "Due date",
+    active: true,
+  },
+  {
+    id: "progression",
+    name: "Progress",
+    active: true,
+  },
+  {
+    id: "priority",
+    name: "Priority",
+    active: true,
+  },
+  {
+    id: "memberIdList",
+    name: "Assignee",
+    active: true,
+  },
+];
+
+export default function PropsMenu() {
+  const [dataFields, setDataFields] = useState(defaultFields);
   const [fields, setFields] = [dataFields, setDataFields];
   const handleChange = (victimName, newState) => {
     setFields(
@@ -21,8 +46,8 @@ export default function PropsMenu({ dataFields, setDataFields }) {
   };
 
   return (
-    <div className="container">
-      <Menu>
+    <div className="container props-menu">
+      <Menu className="my-menu">
         <Menu.Item key="hello-sa">
           <ToggleAllItem onChange={handleChangeAll} />
         </Menu.Item>
@@ -51,7 +76,6 @@ function CustomSwitch({ checked, onChange }) {
 
 function ToggleItem({ name, isActive, handleChange }) {
   const onChange = (newState) => {
-    console.log("item onchange called");
     handleChange(name, newState);
   };
   const handleClick = () => {
