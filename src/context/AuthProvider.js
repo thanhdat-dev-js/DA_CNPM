@@ -31,7 +31,7 @@ export default function AuthProvider({ children }) {
     return () => {
       unsubscibed();
     }
-  }, [history]);
+  }, [history, auth]);
   return (
     <AuthContext.Provider value={{ user }}>
       {isLoading ? <Spin style={{ position: 'fixed', inset: 0 }} /> : children}

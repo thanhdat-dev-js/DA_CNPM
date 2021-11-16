@@ -1,5 +1,5 @@
 import { documentId } from '@firebase/firestore';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import useFirebase from '../hook/useFirebase';
 import { AuthContext } from './AuthProvider';
 
@@ -23,7 +23,7 @@ export default function AppProvider({ children }) {
   const workspaceList = useFirebase('workspace', workspaceCondition);
 
   const selectWorkspace = React.useMemo(
-    () => workspaceList.find(item => item.id == status) || {}
+    () => workspaceList.find(item => item.id === status) || {}
     , [workspaceList, status]);
 
   const memberListCondition = React.useMemo(() => (

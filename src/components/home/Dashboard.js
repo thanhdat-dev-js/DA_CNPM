@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Avatar, Row, Col, Button, Tooltip } from 'antd';
+import { Input, Avatar, Tooltip } from 'antd';
 import "./dashboard.scss";
 import { AuthContext } from '../../context/AuthProvider';
 import "../main/task.scss";

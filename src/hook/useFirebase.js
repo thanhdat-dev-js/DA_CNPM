@@ -33,6 +33,6 @@ export default function useFirebase(collectionParam, condition) {
     return () => {
       unsubscribe();
     }
-  }, [collectionParam, condition])
+  }, [collectionParam, condition, db])
   return document;
 }

@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import { getAuth, signOut } from '@firebase/auth';
 import { AuthContext } from '../../context/AuthProvider';
 import { AppContext } from '../../context/AppProvider';
-import { deleteDocumentById, editDocumentById } from '../../firebase/service';
-import { Avatar, Image, Divider, Tooltip, Button, Modal, Form, Input, Radio } from 'antd';
-import { SearchOutlined, UserOutlined, AntDesignOutlined, ExportOutlined } from '@ant-design/icons';
+import { Avatar, Tooltip, Button, Modal, Input } from 'antd';
 
 import './header.scss';
 
@@ -12,7 +9,6 @@ export default function Header() {
 
   const { user } = React.useContext(AuthContext);
   const { selectWorkspace, memberList } = React.useContext(AppContext);
-  const [input, setInput] = useState('');
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -38,7 +34,7 @@ export default function Header() {
         <Avatar.Group maxCount={2} size="large" maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
             {memberList.map((member) => {
               return (
-              <Tooltip title={member.name} placement="top">
+              <Tooltip key={member.uid} title={member.name} placement="top">
                 <Avatar key={member.uid} src={member.avaURL} />
               </Tooltip>
               )

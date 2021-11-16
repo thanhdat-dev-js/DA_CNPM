@@ -3,7 +3,7 @@ import { Menu, Dropdown, Input } from "antd";
 import PropsMenu from "./PropsMenu";
 import "./subbar.scss";
 
-import { Select, Button } from 'antd';
+import { Select } from 'antd';
 import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
 const { Option } = Select;
 
@@ -14,7 +14,7 @@ const defaultSortRules = [
 
 const OptionList = (<>
   {defaultSortRules.map(option => (
-    <Option value={option.id}>{option.name}</Option>
+    <Option key={option.id} value={option.id}>{option.name}</Option>
   ))}
 </>)
 

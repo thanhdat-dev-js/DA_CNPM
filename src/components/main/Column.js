@@ -16,7 +16,7 @@ export default function Column(props) {
   const handleOkMenu = () => {
     if (modalMenu.type === 'delete') {
       deleteDocumentById('column', props.id);
-      const temp = selectWorkspace.columnIdList.filter((item) => item != props.id);
+      const temp = selectWorkspace.columnIdList.filter((item) => item !== props.id);
       editDocumentById('workspace', selectWorkspace.id, {
         columnIdList: [...temp]
       })
@@ -89,6 +89,8 @@ export default function Column(props) {
                     tags={task.tag}
                   />
                 )
+              else
+                  return null;
             })}
           </div>
         </div>
