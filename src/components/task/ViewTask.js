@@ -134,7 +134,6 @@ export default function ViewTask({ }) {
                 priority: priority,
                 deadline: dl,
                 memberIdList: AA,
-                commentIdList: curTask.commentIdList,
                 progression: prog,
                 tag: tags,
                 createdBy: curTask.createdBy,

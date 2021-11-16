@@ -86,6 +86,7 @@ export default function Column(props) {
                     progression={task.progression} 
                     deadline={task.deadline} 
                     priority={task.priority}
+                    tags={task.tag}
                   />
                 )
             })}

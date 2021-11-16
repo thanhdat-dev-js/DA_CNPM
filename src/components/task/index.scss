@@ -16,6 +16,10 @@
         input {
             border: none;
         }
+
+        input:focus{
+            outline: none !important;
+        }
     
         .title-row input {
             border: none;

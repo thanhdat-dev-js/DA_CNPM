@@ -88,11 +88,13 @@ export default function CreateTask({ children }) {
 
     // Push Data to DB
     async function queryData() {
-        if (title === '') {
-            message.error('Please enter task name');
+        if (title === '' ) {
+            message.error('Please enter the name for this task !');
+            return;
         }
-        else if (dl === '') {
-            message.error('Please enter due date');
+        else if(AA.length === 0){
+            message.error('Please assign this task to at least 1 person !');
+            return;
         }
         else {
             const id = await addDocument('task', {
@@ -101,13 +103,13 @@ export default function CreateTask({ children }) {
                 priority: priority,
                 deadline: dl,
                 memberIdList: AA,
-                commentIdList: [],
                 progression: 0,
                 tag: tags,
                 createdBy: uid,
                 createDate: getDay(),
                 createdAt: serverTimestamp()
             });
+            console.log(AA);
             columns.map(item => {
                 if (item.id == curColumn) {
                     if (Array.isArray(item.taskIdList)) {
