@@ -1,8 +1,6 @@
 import React from 'react';
 import { Input, Avatar, Row, Col, Button, Tooltip } from 'antd';
 import "./dashboard.scss";
-import Task from '../main/Task';
-import { UserOutlined } from '@ant-design/icons';
 import { AuthContext } from '../../context/AuthProvider';
 import "../main/task.scss";
 
