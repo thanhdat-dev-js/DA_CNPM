@@ -33,11 +33,12 @@ function showConfirm(okCallback, cancelCallback) {
   });
 }
 
-export default function CommentItem({comment, mutable, onDelete, onModify}) {
+export default function CommentItem({comment, index, mutable, onDelete, onModify}) {
   const [tempValue, setTempValue] = useState("");
   const [active, setActive] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  
+  const _style = active ? 'bg-info' : ((index % 2) ? 'bg-dark' : 'bg-light');
+
   const onDeleteClick = () => {
     showConfirm(() => onDelete(comment));
   }
@@ -90,8 +91,7 @@ export default function CommentItem({comment, mutable, onDelete, onModify}) {
   }
 
   return (
-    <div className={"container-fluid position-relative " + (
-      active? "bg bg-dark": "bg bg-light")}
+    <div className={"container-fluid position-relative " + _style}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
       onMouseOver={() => setActive(true)}

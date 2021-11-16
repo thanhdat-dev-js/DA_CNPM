@@ -1,94 +1,88 @@
-import { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Input } from 'antd';
 import { CaretDownOutlined, CaretUpOutlined, SendOutlined } from '@ant-design/icons';
 import CommentItem from './CommentItem';
+import { AppContext } from '../../context/AppProvider';
+import { AuthContext } from '../../context/AuthProvider';
+import { addDocument, deleteDocumentById, editDocumentById } from '../../firebase/service';
+import { serverTimestamp } from 'firebase/firestore';
+import useFirebase from '../../hook/useFirebase';
 
 const { TextArea } = Input;
 
-// TODO: remove default value
-
-// const comment = { // Expected data model
-//   id,
-//   content,
-//   timestamp,
-//   uid,
-//   person { 
-//     uid,
-//     name,
-//     avaUrl
-//   }
+// const comment = { // Expected data model 
+//   id, content, timestamp, uid, tid, 
+//   person: { uid, name, avaUrl },
 // }
 
 function isAuthorized(auser, acomment) {
-  return true;
   return auser.uid === acomment.uid;
 }
 
 export default function TestComment() {
-  const defaultUser = {
-    uid: 119,
-    avaUrl: "https://picsum.photos/300",
-    name: "Sa"
-  }
+  const { curTask, memberList } = useContext(AppContext);
 
-  const defaultComment = {
-    person: {
-      uid: 911,
-      avaUrl: "https://picsum.photos/200",
-      name: "Nguyễn Hữu Phúc"
-    },
-    id: 123,
-    content: "Làm lẹ cho xong cái comment đi",
-    uid: 911,
-    timestamp: "Fri Nov 05 2021 15:00:33 GMT+0700 (Indochina Time)"
-  }
-  
   // TODO: fetch current User
-  const user = defaultUser;
+  const {user : userInfo } = useContext(AuthContext);
+  const {displayName: name, photoURL: avaUrl, uid} = userInfo;
+  const user = {name, avaUrl, uid};
+  
+  // TODO: get live comments
+  const commentListCondition = React.useMemo(() => (
+    {
+      fieldName: "tid",
+      operator: "==",
+      compareValue: curTask.id
+    }
+  ), [curTask.id]);
+  const commentList = useFirebase('comment', commentListCondition);
+  
+  const commentAdapter = (acomment) => {
+    const author = memberList.find((member) => member.uid === acomment.uid) || {}
+    author.avaUrl = author.avaURL;
+    return {
+      ...acomment,
+      person: author,
+    };
+  }
+  const comments = commentList.map(commentAdapter).sort((a, b) => a.timestamp - b.timestamp);
+
+  // TODO: Presentation layer
   const [value, setValue] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [comments, setComments] = useState([defaultComment]);
-
-  const newComment = {
-    person: user,
-    id: Date.now(),
-    uid: user.uid,
-    content: value,
-    timestamp: Date(),
+  const [collapse, setCollapse] = useState(true);
+  const handleChange = (e) => {
+    setValue(e.target.value);
   }
-
+  
+  // TODO: Controller
   const handleDelete = (victim) => {
     if (victim.uid !== user.uid) // TODO: delete from DB
       return;
-    setComments(comments.filter(c => c.id !== victim.id))
-    console.log("Delete " + victim);
+    deleteDocumentById('comment', victim.id);
   }
   const handleModify = (victim, newContent) => {
     if (victim.uid !== user.uid) // TODO: update DB
       return;
-    setComments(comments.map(c =>
-      (c.id === victim.id) ? Object.assign(c, { content: newContent }) : c
-    ))
-    console.log("Edit " + newContent);
+    const newComment = commentList.find(c => c.id === victim.id) || {};
+    newComment.content = newContent;
+    editDocumentById('comment', victim.id, newComment);
   }
-  const handleChange = (e) => {
-    setValue(e.target.value);
-  }
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!value)
       return;
-    // TODO: fetch comment from server
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      console.log("Submitting to server: " + value);
-      setComments([...comments, newComment]);
-      setValue("");
-      setSubmitting(false);
-    }, 500);
+    await addDocument('comment', {
+      content: value,
+      timestamp: serverTimestamp(),
+      uid: user.uid,
+      person: user,
+      tid: curTask.id
+    });
+    setSubmitting(false);
+    setValue("");
   }
 
-  const [collapse, setCollapse] = useState(true);
   return (<>
     <div className="container-fluid comment-section">
       <Button
@@ -103,9 +97,10 @@ export default function TestComment() {
 
       <div className={collapse ? "d-none" : ""}>
         <div className='mb-2'>
-          {comments.map((acomment) => <CommentItem
+          {comments.map((acomment, index) => <CommentItem
             key={acomment.id}
             comment={acomment}
+            index={index}
             onDelete={handleDelete}
             onModify={handleModify}
             mutable={isAuthorized(user, acomment)}
