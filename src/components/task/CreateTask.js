@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Input, Col, Row, Button } from 'antd';
-import { DatePicker, Menu, Dropdown, message, Tag, Slider, Select, Modal } from 'antd';
+import { DatePicker, Menu, Dropdown, message, Tag, Select, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
 import moment from 'moment';
 import './index.scss';
@@ -88,11 +88,13 @@ export default function CreateTask({ children }) {
 
     // Push Data to DB
     async function queryData() {
-        if (title === '') {
-            message.error('Please enter task name');
+        if (title === '' ) {
+            message.error('Please enter the name for this task !');
+            return;
         }
-        else if (dl === '') {
-            message.error('Please enter due date');
+        else if(AA.length === 0){
+            message.error('Please assign this task to at least 1 person !');
+            return;
         }
         else {
             const id = await addDocument('task', {
@@ -101,15 +103,15 @@ export default function CreateTask({ children }) {
                 priority: priority,
                 deadline: dl,
                 memberIdList: AA,
-                commentIdList: [],
                 progression: 0,
                 tag: tags,
                 createdBy: uid,
                 createDate: getDay(),
                 createdAt: serverTimestamp()
             });
+            console.log(AA);
             columns.map(item => {
-                if (item.id == curColumn) {
+                if (item.id === curColumn) {
                     if (Array.isArray(item.taskIdList)) {
                         editDocumentById('column', curColumn, {
                             taskIdList: [...item.taskIdList, id]
@@ -121,6 +123,7 @@ export default function CreateTask({ children }) {
                         })
                     }
                 }
+                return null;
             })
             resetInput();
             setVisible(false);
@@ -173,14 +176,14 @@ export default function CreateTask({ children }) {
                 <Row className="normal-row">
                     <Col span={5} className='element-text'>Tag:</Col>
                     {tags.map((tag) => {
-                        const isLongTag = tag.length > 15;
+                        const isLongTag = tag.length > 7;
                         const tagElem = (
                             <Tag
                                 key={tag}
                                 closable={true}
                                 onClose={() => tagClose(tag)}
                             >
-                                <span> {isLongTag ? `${tag.slice(0, 15)}...` : tag} </span>
+                                <span> {isLongTag ? `${tag.slice(0, 7)}...` : tag} </span>
                             </Tag>
                         );
                         return tagElem;
@@ -214,12 +217,11 @@ export default function CreateTask({ children }) {
                 <Row className="normal-row">
                     <Select
                         mode="multiple"
-                        style={{ width: '100%' }}
+                        style={{ width: '100%', minWidth: '150px' }}
                         placeholder="Select person/people to assign"
                         value={AA}
                         optionLabelProp="label"
                         onChange={handleAA}
-                        style={{ minWidth: '150px' }}
                     >
                         {memberList?.map(member => {
                             return <Option key={member.id} value={member.id} label={member.name}>{member.name}</Option>

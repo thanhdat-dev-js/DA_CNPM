@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Typography, Button, Image } from 'antd';
+import { Button } from 'antd';
 import { GoogleOutlined, FacebookOutlined } from '@ant-design/icons';
 import { signInWithPopup, GoogleAuthProvider, getAuth, FacebookAuthProvider, getAdditionalUserInfo } from "firebase/auth";
 import { addDocument } from '../../firebase/service';
@@ -10,7 +10,6 @@ import './index.scss';
 const ggProvider = new GoogleAuthProvider();
 const fbProvider = new FacebookAuthProvider();
 
-const { Title } = Typography;
 
 export default function Login() {
   const auth = getAuth();
@@ -44,7 +43,7 @@ export default function Login() {
       <div className="login-wrapper">
         <div className="image-wrapper">
           <img 
-            src={logo} 
+            src={logo} alt=""
             style={{ 
               borderRadius: '50%', 
               width: '200px', 

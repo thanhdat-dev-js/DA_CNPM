@@ -15,6 +15,11 @@
     
         input {
             border: none;
+            height: 100%;
+        }
+
+        input:focus{
+            outline: none !important;
         }
     
         .title-row input {
@@ -61,5 +66,7 @@
         }
     }
     
-    
+  .comment-section {
+    padding: 0px;
+  }    
 }

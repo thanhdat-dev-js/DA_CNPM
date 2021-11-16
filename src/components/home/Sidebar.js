@@ -30,7 +30,7 @@ export default function Sidebar() {
     setIsModalVisible(true);
   };
   const handleOk = () => {
-    if (input == '') return;
+    if (input === '') return;
     addDocument('workspace', {
       name: input,
       memberIdList: [uid],
@@ -104,7 +104,7 @@ export default function Sidebar() {
                       </Menu.Item>
                     </Menu>
                   )} trigger={['click']}>
-                    <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                    <a className="ant-dropdown-link" href='/' onClick={e => e.preventDefault()}>
                       <EditTwoTone />
                     </a>
                   </Dropdown>

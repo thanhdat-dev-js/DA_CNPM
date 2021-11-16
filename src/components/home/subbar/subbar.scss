@@ -1,11 +1,38 @@
 .subbar {
   background-color: white;
-  border-radius: 20px;
-  padding: 0.8rem;
-  font-size: 18px;
+  border-radius: 12px;
+  padding: .6rem;
   font-weight: 500;
+  font-size: 1rem;
+
+  .spacing {
+    align-items: center;
+    justify-content: space-between;
+    & > Dropdown {
+      min-width: 5rem;
+      text-align: center;
+    }
+  }
+  Button {
+    border: 0px;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  Button:hover {
+    background-color: #f0f0f0;
+  }
 }
 
-.fix-width {
-  min-width: 4.5rem;
+.my-menu {
+  border-radius: 8px;
+}
+.my-menu > * {
+  margin: 0 !important;
+}
+
+.props-menu {
+  padding: 0px;
+  .fix-width {
+    min-width: 4.5rem;
+  }
 }

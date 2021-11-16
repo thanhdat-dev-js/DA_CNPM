@@ -1,81 +1,90 @@
-import { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Input } from 'antd';
 import { CaretDownOutlined, CaretUpOutlined, SendOutlined } from '@ant-design/icons';
 import CommentItem from './CommentItem';
+import { AppContext } from '../../context/AppProvider';
+import { AuthContext } from '../../context/AuthProvider';
+import { addDocument, deleteDocumentById, editDocumentById } from '../../firebase/service';
+import { serverTimestamp } from 'firebase/firestore';
+import useFirebase from '../../hook/useFirebase';
 
 const { TextArea } = Input;
 
-// TODO: remove default value
-const defaultUser = {
-  personId: 119,
-  avaUrl: "https://picsum.photos/300",
-  name: "Sa"
-}
-
-const defaultComment = {
-  person: {
-    personId: 911,
-    avaUrl: "https://picsum.photos/200",
-    name: "Nguyễn Hữu Phúc"
-  },
-  commentId: 123,
-  content: "Làm lẹ cho xong cái comment đi",
-  personId: 911,
-  timestamp: "Fri Nov 05 2021 15:00:33 GMT+0700 (Indochina Time)"
-}
+// const comment = { // Expected data model 
+//   id, content, timestamp, uid, tid, 
+//   person: { uid, name, avaUrl },
+// }
 
 function isAuthorized(auser, acomment) {
-  return auser.personId === acomment.personId;
+  return auser.uid === acomment.uid;
 }
 
 export default function TestComment() {
+  const { curTask, memberList } = useContext(AppContext);
+
   // TODO: fetch current User
-  const user = defaultUser;
+  const {user : userInfo } = useContext(AuthContext);
+  const {displayName: name, photoURL: avaUrl, uid} = userInfo;
+  const user = {name, avaUrl, uid};
+  
+  // TODO: get live comments
+  const commentListCondition = React.useMemo(() => (
+    {
+      fieldName: "tid",
+      operator: "==",
+      compareValue: curTask.id
+    }
+  ), [curTask.id]);
+  const commentList = useFirebase('comment', commentListCondition);
+  
+  const commentAdapter = (acomment) => {
+    const author = memberList.find((member) => member.uid === acomment.uid) || {}
+    author.avaUrl = author.avaURL;
+    return {
+      ...acomment,
+      person: author,
+    };
+  }
+  const comments = commentList.map(commentAdapter).sort((a, b) => a.timestamp - b.timestamp);
+
+  // TODO: Presentation layer
   const [value, setValue] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [comments, setComments] = useState([defaultComment]);
-
-  const newComment = {
-    person: user,
-    commentId: Date.now(),
-    personId: user.personId,
-    content: value,
-    timestamp: Date(),
-  }
-
-  const handleDelete = (victim) => {
-    if (victim.personId !== user.personId) // recheck at serverside
-      return;
-    setComments(comments.filter(c => c.commentId !== victim.commentId))
-    console.log("Delete " + victim);
-  }
-  const handleModify = (victim, newContent) => {
-    if (victim.personId !== user.personId) // recheck at serverside
-      return;
-    setComments(comments.map(c =>
-      (c.commentId === victim.commentId) ? Object.assign(c, { content: newContent }) : c
-    ))
-    console.log("Edit " + newContent);
-  }
+  const [collapse, setCollapse] = useState(true);
   const handleChange = (e) => {
     setValue(e.target.value);
   }
-  const handleSubmit = () => {
+  
+  // TODO: Controller
+  const handleDelete = (victim) => {
+    if (victim.uid !== user.uid) // TODO: delete from DB
+      return;
+    deleteDocumentById('comment', victim.id);
+  }
+  const handleModify = (victim, newContent) => {
+    if (victim.uid !== user.uid) // TODO: update DB
+      return;
+    const newComment = commentList.find(c => c.id === victim.id) || {};
+    newComment.content = newContent;
+    editDocumentById('comment', victim.id, newComment);
+  }
+  const handleSubmit = async () => {
     if (!value)
       return;
-    // TODO: fetch comment from server
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      console.log("Submitting to server: " + value);
-      setComments([...comments, newComment]);
-      setValue("");
-    }, 500);
+    await addDocument('comment', {
+      content: value,
+      timestamp: serverTimestamp(),
+      uid: user.uid,
+      person: user,
+      tid: curTask.id
+    });
+    setSubmitting(false);
+    setValue("");
   }
 
-  const [collapse, setCollapse] = useState(true);
   return (<>
-    <div className="container">
+    <div className="container-fluid comment-section">
       <Button
         onClick={() => setCollapse(!collapse)}
         type="primary"
@@ -88,23 +97,23 @@ export default function TestComment() {
 
       <div className={collapse ? "d-none" : ""}>
         <div className='mb-2'>
-          {comments.map((acomment) => <CommentItem
-            key={acomment.commentId}
+          {comments.map((acomment, index) => <CommentItem
+            key={acomment.id}
             comment={acomment}
+            index={index}
             onDelete={handleDelete}
             onModify={handleModify}
             mutable={isAuthorized(user, acomment)}
           />)}
         </div>
         <div className='d-flex'>
-          <TextArea className='flex-grow-1'
+          <TextArea className='flex-grow-1 mb-1 me-1'
             value={value}
             onChange={handleChange} 
             onSubmit={handleSubmit}
             onPressEnter={handleSubmit}
             autoSize={{ minRows: 1, maxRows: 5 }}
             placeholder="Comment..."
-            className='mb-1 me-1'
           />
           <Button
             loading={submitting}

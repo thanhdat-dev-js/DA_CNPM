@@ -1,5 +1,5 @@
 import { documentId } from '@firebase/firestore';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import useFirebase from '../hook/useFirebase';
 import { AuthContext } from './AuthProvider';
 
@@ -7,6 +7,10 @@ export const AppContext = React.createContext();
 
 export default function AppProvider({ children }) {
   const [status, setStatus] = useState('dashboard');
+  const [visible, setVisible] = useState(false);
+  const [curColumn, setCurColumn] = useState('');
+  const [curTask, setCurTask] = useState({});
+  const [visibleTask, setVisibleTask] = useState(false);
   const { user: { uid }, } = React.useContext(AuthContext);
 
   const workspaceCondition = React.useMemo(() => {
@@ -19,7 +23,7 @@ export default function AppProvider({ children }) {
   const workspaceList = useFirebase('workspace', workspaceCondition);
 
   const selectWorkspace = React.useMemo(
-    () => workspaceList.find(item => item.id == status) || {}
+    () => workspaceList.find(item => item.id === status) || {}
     , [workspaceList, status]);
 
   const memberListCondition = React.useMemo(() => (
@@ -49,12 +53,8 @@ export default function AppProvider({ children }) {
       operator: "in",
       compareValue: taskIdList
     })
-    , [taskIdList])
+    , [taskIdList]);
   const tasks = useFirebase('task', tasksCondition);
-  const [visible, setVisible] = useState(false);
-  const [curColumn, setCurColumn] = useState('');
-  const [curTask, setCurTask] = useState({});
-  const [visibleTask, setVisibleTask] = useState(false);
   return (
     <AppContext.Provider
       value={{

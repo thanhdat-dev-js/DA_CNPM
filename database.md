@@ -73,8 +73,8 @@ Person lưu giữ thông tin của một người sử dụng.
 | ---------- | ------------ |
 | id         | ObjectId     |
 | content    | string       |
-| personId   | ObjectId     |
-| createdAt  | timestamps   |
+| uid        | ObjectId     |
+| timestamp  | timestamps   |
 
 
 **Giải thích** 
