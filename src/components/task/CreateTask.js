@@ -101,7 +101,6 @@ export default function CreateTask({ children }) {
                 priority: priority,
                 deadline: dl,
                 memberIdList: AA,
-                commentIdList: [],
                 progression: 0,
                 tag: tags,
                 createdBy: uid,

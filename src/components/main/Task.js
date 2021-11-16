@@ -10,12 +10,13 @@ export default function Task(props) {
       <Card
         hoverable
         bordered={true}
-        style={{ cursor: 'pointer', borderRadius: '5px',
-        borderRight: props.priority === 'Low' ? '6px solid green' : ( props.priority === 'Medium' ? '6px solid orange' : '6px solid red')  }}
-        bodyStyle={{ padding: '4%', height: '133px'}}
+        style={{
+          cursor: 'pointer', borderRadius: '5px',
+          borderRight: props.priority === 'Low' ? '6px solid green' : (props.priority === 'Medium' ? '6px solid orange' : '6px solid red')
+        }}
+        bodyStyle={{ padding: '4%', height: '133px' }}
         onClick={async () => {
           await setCurTask({ ...props.task });
-          console.log(curTask);
           setVisibleTask(true);
         }}
       >

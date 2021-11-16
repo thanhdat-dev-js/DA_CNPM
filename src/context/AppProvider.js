@@ -55,19 +55,6 @@ export default function AppProvider({ children }) {
     })
     , [taskIdList]);
   const tasks = useFirebase('task', tasksCondition);
-  const commentIdList = React.useMemo(
-    () => curTask == {} ? {} : curTask.commentIdList
-    , [curTask.commentIdList]);
-  const commentCondition = React.useMemo(
-    () => ({
-      fieldName: documentId(),
-      operator: "in",
-      compareValue: commentIdList
-    }),
-    [commentIdList]
-  );
-  const comments = useFirebase('comment', commentCondition);
-  console.log(comments);
   return (
     <AppContext.Provider
       value={{
