@@ -217,7 +217,7 @@ export default function ViewTask({ }) {
                 <Col span={7}>
                     <input type="text" size={20} value={createDate} readOnly />
                 </Col>
-                <Col span={5} className="element-text align-pair">Deadline:</Col>
+                <Col span={5} className="element-text align-pair">Due Date:</Col>
                 <Col span={5}>
                     {!editMode
                         ? <input type="text" size={15} value={dl == "" ? "None" : dl} readOnly />
