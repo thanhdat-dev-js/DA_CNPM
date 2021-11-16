@@ -34,7 +34,7 @@ export default function ViewTask({ }) {
     const [PrevTitle, setPT] = useState(curTask.name);
     const [title, setTitle] = useState(curTask.name);
 
-    const Author = memberList.find(member => member.uid === curTask.createdBy).name;
+    const Author = memberList.find(member => member.uid === curTask.createdBy)?.name;
     const createDate = curTask.createDate;
 
     const [prevDl, setPDL] = useState(curTask.deadline);
@@ -247,7 +247,7 @@ export default function ViewTask({ }) {
             {/* Tag */}
             <Row className="normal-row">
                 <Col span={5} className="element-text">Tag:</Col>
-                {tags.map((tag) => {
+                {tags?.map((tag) => {
                     const isLongTag = tag.length > 15;
                     const tagElem = (
                         <Tag
