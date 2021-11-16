@@ -247,13 +247,14 @@ export default function ViewTask({ }) {
             <Row className="normal-row">
                 <Col span={5} className="element-text">Tag:</Col>
                 {tags?.map((tag) => {
-                    const isLongTag = tag.length > 15;
+                    const isLongTag = tag.length > 7;
                     const tagElem = (
                         <Tag
                             key={tag}
+                            closable={editMode}
                             onClose={() => tagClose(tag)}
                         >
-                            <span> {isLongTag ? `${tag.slice(0, 15)}...` : tag} </span>
+                            <span style={{fontSize: '14px'}}> {isLongTag ? `${tag.slice(0, 7)}...` : tag} </span>
                         </Tag>
                     );
                     return tagElem;

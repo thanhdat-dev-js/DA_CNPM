@@ -14,7 +14,7 @@ export default function Task(props) {
         bordered={true}
         style={{ cursor: 'pointer', borderRadius: '5px',
         borderRight: props.priority === 'Low' ? '6px solid green' : ( props.priority === 'Medium' ? '6px solid orange' : '6px solid red')  }}
-        bodyStyle={{ padding: '4%', height: '150px'}}
+        bodyStyle={{ padding: '4%', minheight: '150px'}}
         onClick={async () => {
           await setCurTask({ ...props.task });
           setVisibleTask(true);
@@ -47,10 +47,10 @@ export default function Task(props) {
           </div>
         }
         
-        <div style={{ marginTop: '-10px', float: 'right' }}>
+        <div style={{ marginTop: '0px', float: 'right'  }}>
           {props.tags.map((T, idx) => {
             return(
-              <Tag color={ColorPallet[idx]} style={{ color: '#60B158', fontFamily: 'arial', fontWeight: 'bold', fontSize: '14px' }}>{T}</Tag>
+              <Tag color={ColorPallet[idx]} style={{ color: '#60B158', fontFamily: 'arial', fontWeight: 'bold', fontSize: '14px' }}>{T.length > 7 ? T.slice(0, 7) + '...' : T}</Tag>
             )
           })}
         </div>

@@ -175,14 +175,14 @@ export default function CreateTask({ children }) {
                 <Row className="normal-row">
                     <Col span={5} className='element-text'>Tag:</Col>
                     {tags.map((tag) => {
-                        const isLongTag = tag.length > 15;
+                        const isLongTag = tag.length > 7;
                         const tagElem = (
                             <Tag
                                 key={tag}
                                 closable={true}
                                 onClose={() => tagClose(tag)}
                             >
-                                <span> {isLongTag ? `${tag.slice(0, 15)}...` : tag} </span>
+                                <span> {isLongTag ? `${tag.slice(0, 7)}...` : tag} </span>
                             </Tag>
                         );
                         return tagElem;
