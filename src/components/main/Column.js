@@ -79,7 +79,14 @@ export default function Column(props) {
             {props.tasks.map((task) => {
               if (props.taskIdList.includes(task.id))
                 return (
-                  <Task key={task.id} task={task} name={task.name} progression={task.progression} deadline={task.deadline} />
+                  <Task 
+                    key={task.id} 
+                    task={task} 
+                    name={task.name} 
+                    progression={task.progression} 
+                    deadline={task.deadline} 
+                    priority={task.priority}
+                  />
                 )
             })}
           </div>
