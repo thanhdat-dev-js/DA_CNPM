@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
+import { AuthContext } from '../../context/AuthProvider';
+import { AppContext } from '../../context/AppProvider';
 import { Avatar, Tooltip, Button, Modal, Input } from 'antd';
 
 import './header.scss';
 
-export default function Header({ name }) {
+export default function Header() {
 
-  let Members = [
-    { name: "Hoang Lam", key: "L" },
-    { name: "Hoang Phuc", key: "P" },
-    { name: "Thanh Dat", key: "D" },
-    { name: "Dieu Ai", key: "A" },
-    { name: "Phuc Thinh", key: "T" }
-  ]
+  const { user } = React.useContext(AuthContext);
+  const { selectWorkspace, memberList } = React.useContext(AppContext);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -31,19 +28,18 @@ export default function Header({ name }) {
   return (
     <div className="header">
       <div className="header-left">
-        <h1>Team 1</h1>
+        <h1>{selectWorkspace.name}</h1>
       </div>
       <div className="header-center">
         <Avatar.Group maxCount={2} size="large" maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
-          {
-            Members.map((item) => (
-              <Tooltip key={item.name} title={item.name} placement="top">
-                <Avatar style={{ backgroundColor: '#1890ff' }} >{item.key}</Avatar>
+            {memberList.map((member) => {
+              return (
+              <Tooltip key={member.uid} title={member.name} placement="top">
+                <Avatar key={member.uid} src={member.avaURL} />
               </Tooltip>
-            )
-            )
+              )
+            })}
 
-          }
         </Avatar.Group>
 
         <Button type="dashed" onClick={showModal}>
@@ -58,7 +54,9 @@ export default function Header({ name }) {
       </div>
 
       <div className="header-right">
-        <Avatar size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf', marginLeft: "10px" }}>A</Avatar>
+      <Tooltip title={user.displayName} placement="top">
+        <Avatar size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf', marginLeft: "10px" }} key={user.uid} src={user.photoURL}/>
+      </Tooltip>
       </div>
     </div>
   )

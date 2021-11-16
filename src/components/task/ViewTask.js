@@ -33,7 +33,7 @@ export default function ViewTask() {
     const [PrevTitle, setPT] = useState(curTask.name);
     const [title, setTitle] = useState(curTask.name);
 
-    const Author = memberList.find(member => member.uid === curTask.createdBy).name;
+    const Author = memberList.find(member => member.uid === curTask.createdBy)?.name;
     const createDate = curTask.createDate;
 
     const [prevDl, setPDL] = useState(curTask.deadline);
@@ -133,7 +133,6 @@ export default function ViewTask() {
                 priority: priority,
                 deadline: dl,
                 memberIdList: AA,
-                commentIdList: curTask.commentIdList,
                 progression: prog,
                 tag: tags,
                 createdBy: curTask.createdBy,
@@ -216,7 +215,7 @@ export default function ViewTask() {
                 <Col span={7}>
                     <input type="text" size={20} value={createDate} readOnly />
                 </Col>
-                <Col span={5} className="element-text align-pair">Deadline:</Col>
+                <Col span={5} className="element-text align-pair">Due Date:</Col>
                 <Col span={5}>
                     {!editMode
                         ? <input type="text" size={15} value={dl === "" ? "None" : dl} readOnly />
@@ -246,7 +245,7 @@ export default function ViewTask() {
             {/* Tag */}
             <Row className="normal-row">
                 <Col span={5} className="element-text">Tag:</Col>
-                {tags.map((tag) => {
+                {tags?.map((tag) => {
                     const isLongTag = tag.length > 15;
                     const tagElem = (
                         <Tag
