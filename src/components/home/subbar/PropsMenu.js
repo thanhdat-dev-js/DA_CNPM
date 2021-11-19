@@ -1,48 +1,34 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Menu, Checkbox, Button } from "antd";
-
-// TODO: useContext instead
-const defaultFields = [
-  {
-    id: "deadline",
-    name: "Due date",
-    active: true,
-  },
-  {
-    id: "progression",
-    name: "Progress",
-    active: true,
-  },
-  {
-    id: "priority",
-    name: "Priority",
-    active: true,
-  },
-  {
-    id: "memberIdList",
-    name: "Assignee",
-    active: true,
-  },
-];
+import { Field, ViewContext } from "../../../context/ViewProvider";
 
 export default function PropsMenu() {
-  const [dataFields, setDataFields] = useState(defaultFields);
-  const [fields, setFields] = [dataFields, setDataFields];
-  const handleChange = (victimName, newState) => {
-    setFields(
-      fields.map((f) => {
-        if (f.name === victimName) f.active = newState;
-        return f;
-      })
-    );
+  const { setFieldVisible, isFieldVisible } = useContext(ViewContext);
+  const selectedFields = [
+    // { id: Field.NAME, name: "Name" },
+    { id: Field.PRIORITY, name: "Priority" },
+    { id: Field.MEMBER, name: "Assignee" },
+    { id: Field.DEADLINE, name: "Due date" },
+    { id: Field.PROGRESS, name: "Progress" },
+  ];
+  const fields = selectedFields.map(f => ({ 
+    id: f.id,
+    name: f.name,
+    active: isFieldVisible(f.id),
+  }));
+
+  // useEffect(() => {
+  //   console.log("state changed");
+  // }, [state]);
+
+  const handleChange = (victimId, newState) => {
+    setFieldVisible(victimId, newState);
+    console.log({fields});
   };
   const handleChangeAll = (newState) => {
-    setFields(
-      fields.map((f) => {
-        f.active = newState;
-        return f;
-      })
-    );
+    fields.forEach(field => {
+      setFieldVisible(field.id, newState);
+    })
   };
 
   return (
@@ -52,8 +38,9 @@ export default function PropsMenu() {
           <ToggleAllItem onChange={handleChangeAll} />
         </Menu.Item>
         {fields.map((f) => (
-          <Menu.Item key={f.name}>
+          <Menu.Item key={f.id}>
             <ToggleItem
+              id={f.id}
               name={f.name}
               isActive={f.active}
               handleChange={handleChange}
@@ -74,12 +61,12 @@ function CustomSwitch({ checked, onChange }) {
   </>);
 }
 
-function ToggleItem({ name, isActive, handleChange }) {
+function ToggleItem({ id, name, isActive, handleChange }) {
   const onChange = (newState) => {
-    handleChange(name, newState);
+    handleChange(id, newState);
   };
   const handleClick = () => {
-    handleChange(name, !isActive);
+    handleChange(id, !isActive);
   };
   return (
     <div className="container">

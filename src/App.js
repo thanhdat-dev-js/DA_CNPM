@@ -3,16 +3,19 @@ import './firebase/config';
 import Login from "./components/login";
 import AppProvider from './context/AppProvider';
 import AuthProvider from './context/AuthProvider';
+import ViewProvider from './context/ViewProvider';
 import Home from './components/home/index';
 function App() {
   return (
     <Router>
       <AuthProvider>
         <AppProvider>
+        <ViewProvider>
           <Switch>
             <Route component={Login} exact path='/login' />
             <Route component={Home} exact path='/' />
           </Switch>
+          </ViewProvider>
         </AppProvider>
       </AuthProvider>
     </Router>
