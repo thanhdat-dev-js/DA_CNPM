@@ -1,6 +1,6 @@
 import React, { useState, useContext, useMemo, useEffect } from 'react';
 import { AppContext } from '../context/AppProvider';
-import { cmpNAME, cmpPRIORITY, cmpDEADLINE, cmpPROGRESS } from './customFunction';
+import { cmpNAME, cmpPRIORITY, cmpDEADLINE, cmpPROGRESS, strMatch } from './customFunction';
 
 export const ViewContext = React.createContext();
 
@@ -97,17 +97,26 @@ export default function ViewProvider({ children }) {
     return _field(field).visible;
   }
 
+  // To filter taskname that match search keyword
+  const [searchString, setSearchString] = useState('');
+  const {tasks} = useContext(AppContext); 
+  const filteredTasks = useMemo(() => {
+    let taskList = [...tasks];
+    if (searchString !== '')
+      taskList = taskList.filter(t => strMatch(t[_Field.NAME], searchString));
+    return taskList;
+  }, [tasks, searchString]);
+  
   // To sort task in workspace
   // { id: Field.DEADLINE, value: Sort.ASC },
   // { id: Field.PRIORITY, value: Sort.ASC },
   // { id: Field.PROGRESS, value: Sort.ASC },
   const [sortOptions, setSortOptions] = useState([]);
-  const {tasks} = useContext(AppContext); 
   const sortedTasks = useMemo(() => {
-    let taskList = [...tasks];
+    let taskList = [...filteredTasks];
     taskList.sort(makePipeline(...sortOptions));
     return taskList;
-  }, [tasks, sortOptions]);
+  }, [filteredTasks, sortOptions]);
   
   return (
     <ViewContext.Provider
@@ -117,6 +126,7 @@ export default function ViewProvider({ children }) {
         sortOptions,
         setSortOptions,
         sortedTasks,
+        setSearchString,
     }}>
       {children}
     </ViewContext.Provider>

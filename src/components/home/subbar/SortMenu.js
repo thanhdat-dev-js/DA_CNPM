@@ -16,7 +16,6 @@ export default function SortMenu() {
   ]);
   const [selectedOptions, setSelectedOptions] = [sortOptions, setSortOptions];
 
-  console.log(selectedOptions.map((f) => (f.id + ": " + f.value )));
   const handleChange = (victimId, candidate) => {
     const ref1 = selectedOptions.find(f => f.id === victimId);
     const ref2 = allowedOptions.find(f => f.id === candidate);
