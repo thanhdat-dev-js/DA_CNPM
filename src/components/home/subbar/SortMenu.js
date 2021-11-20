@@ -15,7 +15,6 @@ export default function SortMenu() {
     { id: Field.PROGRESS, value: Sort.ASC },
   ]);
   const [selectedOptions, setSelectedOptions] = [sortOptions, setSortOptions];
-  const [flush, setFlush] = useState(false);
 
   console.log(selectedOptions.map((f) => (f.id + ": " + f.value )));
   const handleChange = (victimId, candidate) => {
@@ -24,21 +23,19 @@ export default function SortMenu() {
     const temp = ref1.id;
     ref1.id = ref2.id;
     ref2.id = temp;
-    setSelectedOptions(selectedOptions);
     setAllowedOptions(allowedOptions);
-    setFlush(!flush);
+    setSelectedOptions([...selectedOptions]);
   };
   const handleChangeValue = (rule, newValue) => {
     rule.value = newValue;
     setAllowedOptions(allowedOptions);
     setSelectedOptions([...selectedOptions]);
-    setFlush(!flush);
   }
   const handleRemoveRule = (victimId) => {
     const pos = selectedOptions.findIndex(f => f.id === victimId);
     const victim = selectedOptions.splice(pos, 1)[0];
-    setSelectedOptions(selectedOptions);
     setAllowedOptions([...allowedOptions, victim]);
+    setSelectedOptions([...selectedOptions]);
   };
   const handleAddRule = () => {
     if (!allowedOptions || allowedOptions.length === 0) {
