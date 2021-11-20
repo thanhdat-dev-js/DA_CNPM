@@ -19,26 +19,23 @@ export default function Subbar() {
   }
 
   return (
-    <div className="subbar container">
+    <div className="subbar container-fluid">
       <div className="row d-flex justify-content-between align-items-center">
         <div className="col-auto ps-3">
           <div>#By Status</div>
         </div>
         <div className="col-auto col-md-8 col-xl-6">
-          <div className="d-flex spacing">
+          <div className="d-flex justify-content-evenly">
             <Dropdown overlay={<PropsMenu/>}>
               <Button>Properties</Button>
             </Dropdown>
             <Dropdown overlay={<SortMenu />}>
               <Button>Sort</Button>
             </Dropdown>
-            <Dropdown overlay={<FilterMenu />}>
-              <Button>Filter</Button>
-            </Dropdown>
             <Input
               value={keyword}
               onChange={handleInputChange}
-              style={{ width: 200 }}
+              style={{ width: '10rem' }}
               placeholder="Search"
             />
           </div>
