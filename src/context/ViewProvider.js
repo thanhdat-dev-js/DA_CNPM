@@ -1,6 +1,6 @@
 import React, { useState, useContext, useMemo, useEffect } from 'react';
 import { AppContext } from '../context/AppProvider';
-import { cmpNAME, cmpPRIORITY, cmpDEADLINE, cmpPROGRESS } from './customFunction';
+import { cmpNAME, cmpPRIORITY, cmpDEADLINE, cmpPROGRESS, strMatch } from './customFunction';
 
 export const ViewContext = React.createContext();
 
@@ -30,27 +30,35 @@ Object.freeze(_Field);
 Object.freeze(Field);
 Object.freeze(Sort);
 
-function applySortOption (tasks, sortOption) {
-  const res = [...tasks];
-  res.sort(FuncFactory(sortOption.id, sortOption.value));
-  return res;
-}
-
-function FuncFactory (aField, aSort) {
-  const func = (task1, task2) => {
-    const factor = aSort === Sort.ASC ? 1 : -1;
-    switch (aField) {
-      case Field.NAME:
-        return factor * cmpNAME(task1[_Field.NAME], task2[_Field.NAME]) || 0;
-      case Field.PRIORITY:
-        return factor * cmpPRIORITY(task1[_Field.PRIORITY], task2[_Field.PRIORITY]) || 0;
-      case Field.DEADLINE:
-        return factor * cmpDEADLINE(task1[_Field.DEADLINE], task2[_Field.DEADLINE]) || 0;
-      case Field.PROGRESS:
-        return factor * cmpPROGRESS(task1[_Field.PROGRESS], task2[_Field.PROGRESS]) || 0;
-      default:
-        throw "Not yet handled";
+function makePipeline () { // [{aField, aSort}]
+  const options = [...arguments];
+  const func = (task1, task2) => { 
+    for (let i = 0; i < options.length; i++) {
+      const aField = options[i].id;
+      const aSort = options[i].value;
+      let diff;
+      switch (aField) {
+        case Field.NAME:
+          diff = cmpNAME(task1[_Field.NAME], task2[_Field.NAME]) || 0;
+          break;
+        case Field.PRIORITY:
+          diff = cmpPRIORITY(task1[_Field.PRIORITY], task2[_Field.PRIORITY]) || 0;
+          break;
+        case Field.DEADLINE:
+          diff = cmpDEADLINE(task1[_Field.DEADLINE], task2[_Field.DEADLINE]) || 0;
+          break;
+        case Field.PROGRESS:
+          diff = cmpPROGRESS(task1[_Field.PROGRESS], task2[_Field.PROGRESS]) || 0;
+          break;
+        default: 
+          throw new Error('Not handled yet');
+      }
+      if (!diff)
+        continue;
+      const factor = aSort === Sort.ASC ? 1 : -1;
+      return factor * diff;
     }
+    return 0;
   }
   // console.log("I have a func now");
   return func;
@@ -89,19 +97,26 @@ export default function ViewProvider({ children }) {
     return _field(field).visible;
   }
 
+  // To filter taskname that match search keyword
+  const [searchString, setSearchString] = useState('');
+  const {tasks} = useContext(AppContext); 
+  const filteredTasks = useMemo(() => {
+    let taskList = [...tasks];
+    if (searchString !== '')
+      taskList = taskList.filter(t => strMatch(t[_Field.NAME], searchString));
+    return taskList;
+  }, [tasks, searchString]);
+  
   // To sort task in workspace
   // { id: Field.DEADLINE, value: Sort.ASC },
   // { id: Field.PRIORITY, value: Sort.ASC },
   // { id: Field.PROGRESS, value: Sort.ASC },
   const [sortOptions, setSortOptions] = useState([]);
-  const {tasks} = useContext(AppContext); 
   const sortedTasks = useMemo(() => {
-    let taskList = [...tasks];
-    for (let i = 0; i < sortOptions.length; i++) {
-      taskList = applySortOption(taskList, sortOptions[i]);
-    }
+    let taskList = [...filteredTasks];
+    taskList.sort(makePipeline(...sortOptions));
     return taskList;
-  }, [tasks, sortOptions]);
+  }, [filteredTasks, sortOptions]);
   
   return (
     <ViewContext.Provider
@@ -111,6 +126,7 @@ export default function ViewProvider({ children }) {
         sortOptions,
         setSortOptions,
         sortedTasks,
+        setSearchString,
     }}>
       {children}
     </ViewContext.Provider>
