@@ -5,9 +5,11 @@ import { Modal, Button, Input } from 'antd';
 import { AppContext } from '../../context/AppProvider';
 import { addDocument, editDocumentById } from '../../firebase/service';
 import { serverTimestamp } from 'firebase/firestore';
+import { ViewContext } from '../../context/ViewProvider';
 
 export default function Main() {
   const { columns, tasks } = React.useContext(AppContext);
+  const {sortedTasks} = React.useContext(ViewContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [input, setInput] = useState('');
   const { selectWorkspace } = React.useContext(AppContext);
@@ -44,7 +46,7 @@ export default function Main() {
     <div className="main">
       {columns.map((column) => {
         return (
-          <Column key={column.id} id={column.id} name={column.name} taskIdList={column.taskIdList} tasks={tasks} />
+          <Column key={column.id} id={column.id} name={column.name} taskIdList={column.taskIdList} tasks={sortedTasks} />
         )
       })}
       <div className="button-wrapper">
