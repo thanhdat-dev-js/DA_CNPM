@@ -22,13 +22,13 @@ export default function AppProvider({ children }) {
     }
   }, [uid]);
   // Get workspaceList from workspace with Condition 1
+
   const workspaceList = useFirebase('workspace', workspaceCondition);
 
   // Get the selected Workspace
-  const selectWorkspace = React.useMemo(
-    () => workspaceList.find(item => item.id === status) || {}
-    , [workspaceList, status]);
-
+  const selectWorkspace = React.useMemo
+  (() => workspaceList.find(item => item.id === status) || {}, [workspaceList, status]);
+  
   // Condition 2: Take all people listed in memberIDList 
   const memberListCondition = React.useMemo(() => (
     {
@@ -68,7 +68,7 @@ export default function AppProvider({ children }) {
   // Get tasks from task with Condition 4
   const tasks = useFirebase('task', tasksCondition);
 
-  // 
+  //
   const memberIdList = React.useMemo(
     () => tasks.reduce((prev, cur) => (prev.concat(cur.memberIdList)), []), [tasks]);
 
