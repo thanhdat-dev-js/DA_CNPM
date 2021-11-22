@@ -8,6 +8,7 @@ import { AppContext } from '../../context/AppProvider';
 
 export default function Workspace() {
   const { workspaceList, visibleTask } = React.useContext(AppContext);
+
   return (
     <div style={{
       paddingRight: '16px'

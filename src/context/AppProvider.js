@@ -68,6 +68,15 @@ export default function AppProvider({ children }) {
   // Get tasks from task with Condition 4
   const tasks = useFirebase('task', tasksCondition);
 
+  const dashboardTaskCondition = React.useMemo(() => (
+    {
+      fieldName: "memberIdList",
+      operator: "array-contains",
+      compareValue: uid
+    }
+  ), [tasks]);
+  const dashboardTask = useFirebase('task', dashboardTaskCondition);
+
   return (
     <AppContext.Provider
       value={{
@@ -75,6 +84,7 @@ export default function AppProvider({ children }) {
         workspaceList,
         setStatus,
         memberList,
+        dashboardTask,
         selectWorkspace,
         tasks,
         columns,

@@ -24,7 +24,7 @@ const { Option } = Select;
 
 export default function CreateTask({ children }) {
     // For saving input
-    const { visible, setVisible, memberList, curColumn, columns } = React.useContext(AppContext);
+    const { visible, setVisible, status, memberList, curColumn, columns } = React.useContext(AppContext);
     const { user: { uid, displayName } } = React.useContext(AuthContext);
     const [title, setTitle] = useState('');
     const CreateDate = getDay();
@@ -107,7 +107,8 @@ export default function CreateTask({ children }) {
                 tag: tags,
                 createdBy: uid,
                 createDate: getDay(),
-                createdAt: serverTimestamp()
+                createdAt: serverTimestamp(),
+                workspace: status
             });
             console.log(AA);
             columns.map(item => {

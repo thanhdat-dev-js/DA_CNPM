@@ -4,11 +4,18 @@ import "./dashboard.scss";
 import { AuthContext } from '../../context/AuthProvider';
 import "../main/task.scss";
 import { Field, ViewContext } from "../../context/ViewProvider";
+import { AppContext } from '../../context/AppProvider';
+import { useEffect } from 'react';
 
 const { Title } = Typography;
 
 export default function Dashboard() {
   const { user } = React.useContext(AuthContext);
+  const { dashboardTask } = useContext(AppContext);
+
+  useEffect(() => {
+    console.log(dashboardTask);
+  }, []);
   
   // Checklist
   const { setFieldVisible, isFieldVisible } = useContext(ViewContext);

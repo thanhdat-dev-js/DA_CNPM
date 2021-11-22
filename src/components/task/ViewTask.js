@@ -93,8 +93,8 @@ export default function ViewTask() {
         setVisibleTask(false);
     }
 
-    function convertIDtoName(id) {
-        return memberList.find(o => o.uid === id).name;
+    function convertIDtoName(uid) {
+        return memberList.find(o => o.uid === uid).name;
     }
 
     function showTagInput() {
