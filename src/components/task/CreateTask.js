@@ -224,7 +224,7 @@ export default function CreateTask({ children }) {
                         onChange={handleAA}
                     >
                         {memberList?.map(member => {
-                            return <Option key={member.id} value={member.id} label={member.name}>{member.name}</Option>
+                            return <Option key={member.uid} value={member.uid} label={member.name}>{member.name}</Option>
                         })}
                     </Select>
                 </Row>

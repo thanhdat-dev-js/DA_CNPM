@@ -56,19 +56,6 @@ export default function AppProvider({ children }) {
     , [taskIdList]);
   const tasks = useFirebase('task', tasksCondition);
 
-  const memberIdList = React.useMemo(
-    () => tasks.reduce((prev, cur) => (prev.concat(cur.memberIdList)), [])
-    , [tasks]);
-
-  const memberTaskCondition = React.useMemo(() => (
-    {
-      fieldName: documentId(),
-      operator: "in",
-      compareValue: memberIdList
-    }
-  ), [memberIdList]);
-  const memberTask = useFirebase('person', memberTaskCondition);
-
   return (
     <AppContext.Provider
       value={{
@@ -76,7 +63,6 @@ export default function AppProvider({ children }) {
         workspaceList,
         setStatus,
         memberList,
-        memberTask,
         selectWorkspace,
         tasks,
         columns,
@@ -87,7 +73,7 @@ export default function AppProvider({ children }) {
         curTask,
         setCurTask,
         visibleTask,
-        setVisibleTask
+        setVisibleTask,
       }}>
       {children}
     </AppContext.Provider>

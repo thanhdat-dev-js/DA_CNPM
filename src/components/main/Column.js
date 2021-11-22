@@ -87,6 +87,7 @@ export default function Column(props) {
                     deadline={task.deadline} 
                     priority={task.priority}
                     tags={task.tag}
+                    memberIdList={task.memberIdList}
                   />
                 )
               else

@@ -94,7 +94,7 @@ export default function ViewTask() {
     }
 
     function convertIDtoName(id) {
-        return memberList.find(o => o.id === id).name;
+        return memberList.find(o => o.uid === id).name;
     }
 
     function showTagInput() {
@@ -297,7 +297,7 @@ export default function ViewTask() {
                         onChange={handleAA}
                     >
                         {memberList.map(member => {
-                            return <Option key={member.id} value={member.id} label={member.name}>{member.name}</Option>
+                            return <Option key={member.uid} value={member.uid} label={member.name}>{member.name}</Option>
                         })}
                     </Select>
                     :
