@@ -78,8 +78,17 @@ export default function AppProvider({ children }) {
       operator: "in",
       compareValue: memberIdList
     }
-  ), [memberIdList]);
+  ), [tasks]);
   const memberTask = useFirebase('person', memberTaskCondition);
+
+  const dashboardTaskCondition = React.useMemo(() => (
+    {
+      fieldName: "memberIdList",
+      operator: "array-contains",
+      compareValue: uid
+    }
+  ), [tasks]);
+  const dashboardTask = useFirebase('task', dashboardTaskCondition);
 
   return (
     <AppContext.Provider
@@ -89,6 +98,7 @@ export default function AppProvider({ children }) {
         setStatus,
         memberList,
         memberTask,
+        dashboardTask,
         selectWorkspace,
         tasks,
         columns,
