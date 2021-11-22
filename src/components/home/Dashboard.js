@@ -1,22 +1,85 @@
-import React from 'react';
-import { Input, Avatar, Tooltip } from 'antd';
+import React, { useState, useContext } from 'react';
+import { Checkbox, Typography, Avatar, Tooltip } from 'antd';
 import "./dashboard.scss";
 import { AuthContext } from '../../context/AuthProvider';
 import "../main/task.scss";
+import { Field, ViewContext } from "../../context/ViewProvider";
+
+const { Title } = Typography;
 
 export default function Dashboard() {
   const { user } = React.useContext(AuthContext);
+  
+  // Checklist
+  const { setFieldVisible, isFieldVisible } = useContext(ViewContext);
+  const selectedFields = [
+    { id: Field.PRIORITY, name: "Priority" },
+    { id: Field.MEMBER, name: "Assignee" },
+    { id: Field.DEADLINE, name: "Due date" },
+    { id: Field.PROGRESS, name: "Progress" },
+  ];
+  const fields = selectedFields.map(f => ({ 
+    id: f.id,
+    name: f.name,
+    active: isFieldVisible(f.id),
+  }));
+
+  const handleChange = (victimId, newState) => {
+    setFieldVisible(victimId, newState);
+    console.log({fields});
+  };
+
+  function CustomSwitch({ checked, onChange }) {
+    const handleChange = (e) => {
+      onChange(e.target.checked);
+    };
+    return (<>
+      <Checkbox checked={checked} onChange={handleChange}/>
+    </>);
+  }
+  
+  function ToggleItem({ id, name, isActive, handleChange }) {
+    const onChange = (newState) => {
+      handleChange(id, newState);
+    };
+    const handleClick = () => {
+      handleChange(id, !isActive);
+    };
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-9" style={{wordBreak: "keep-all"}} onClick={handleClick}>{name}</div>
+          <div className="col-3">
+            <CustomSwitch checked={isActive} onChange={onChange} />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <Input.Search
-          style={{ width: 200 }}
-          placeholder="Search"
-        />
+        <Title level={2}>Delta+</Title>
         <Tooltip title={user.displayName} placement="top">
           <Avatar size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf', marginLeft: "10px" }} key={user.uid} src={user.photoURL} />
         </Tooltip>
+      </div>
+      <div className="dashboard-subbar">
+        <div>
+          <Title level={4}>Your Dash Board</Title>
+        </div>
+        <div style={{display:'flex'}}>
+          {fields.map((f) => (
+              <ToggleItem
+                id={f.id}
+                name={f.name}
+                isActive={f.active}
+                handleChange={handleChange}
+              />
+          ))}
+        </div>
+        
       </div>
     </div>
   )

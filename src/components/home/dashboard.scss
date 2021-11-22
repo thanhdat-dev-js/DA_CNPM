@@ -9,6 +9,17 @@
     background-color: #fff;
     border-radius: 20px;
   }
+  &-subbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px 30px;
+    border-radius: 15px;
+  }
+  h2 {
+    margin: 0px;
+  }
   &-wrapper {
     overflow: auto;
   }
