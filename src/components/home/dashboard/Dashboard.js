@@ -1,21 +1,23 @@
 import React, { useState, useContext } from 'react';
 import { Checkbox, Typography, Avatar, Tooltip } from 'antd';
 import "./dashboard.scss";
-import { AuthContext } from '../../context/AuthProvider';
-import "../main/task.scss";
-import { Field, ViewContext } from "../../context/ViewProvider";
-import { AppContext } from '../../context/AppProvider';
+import { AuthContext } from '../../../context/AuthProvider';
+import "../../main/task.scss";
+import { Field, ViewContext } from "../../../context/ViewProvider";
+import { AppContext } from '../../../context/AppProvider';
+import ListTask from './ListTasks';
 import { useEffect } from 'react';
+// import Task from "../main/Task";
 
 const { Title } = Typography;
 
 export default function Dashboard() {
   const { user } = React.useContext(AuthContext);
-  const { dashboardTask } = useContext(AppContext);
+  const { dashboardTask, workspaceList } = useContext(AppContext);
 
   useEffect(() => {
     console.log(dashboardTask);
-  }, []);
+  }, [dashboardTask]);
   
   // Checklist
   const { setFieldVisible, isFieldVisible } = useContext(ViewContext);
@@ -79,6 +81,7 @@ export default function Dashboard() {
         <div style={{display:'flex'}}>
           {fields.map((f) => (
               <ToggleItem
+                key={f.id}
                 id={f.id}
                 name={f.name}
                 isActive={f.active}
@@ -86,8 +89,12 @@ export default function Dashboard() {
               />
           ))}
         </div>
-        
       </div>
+      {workspaceList.map((item) => {
+        return (
+          <ListTask key={item.id} id={item.id} name={item.name} list={dashboardTask} />
+        )
+      })}
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import Workspace from './Workspace';
-import DashBoard from './Dashboard';
+import DashBoard from './dashboard/Dashboard';
 import Sidebar from './Sidebar';
 import './index.scss';
 import { Row, Col } from "antd";

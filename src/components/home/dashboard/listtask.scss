@@ -1,0 +1,12 @@
+.list-task-contain {
+    background-color: rgb(253, 227, 207);
+    padding: 5px;
+    margin-bottom: 20px;
+}
+.tasks-contain {
+    display: flex;
+    overflow: auto;
+}
+.ant-col.ant-col-6 {
+    margin: 0 10px;
+}
