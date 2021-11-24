@@ -7,12 +7,11 @@ import { serverTimestamp } from 'firebase/firestore';
 import logo from './logoDelta.png';
 import './index.scss';
 
+const auth = getAuth();
 const ggProvider = new GoogleAuthProvider();
 const fbProvider = new FacebookAuthProvider();
 
-
 export default function Login() {
-  const auth = getAuth();
   const handleGgLogin = () => {
     try {
       signInWithPopup(auth, ggProvider)
@@ -27,6 +26,7 @@ export default function Login() {
             })
           }
         })
+        .catch(err => console.log(err));
     }
     catch (err) {
       console.log(err)
@@ -35,51 +35,63 @@ export default function Login() {
   const handleFbLogin = () => {
     signInWithPopup(auth, fbProvider)
       .then(data => {
-        console.log(data);
+        if (getAdditionalUserInfo(data).isNewUser) {
+          addDocument("person", {
+            email: data.user.email,
+            name: data.user.displayName,
+            avaURL: data.user.photoURL,
+            createdAt: serverTimestamp(),
+            uid: data.user.uid
+          })
+        }
       })
+      .catch(err => console.log(err));
   }
   return (
     <div className="wrapper">
       <div className="login-wrapper">
         <div className="image-wrapper">
-          <img 
+          <img
             src={logo} alt=""
-            style={{ 
-              borderRadius: '50%', 
-              width: '200px', 
-              height: '200px', 
-              border: '5px solid #1890ff'}}
-            />
+            style={{
+              borderRadius: '50%',
+              width: '200px',
+              height: '200px',
+              border: '5px solid #1890ff'
+            }}
+          />
         </div>
 
-        <div className="btn-wrapper">  
-          <Button 
-            style={{ 
+        <div className="btn-wrapper">
+          <Button
+            style={{
               width: "350px",
               height: "40px",
-              marginBottom: 7, 
-              background: '#4285f4', 
+              marginBottom: 7,
+              background: '#4285f4',
               color: 'white',
-              fontSize: '16px' }}
+              fontSize: '16px'
+            }}
             onClick={handleGgLogin}
           >
-            <GoogleOutlined style={{fontSize: '18px'}} />Đăng nhập bằng Google
+            <GoogleOutlined style={{ fontSize: '18px' }} />Đăng nhập bằng Google
           </Button>
         </div>
 
         <div className="btn-wrapper">
-          <Button 
-            style={{ 
-              width: "350px", 
+          <Button
+            style={{
+              width: "350px",
               marginBottom: 7,
               height: "40px",
-              background: '#3b5998', 
+              background: '#3b5998',
               color: 'white',
-              fontSize: '16px' }}
-              onClick={handleFbLogin}
-            >
-              <FacebookOutlined style={{fontSize: '18px'}}/>Đăng nhập bằng Facebook
-            </Button>
+              fontSize: '16px'
+            }}
+            onClick={handleFbLogin}
+          >
+            <FacebookOutlined style={{ fontSize: '18px' }} />Đăng nhập bằng Facebook
+          </Button>
         </div>
       </div>
     </div>
