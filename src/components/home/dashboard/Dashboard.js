@@ -7,13 +7,13 @@ import { Field, ViewContext } from "../../../context/ViewProvider";
 import { AppContext } from '../../../context/AppProvider';
 import ListTask from './ListTasks';
 import { useEffect } from 'react';
-// import Task from "../main/Task";
+import ViewDBTask from './ViewDBTask';
 
 const { Title } = Typography;
 
 export default function Dashboard() {
   const { user } = React.useContext(AuthContext);
-  const { dashboardTask, workspaceList } = useContext(AppContext);
+  const { DBmemberList, dashboardTask, workspaceList, visibleDBTask } = useContext(AppContext);
 
   useEffect(() => {
     console.log(dashboardTask);
@@ -24,7 +24,7 @@ export default function Dashboard() {
   const selectedFields = [
     { id: Field.PRIORITY, name: "Priority" },
     { id: Field.MEMBER, name: "Assignee" },
-    { id: Field.DEADLINE, name: "Due date" },
+    { id: Field.DEADLINE, name: "Due-date" },
     { id: Field.PROGRESS, name: "Progress" },
   ];
   const fields = selectedFields.map(f => ({ 
@@ -57,10 +57,10 @@ export default function Dashboard() {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-9" style={{wordBreak: "keep-all"}} onClick={handleClick}>{name}</div>
-          <div className="col-3">
+          <div className="col-1">
             <CustomSwitch checked={isActive} onChange={onChange} />
           </div>
+          <div className="col-9" style={{wordBreak: "keep-all"}} onClick={handleClick}>{name}</div>
         </div>
       </div>
     );
@@ -69,27 +69,29 @@ export default function Dashboard() {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <Title level={2}>Delta+</Title>
-        <Tooltip title={user.displayName} placement="top">
-          <Avatar size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf', marginLeft: "10px" }} key={user.uid} src={user.photoURL} />
-        </Tooltip>
+        <div className='flex'>
+            {fields.map((f) => (
+                <ToggleItem
+                  key={f.id}
+                  id={f.id}
+                  name={f.name}
+                  isActive={f.active}
+                  handleChange={handleChange}
+                />
+            ))}
+            <div className='Avatar'>
+            <Tooltip title={user.displayName} placement="top">
+              <Avatar className='img' size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf', marginLeft: "10px" }} key={user.uid} src={user.photoURL} />
+            </Tooltip>
+            </div>
+        </div>
       </div>
       <div className="dashboard-subbar">
         <div>
           <Title level={4}>Your Dash Board</Title>
         </div>
-        <div style={{display:'flex'}}>
-          {fields.map((f) => (
-              <ToggleItem
-                key={f.id}
-                id={f.id}
-                name={f.name}
-                isActive={f.active}
-                handleChange={handleChange}
-              />
-          ))}
-        </div>
       </div>
+      {visibleDBTask && <ViewDBTask></ViewDBTask>}
       {workspaceList.map((item) => {
         return (
           <ListTask key={item.id} id={item.id} name={item.name} list={dashboardTask} />

@@ -1,15 +1,15 @@
 import React from 'react';
-import "./task.scss";
+import "./DBTask.scss";
 import { Card, Avatar, Progress, Tag } from 'antd';
-import { AppContext } from '../../context/AppProvider';
-import { ViewContext, Field } from '../../context/ViewProvider';
+import { AppContext } from '../../../context/AppProvider';
+import { ViewContext, Field } from '../../../context/ViewProvider';
 import { useContext } from 'react';
 
 const ColorPallete = ['6px solid green', '6px solid orange' , '6px solid red'];
 
-export default function Task(props) {
+export default function DBTask(props) {
   const {isFieldVisible} = useContext(ViewContext);
-  const { curTask, setCurTask, setVisibleTask, memberList } = React.useContext(AppContext);
+  const { DBmemberList, curDBTask, setDBTask, setVisibleDBTask } = React.useContext(AppContext);
   return (
     <div className="task-card-container">
       <Card
@@ -18,16 +18,16 @@ export default function Task(props) {
         style={{ cursor: 'pointer', borderRadius: '5px',
         borderRight: (!isFieldVisible(Field.PRIORITY)) ? '' : props.priority === 'Low' ? ColorPallete[0] : ( props.priority === 'Medium' ? ColorPallete[1] : ColorPallete[2])  }}
         bodyStyle={{ padding: '4%', minheight: '150px'}}
-        onClick={async () => {
-          await setCurTask({ ...props.task });
-          setVisibleTask(true);
+        onClick= {async () => {
+          await setDBTask({ ...props.task });
+          setVisibleDBTask(true);
         }}
       >
         <div style={{ display: 'flex' }}>
           <p className="title">{props.name}</p>
           {(isFieldVisible(Field.MEMBER)) && 
           <Avatar.Group style={{ marginLeft: 'auto', marginRight: 0 }}>
-            {memberList.map((member) => {
+            {DBmemberList.map((member) => {
               if (props.memberIdList.includes(member.uid))
                 return (
                   <Avatar key={member.uid} src={member.avaURL} />
@@ -59,7 +59,6 @@ export default function Task(props) {
         <div style={{ marginTop: '0px', float: 'right'  }}>
           {props.tags.map((T, idx) => {
             return(
-
               <Tag style={{ fontFamily: 'arial', fontWeight: 'bold', fontSize: '14px' }}>{T.length > 7 ? T.slice(0, 7) + '...' : T}</Tag>
             )
           })}
