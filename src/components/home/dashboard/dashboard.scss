@@ -3,11 +3,19 @@
   width: 100%;
   &-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: right;
     padding: 10px 30px;
     background-color: #fff;
     border-radius: 20px;
+    .flex{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .Avatar{
+      padding-left: 30px;
+    }
   }
   &-subbar{
     display: flex;

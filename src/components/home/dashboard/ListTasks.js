@@ -1,4 +1,4 @@
-import Task from '../../main/Task';
+import DBTask from './DBTask';
 import './listtask.scss';
 import { Col } from 'antd';
 
@@ -12,8 +12,9 @@ export default function ListTasks(props) {
                         if (task.workspace === props.id)
                         return (
                             <Col span={6}>
-                                <Task 
+                                <DBTask 
                                     key={task.id} 
+                                    id={task.id}
                                     task={task} 
                                     name={task.name} 
                                     progression={task.progression} 

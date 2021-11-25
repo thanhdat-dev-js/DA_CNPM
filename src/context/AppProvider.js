@@ -10,7 +10,9 @@ export default function AppProvider({ children }) {
   const [visible, setVisible] = useState(false);
   const [curColumn, setCurColumn] = useState('');
   const [curTask, setCurTask] = useState({});
+  const [curDBTask, setDBTask] = useState({});
   const [visibleTask, setVisibleTask] = useState(false);
+  const [visibleDBTask, setVisibleDBTask] = useState(false);
   const { user: { uid }, } = React.useContext(AuthContext);
 
   // Condition 1: Take workspace has memberIdList has that person
@@ -68,6 +70,7 @@ export default function AppProvider({ children }) {
   // Get tasks from task with Condition 4
   const tasks = useFirebase('task', tasksCondition);
 
+  // Get all task for dashboard 
   const dashboardTaskCondition = React.useMemo(() => (
     {
       fieldName: "memberIdList",
@@ -77,16 +80,18 @@ export default function AppProvider({ children }) {
   ), [tasks]);
   const dashboardTask = useFirebase('task', dashboardTaskCondition);
 
-  const memberListId = React.useMemo(() => workspaceList.reduce((prev, cur) => (prev.concat(cur.memberIdList)), []), [workspaceList]);
+  // Get all member in Dashboard
+  const DBmemberListID = React.useMemo(() => dashboardTask.reduce((prev, cur) => (prev.concat(cur.memberIdList)), []), [dashboardTask]);
 
-  const memberDashboardCondition = React.useMemo(() => (
+  const DBmemberListCondition = React.useMemo(() => (
     {
       fieldName: "uid",
       operator: "in",
-      compareValue: memberListId
+      compareValue: DBmemberListID
     }
-  ), [memberListId]);
-  const memberDashboard = useFirebase('person', memberDashboardCondition);
+  ), [DBmemberListID]);
+
+  const DBmemberList = useFirebase('person', DBmemberListCondition);
 
   return (
     <AppContext.Provider
@@ -96,7 +101,7 @@ export default function AppProvider({ children }) {
         setStatus,
         memberList,
         dashboardTask,
-        memberDashboard,
+        DBmemberList,
         selectWorkspace,
         tasks,
         columns,
@@ -106,8 +111,12 @@ export default function AppProvider({ children }) {
         setCurColumn,
         curTask,
         setCurTask,
+        curDBTask,
+        setDBTask,
         visibleTask,
         setVisibleTask,
+        visibleDBTask,
+        setVisibleDBTask,
       }}>
       {children}
     </AppContext.Provider>
