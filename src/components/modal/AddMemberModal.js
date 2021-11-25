@@ -2,11 +2,9 @@ import React, { useContext, useState } from 'react';
 import { Form, Modal, Select, Spin, Avatar } from 'antd';
 import { AppContext } from '../../context/AppProvider';
 import { debounce } from 'lodash';
-//import { db } from '../../firebase/config';
 import { editDocumentById } from '../../firebase/service';
 
-import { getFirestore, collection, getDocs, doc } from 'firebase/firestore';
-import {  query, where, orderBy, limit} from "firebase/firestore";
+import { getFirestore, collection, getDocs, doc, query, where, orderBy, limit } from 'firebase/firestore';
 
 //import firebase from 'firebase/app';
 
@@ -62,19 +60,26 @@ function DebounceSelect({
   );
 }
 
-const db = getFirestore();
-
 async function fetchUserList(search, curMembers) {
-
-    const userList = query(collection(db, 'person'),orderBy('name'), where('name', '>=', search?.toUpperCase()), where('name', '<=', search?.toUpperCase() + "\uf8ff"), limit(20));
-    const querySnapshot = await getDocs(userList);
-    return querySnapshot.docs.map((doc) => ({
+  const db = getFirestore();
+  let collectionRef = collection(db, 'person');
+  var q = {};
+  const result = [];
+  try {
+    q = query(collectionRef, where('keywords', 'array-contains', search?.toLowerCase()), limit(20))
+  }
+  catch (err) {
+    console.log(err);
+  }
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    result.push({
       label: doc.data().name,
       value: doc.data().uid,
-      photoURL: doc.data().avaURL,
-    }))
-    .filter((opt) => !curMembers.includes(opt.value));
-    
+      photoURL: doc.data().avaURL
+    })
+  });
+  return result.filter((value) => !curMembers.includes(value.value));
 }
 
 export default function AddMemberModal() {
@@ -91,15 +96,12 @@ export default function AddMemberModal() {
     // reset form value
     form.resetFields();
     setValue([]);
-
     // update members in current workspcae
-    
-
     console.log(selectWorkspace.memberIdList)
     editDocumentById('workspace', selectWorkspace.id, {
-        memberIdList: [...selectWorkspace.memberIdList, ...value.map((val) => val.value)]
+      memberIdList: [...selectWorkspace.memberIdList, ...value.map((val) => val.value)]
     })
-      
+
     setAddMemberVisible(false);
   };
 

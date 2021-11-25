@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 import { GoogleOutlined, FacebookOutlined } from '@ant-design/icons';
 import { signInWithPopup, GoogleAuthProvider, getAuth, FacebookAuthProvider, getAdditionalUserInfo } from "firebase/auth";
-import { addDocument } from '../../firebase/service';
+import { addDocument, generateKeywords } from '../../firebase/service';
 import { serverTimestamp } from 'firebase/firestore';
 import logo from './logoDelta.png';
 import './index.scss';
@@ -22,7 +22,8 @@ export default function Login() {
               name: data.user.displayName,
               avaURL: data.user.photoURL,
               createdAt: serverTimestamp(),
-              uid: data.user.uid
+              uid: data.user.uid,
+              keywords: generateKeywords(data.user.displayName?.toLowerCase()),
             })
           }
         })
@@ -41,7 +42,8 @@ export default function Login() {
             name: data.user.displayName,
             avaURL: data.user.photoURL,
             createdAt: serverTimestamp(),
-            uid: data.user.uid
+            uid: data.user.uid,
+            keywords: generateKeywords(data.user.displayName?.toLowerCase()),
           })
         }
       })

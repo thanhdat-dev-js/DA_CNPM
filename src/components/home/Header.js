@@ -2,20 +2,17 @@ import React, { useState } from 'react';
 import { AuthContext } from '../../context/AuthProvider';
 import { AppContext } from '../../context/AppProvider';
 import { Avatar, Tooltip, Button, Modal, Input, Dropdown, Menu } from 'antd';
-import {CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined } from '@ant-design/icons';
 import { editDocumentById, deleteDocumentById } from '../../firebase/service';
 
-
-
 import './header.scss';
-import { AuthCredential } from 'firebase/auth';
 
 export default function Header() {
 
   const { user } = React.useContext(AuthContext);
   const { selectWorkspace, memberList, memberIdList, setAddMemberVisible } = React.useContext(AppContext);
   const [deletePerson, setDeletePerson] = useState('');
-  
+
   const [modalDelete, setModalDelete] = useState({
     isModalVisible: false,
     input: '',
@@ -40,11 +37,6 @@ export default function Header() {
       isModalVisible: false
     })
   }
-
-  
-
-
-  
   return (
     <div className="header">
       <div className="header-left">
@@ -52,16 +44,14 @@ export default function Header() {
       </div>
       <div className="header-center">
         <Avatar.Group maxCount={4} size="large" maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
-            {memberList.map((member) => {
-              return (
+          {memberList.map((member) => {
+            return (
               <Tooltip key={member.uid} title={member.name} placement="top">
                 <Avatar key={member.uid} src={member.avaURL} />
               </Tooltip>
-              )
-            })}
-
+            )
+          })}
         </Avatar.Group>
-        
         <Dropdown overlay={(
           <Menu>
             <Menu.Item>
@@ -72,50 +62,47 @@ export default function Header() {
             {memberList.map((member) => {
               return (
                 <Menu.Item key={member.uid}>
-                <div className="row">
-                  <div className="col">
-                  <Avatar size="medium"  key={member.uid} src={member.avaURL} />
-                  <span style={{fontFamily: AuthCredential, marginLeft: "10px"}}>{member.name}</span>
+                  <div className="row">
+                    <div className="col">
+                      <Avatar size="medium" key={member.uid} src={member.avaURL} />
+                      <span style={{ marginLeft: "10px" }}>{member.name}</span>
+                    </div>
+                    <div className="col col-2" >
+                      <div>
+                        <Button
+                          onClick={async () => {
+                            setDeletePerson(member.uid);
+                            setModalDelete({
+                              ...modalDelete,
+                              isModalVisible: true,
+                              type: 'delete'
+                            })
+                          }}
+                          icon={<CloseOutlined />}
+                          style={{ marginRight: "35px" }}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="col col-2" >
-                  <div>
-                    <Button 
-                      onClick={async () => {
-                        setDeletePerson(member.uid);
-                        setModalDelete({
-                          ...modalDelete,
-                          isModalVisible: true,
-                          type: 'delete'})
-                      }}
-                      icon={<CloseOutlined />}
-                      style={{marginRight: "35px"}}
-                    />
-                  </div>
-                  </div>
-                </div>
                 </Menu.Item>
               )
             })}
           </Menu>
         )} trigger={['click']}>
-        <Button type="dashed">Edit Member</Button>
+          <Button type="dashed">Edit Member</Button>
         </Dropdown>
-
-
-        <Modal  visible={modalDelete.isModalVisible} onOk={handleOkDelete} onCancel={handleCancelDelete}>   
-              <strong>
-                <p>
-                  Do you want to delete member?
-                </p>
-              </strong>
-          </Modal>
-
+        <Modal visible={modalDelete.isModalVisible} onOk={handleOkDelete} onCancel={handleCancelDelete}>
+          <strong>
+            <p>
+              Do you want to delete member?
+            </p>
+          </strong>
+        </Modal>
       </div>
-
       <div className="header-right">
-      <Tooltip title={user.displayName} placement="top">
-        <Avatar size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf', marginLeft: "10px" }} key={user.uid} src={user.photoURL}/>
-      </Tooltip>
+        <Tooltip title={user.displayName} placement="top">
+          <Avatar size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf', marginLeft: "10px" }} key={user.uid} src={user.photoURL} />
+        </Tooltip>
       </div>
     </div>
   )
