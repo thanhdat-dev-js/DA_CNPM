@@ -14,6 +14,8 @@ export default function AppProvider({ children }) {
   const [visibleTask, setVisibleTask] = useState(false);
   const [visibleDBTask, setVisibleDBTask] = useState(false);
   const { user: { uid }, } = React.useContext(AuthContext);
+  const [AddMemberVisible, setAddMemberVisible] = useState(false);
+
 
   // Condition 1: Take workspace has memberIdList has that person
   const workspaceCondition = React.useMemo(() => {
@@ -117,6 +119,8 @@ export default function AppProvider({ children }) {
         setVisibleTask,
         visibleDBTask,
         setVisibleDBTask,
+        AddMemberVisible,
+        setAddMemberVisible,
       }}>
       {children}
     </AppContext.Provider>
