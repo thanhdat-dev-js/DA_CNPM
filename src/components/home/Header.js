@@ -1,37 +1,57 @@
 import React, { useState } from 'react';
 import { AuthContext } from '../../context/AuthProvider';
 import { AppContext } from '../../context/AppProvider';
-import { Avatar, Tooltip, Button, Modal, Input } from 'antd';
+import { Avatar, Tooltip, Button, Modal, Input, Dropdown, Menu } from 'antd';
+import {CloseOutlined } from '@ant-design/icons';
+import { editDocumentById, deleteDocumentById } from '../../firebase/service';
+
+
 
 import './header.scss';
+import { AuthCredential } from 'firebase/auth';
 
 export default function Header() {
 
   const { user } = React.useContext(AuthContext);
-  const { selectWorkspace, memberList } = React.useContext(AppContext);
+  const { selectWorkspace, memberList, memberIdList, setAddMemberVisible } = React.useContext(AppContext);
+  const [deletePerson, setDeletePerson] = useState('');
+  
+  const [modalDelete, setModalDelete] = useState({
+    isModalVisible: false,
+    input: '',
+    type: 'delete'
+  })
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const handleOkDelete = () => {
+    //deleteDocumentById('workspace', selectWorkspace.memberIdList.map((it) => it === item.uid));
+    //const temp = selectWorkspace.memberIdList.map((it) => it !== ID);
+    console.log(deletePerson);
+    editDocumentById('workspace', selectWorkspace.id, {
+      memberIdList: [...selectWorkspace.memberIdList.filter(it => it !== deletePerson)]
+    })
+    setModalDelete({
+      ...modalDelete,
+      isModalVisible: false
+    })
+  }
+  const handleCancelDelete = () => {
+    setModalDelete({
+      ...modalDelete,
+      isModalVisible: false
+    })
+  }
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  
 
 
+  
   return (
     <div className="header">
       <div className="header-left">
         <h1>{selectWorkspace.name}</h1>
       </div>
       <div className="header-center">
-        <Avatar.Group maxCount={2} size="large" maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
+        <Avatar.Group maxCount={4} size="large" maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
             {memberList.map((member) => {
               return (
               <Tooltip key={member.uid} title={member.name} placement="top">
@@ -41,16 +61,55 @@ export default function Header() {
             })}
 
         </Avatar.Group>
+        
+        <Dropdown overlay={(
+          <Menu>
+            <Menu.Item>
+              <Button onClick={setAddMemberVisible}>
+                +  New Member
+              </Button>
+            </Menu.Item>
+            {memberList.map((member) => {
+              return (
+                <Menu.Item key={member.uid}>
+                <div className="row">
+                  <div className="col">
+                  <Avatar size="medium"  key={member.uid} src={member.avaURL} />
+                  <span style={{fontFamily: AuthCredential, marginLeft: "10px"}}>{member.name}</span>
+                  </div>
+                  <div className="col col-2" >
+                  <div>
+                    <Button 
+                      onClick={async () => {
+                        setDeletePerson(member.uid);
+                        setModalDelete({
+                          ...modalDelete,
+                          isModalVisible: true,
+                          type: 'delete'})
+                      }}
+                      icon={<CloseOutlined />}
+                      style={{marginRight: "35px"}}
+                    />
+                  </div>
+                  </div>
+                </div>
+                </Menu.Item>
+              )
+            })}
+          </Menu>
+        )} trigger={['click']}>
+        <Button type="dashed">Edit Member</Button>
+        </Dropdown>
 
-        <Button type="dashed" onClick={showModal}>
-          +  New Member
-        </Button>
 
-        <Modal title="Add New Member" visible={isModalVisible} width="400px" onOk={handleOk} onCancel={handleCancel}>
-          <Input
-            placeholder="@Username"
-          />
-        </Modal>
+        <Modal  visible={modalDelete.isModalVisible} onOk={handleOkDelete} onCancel={handleCancelDelete}>   
+              <strong>
+                <p>
+                  Do you want to delete member?
+                </p>
+              </strong>
+          </Modal>
+
       </div>
 
       <div className="header-right">
