@@ -93,9 +93,13 @@ export default function Dashboard() {
       </div>
       {visibleDBTask && <ViewDBTask></ViewDBTask>}
       {workspaceList.map((item) => {
-        return (
-          <ListTask key={item.id} id={item.id} name={item.name} list={dashboardTask} />
-        )
+        for (let i = 0; i < dashboardTask.length; i++) {
+          if (dashboardTask[i].workspace === item.id) {
+            return (
+              <ListTask key={item.id} id={item.id} name={item.name} list={dashboardTask} />
+            )
+          }
+        }
       })}
     </div>
   )
