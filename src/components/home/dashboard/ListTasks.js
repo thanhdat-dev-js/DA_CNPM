@@ -1,6 +1,6 @@
 import Task from '../../main/Task';
 import './listtask.scss';
-import { Row, Col } from 'antd';
+import { Col } from 'antd';
 
 export default function ListTasks(props) {
     return (

@@ -77,6 +77,17 @@ export default function AppProvider({ children }) {
   ), [tasks]);
   const dashboardTask = useFirebase('task', dashboardTaskCondition);
 
+  const memberListId = React.useMemo(() => workspaceList.reduce((prev, cur) => (prev.concat(cur.memberIdList)), []), [workspaceList]);
+
+  const memberDashboardCondition = React.useMemo(() => (
+    {
+      fieldName: "uid",
+      operator: "in",
+      compareValue: memberListId
+    }
+  ), [memberListId]);
+  const memberDashboard = useFirebase('person', memberDashboardCondition);
+
   return (
     <AppContext.Provider
       value={{
@@ -85,6 +96,7 @@ export default function AppProvider({ children }) {
         setStatus,
         memberList,
         dashboardTask,
+        memberDashboard,
         selectWorkspace,
         tasks,
         columns,
