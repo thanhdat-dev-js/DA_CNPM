@@ -69,6 +69,9 @@ export default function Dashboard() {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
+        <div className="dashboard-subbar">
+            <Title level={4}>Your Dash Board</Title>
+        </div>
         <div className='flex'>
             {fields.map((f) => (
                 <ToggleItem
@@ -84,11 +87,6 @@ export default function Dashboard() {
               <Avatar className='img' size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf', marginLeft: "10px" }} key={user.uid} src={user.photoURL} />
             </Tooltip>
             </div>
-        </div>
-      </div>
-      <div className="dashboard-subbar">
-        <div>
-          <Title level={4}>Your Dash Board</Title>
         </div>
       </div>
       {visibleDBTask && <ViewDBTask></ViewDBTask>}
