@@ -101,7 +101,6 @@ export default function AddMemberModal() {
     editDocumentById('workspace', selectWorkspace.id, {
       memberIdList: [...selectWorkspace.memberIdList, ...value.map((val) => val.value)]
     })
-
     setAddMemberVisible(false);
   };
 
@@ -109,7 +108,6 @@ export default function AddMemberModal() {
     // reset form value
     form.resetFields();
     setValue([]);
-
     setAddMemberVisible(false);
   };
 

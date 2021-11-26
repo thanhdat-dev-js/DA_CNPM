@@ -49,6 +49,7 @@ export default function Sidebar() {
 
   const handleOkMenu = () => {
     if (modalMenu.type === 'delete') {
+      setStatus('dashboard');
       deleteDocumentById('workspace', status);
     }
     else {

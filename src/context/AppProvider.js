@@ -79,7 +79,8 @@ export default function AppProvider({ children }) {
       operator: "array-contains",
       compareValue: uid
     }
-  ), [tasks]);
+  ), [tasks, uid]);
+  
   const dashboardTask = useFirebase('task', dashboardTaskCondition);
 
   // Get all member in Dashboard
