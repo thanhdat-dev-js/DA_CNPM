@@ -10,7 +10,7 @@ import './header.scss';
 export default function Header() {
 
   const { user } = React.useContext(AuthContext);
-  const { selectWorkspace, memberList, memberIdList, setAddMemberVisible } = React.useContext(AppContext);
+  const { selectWorkspace, memberList, memberIdList, setAddMemberVisible, tasks } = React.useContext(AppContext);
   const [deletePerson, setDeletePerson] = useState('');
 
   const [modalDelete, setModalDelete] = useState({
@@ -25,7 +25,7 @@ export default function Header() {
     console.log(deletePerson);
     editDocumentById('workspace', selectWorkspace.id, {
       memberIdList: [...selectWorkspace.memberIdList.filter(it => it !== deletePerson)]
-    })
+    });
     setModalDelete({
       ...modalDelete,
       isModalVisible: false
@@ -37,6 +37,7 @@ export default function Header() {
       isModalVisible: false
     })
   }
+
   return (
     <div className="header">
       <div className="header-left">
@@ -69,7 +70,8 @@ export default function Header() {
                     </div>
                     <div className="col col-2" >
                       <div>
-                        <Button
+                        {(selectWorkspace === undefined) && selectWorkspace.createdById[0] === user.uid && 
+                          <Button
                           onClick={async () => {
                             setDeletePerson(member.uid);
                             setModalDelete({
@@ -80,7 +82,8 @@ export default function Header() {
                           }}
                           icon={<CloseOutlined />}
                           style={{ marginRight: "35px" }}
-                        />
+                          />
+                        }
                       </div>
                     </div>
                   </div>

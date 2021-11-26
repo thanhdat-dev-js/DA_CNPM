@@ -94,7 +94,7 @@ export default function ViewTask() {
     }
 
     function convertIDtoName(uid) {
-        return memberList.find(o => o.uid === uid).name;
+        return memberList.find(o => o.uid === uid)?.name;
     }
 
     function showTagInput() {

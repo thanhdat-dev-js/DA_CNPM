@@ -15,6 +15,9 @@ export default function Column(props) {
   const { selectWorkspace, setVisible, setCurColumn } = React.useContext(AppContext);
   const handleOkMenu = () => {
     if (modalMenu.type === 'delete') {
+      props.taskIdList.forEach(taskID => {
+        deleteDocumentById('task', taskID);
+      });
       deleteDocumentById('column', props.id);
       const temp = selectWorkspace.columnIdList.filter((item) => item !== props.id);
       editDocumentById('workspace', selectWorkspace.id, {

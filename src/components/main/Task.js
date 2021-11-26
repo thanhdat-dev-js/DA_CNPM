@@ -9,7 +9,7 @@ const ColorPallete = ['6px solid green', '6px solid orange' , '6px solid red'];
 
 export default function Task(props) {
   const {isFieldVisible} = useContext(ViewContext);
-  const { curTask, setCurTask, setVisibleTask, memberList, memberDashboard, status } = React.useContext(AppContext);
+  const { curTask, setCurTask, setVisibleTask, memberList, DBmemberList, status } = React.useContext(AppContext);
   return (
     <div className="task-card-container">
       <Card
@@ -28,7 +28,7 @@ export default function Task(props) {
           <p className="title">{props.name}</p>
           {(isFieldVisible(Field.MEMBER)) && 
           <Avatar.Group style={{ marginLeft: 'auto', marginRight: 0 }}>
-            {status === 'dashboard' ? memberDashboard.map((member) => {
+            {status === 'dashboard' ? DBmemberList.map((member) => {
               if (props.memberIdList.includes(member.uid))
                 return (
                   <Avatar key={member.uid} src={member.avaURL} />
