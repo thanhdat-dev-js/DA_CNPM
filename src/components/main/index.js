@@ -9,7 +9,7 @@ import { ViewContext } from '../../context/ViewProvider';
 
 export default function Main() {
   const { columns, tasks } = React.useContext(AppContext);
-  const {sortedTasks} = React.useContext(ViewContext);
+  const { sortedTasks } = React.useContext(ViewContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [input, setInput] = useState('');
   const { selectWorkspace } = React.useContext(AppContext);
@@ -23,7 +23,7 @@ export default function Main() {
       createdAt: serverTimestamp()
     })
     if (id) {
-      console.log(selectWorkspace.columnIdList)
+      // console.log(selectWorkspace.columnIdList)
       if (selectWorkspace.columnIdList === undefined || selectWorkspace.columnIdList === []) {
         editDocumentById('workspace', selectWorkspace.id, {
           columnIdList: [id]
@@ -50,7 +50,7 @@ export default function Main() {
         )
       })}
       <div className="button-wrapper">
-        <Button type="dashed" size="large" onClick={showModal} style={{color: "#1890ff"}}> + Create Column</Button>
+        <Button type="dashed" size="large" onClick={showModal} style={{ color: "#1890ff" }}> + Create Column</Button>
       </div>
       <Modal title="Create new column" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
         <Input value={input} placeholder="Enter column name" onChange={(e) => setInput(e.target.value)} />

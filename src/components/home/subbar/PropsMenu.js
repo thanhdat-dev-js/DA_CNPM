@@ -11,7 +11,7 @@ export default function PropsMenu() {
     { id: Field.DEADLINE, name: "Due date" },
     { id: Field.PROGRESS, name: "Progress" },
   ];
-  const fields = selectedFields.map(f => ({ 
+  const fields = selectedFields.map(f => ({
     id: f.id,
     name: f.name,
     active: isFieldVisible(f.id),
@@ -23,7 +23,7 @@ export default function PropsMenu() {
 
   const handleChange = (victimId, newState) => {
     setFieldVisible(victimId, newState);
-    console.log({fields});
+    // console.log({fields});
   };
   const handleChangeAll = (newState) => {
     fields.forEach(field => {
@@ -57,7 +57,7 @@ function CustomSwitch({ checked, onChange }) {
     onChange(e.target.checked);
   };
   return (<>
-    <Checkbox checked={checked} onChange={handleChange}/>
+    <Checkbox checked={checked} onChange={handleChange} />
   </>);
 }
 

@@ -15,10 +15,10 @@ export default function Dashboard() {
   const { user } = React.useContext(AuthContext);
   const { DBmemberList, dashboardTask, workspaceList, visibleDBTask } = useContext(AppContext);
 
-  useEffect(() => {
-    console.log(dashboardTask);
-  }, [dashboardTask]);
-  
+  // useEffect(() => {
+  //   console.log(dashboardTask);
+  // }, [dashboardTask]);
+
   // Checklist
   const { setFieldVisible, isFieldVisible } = useContext(ViewContext);
   const selectedFields = [
@@ -27,7 +27,7 @@ export default function Dashboard() {
     { id: Field.DEADLINE, name: "Due-date" },
     { id: Field.PROGRESS, name: "Progress" },
   ];
-  const fields = selectedFields.map(f => ({ 
+  const fields = selectedFields.map(f => ({
     id: f.id,
     name: f.name,
     active: isFieldVisible(f.id),
@@ -35,7 +35,7 @@ export default function Dashboard() {
 
   const handleChange = (victimId, newState) => {
     setFieldVisible(victimId, newState);
-    console.log({fields});
+    console.log({ fields });
   };
 
   function CustomSwitch({ checked, onChange }) {
@@ -43,10 +43,10 @@ export default function Dashboard() {
       onChange(e.target.checked);
     };
     return (<>
-      <Checkbox checked={checked} onChange={handleChange}/>
+      <Checkbox checked={checked} onChange={handleChange} />
     </>);
   }
-  
+
   function ToggleItem({ id, name, isActive, handleChange }) {
     const onChange = (newState) => {
       handleChange(id, newState);
@@ -60,7 +60,7 @@ export default function Dashboard() {
           <div className="col-1">
             <CustomSwitch checked={isActive} onChange={onChange} />
           </div>
-          <div className="col-9" style={{wordBreak: "keep-all"}} onClick={handleClick}>{name}</div>
+          <div className="col-9" style={{ wordBreak: "keep-all" }} onClick={handleClick}>{name}</div>
         </div>
       </div>
     );
@@ -70,23 +70,23 @@ export default function Dashboard() {
     <div className="dashboard">
       <div className="dashboard-header">
         <div className="dashboard-subbar">
-            <Title level={4}>Your Dash Board</Title>
+          <Title level={4}>Your Dash Board</Title>
         </div>
         <div className='flex'>
-            {fields.map((f) => (
-                <ToggleItem
-                  key={f.id}
-                  id={f.id}
-                  name={f.name}
-                  isActive={f.active}
-                  handleChange={handleChange}
-                />
-            ))}
-            <div className='Avatar'>
+          {fields.map((f) => (
+            <ToggleItem
+              key={f.id}
+              id={f.id}
+              name={f.name}
+              isActive={f.active}
+              handleChange={handleChange}
+            />
+          ))}
+          <div className='Avatar'>
             <Tooltip title={user.displayName} placement="top">
               <Avatar className='img' size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf', marginLeft: "10px" }} key={user.uid} src={user.photoURL} />
             </Tooltip>
-            </div>
+          </div>
         </div>
       </div>
       {visibleDBTask && <ViewDBTask></ViewDBTask>}

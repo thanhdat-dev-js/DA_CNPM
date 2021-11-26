@@ -88,11 +88,11 @@ export default function CreateTask({ children }) {
 
     // Push Data to DB
     async function queryData() {
-        if (title === '' ) {
+        if (title === '') {
             message.error('Please enter the name for this task !');
             return;
         }
-        else if(AA.length === 0){
+        else if (AA.length === 0) {
             message.error('Please assign this task to at least 1 person !');
             return;
         }
@@ -110,7 +110,7 @@ export default function CreateTask({ children }) {
                 createdAt: serverTimestamp(),
                 workspace: status
             });
-            console.log(AA);
+            // console.log(AA);
             columns.map(item => {
                 if (item.id === curColumn) {
                     if (Array.isArray(item.taskIdList)) {

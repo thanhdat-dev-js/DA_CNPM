@@ -23,6 +23,16 @@ export default function Header() {
     //deleteDocumentById('workspace', selectWorkspace.memberIdList.map((it) => it === item.uid));
     //const temp = selectWorkspace.memberIdList.map((it) => it !== ID);
     // console.log('ád');
+    tasks.forEach(task => {
+      if (task.createdBy == deletePerson) {
+        deleteDocumentById('task', task.id);
+      }
+      if (task.memberIdList.includes(deletePerson)) {
+        editDocumentById('task', task.id, {
+          memberIdList: [...task.memberIdList.filter(value => value !== deletePerson)]
+        })
+      }
+    })
     editDocumentById('workspace', selectWorkspace.id, {
       memberIdList: [...selectWorkspace.memberIdList.filter(it => it !== deletePerson)]
     });
@@ -40,19 +50,17 @@ export default function Header() {
 
   function check(memberuid) {
     if (selectWorkspace) {
-      if (selectWorkspace.createdById[0] === user.uid) {
-        if (user.uid === memberuid) {
-          return false;
+      if (selectWorkspace.createdById) {
+        if (selectWorkspace.createdById[0] == user.uid) {
+          if (memberuid == user.uid) {
+            return false;
+          }
+          else
+            return true;
         }
-        return true;
-      }
-      else {
-        return false;
       }
     }
-    else {
-      return false;
-    }
+    return false;
   }
 
   return (

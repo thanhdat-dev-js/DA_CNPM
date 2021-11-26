@@ -97,7 +97,7 @@ export default function AddMemberModal() {
     form.resetFields();
     setValue([]);
     // update members in current workspcae
-    console.log(selectWorkspace.memberIdList)
+    // console.log(selectWorkspace.memberIdList)
     editDocumentById('workspace', selectWorkspace.id, {
       memberIdList: [...selectWorkspace.memberIdList, ...value.map((val) => val.value)]
     })

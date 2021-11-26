@@ -25,7 +25,7 @@ const { TextArea } = Input;
 
 export default function ViewDBTask() {
     const { visibleDBTask, setVisibleDBTask, curDBTask, DBmemberList } = React.useContext(AppContext);
-    const title  = curDBTask.name;
+    const title = curDBTask.name;
 
     const createDate = curDBTask.createDate;
 
@@ -51,7 +51,7 @@ export default function ViewDBTask() {
     );
 
     function convertIDtoName(uid) {
-        return DBmemberList.find(o => o.uid === uid).name;
+        return DBmemberList.find(o => o.uid === uid)?.name;
     }
 
     async function closeModal() {
@@ -97,7 +97,7 @@ export default function ViewDBTask() {
                             key={tag}
                             closable={false}
                         >
-                            <span style={{fontSize: '14px'}}> {isLongTag ? `${tag.slice(0, 7)}...` : tag} </span>
+                            <span style={{ fontSize: '14px' }}> {isLongTag ? `${tag.slice(0, 7)}...` : tag} </span>
                         </Tag>
                     );
                     return tagElem;
@@ -130,7 +130,7 @@ export default function ViewDBTask() {
             <Row className="normal-row">
                 <Col span={5} className="element-text">Progression:</Col>
                 <Col span={4}>
-                   <input type="text" size={10} value={prog + " %"} readOnly />
+                    <input type="text" size={10} value={prog + " %"} readOnly />
                 </Col>
             </Row>
 
