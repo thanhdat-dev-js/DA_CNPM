@@ -34,20 +34,25 @@ export default function Login() {
     }
   }
   const handleFbLogin = () => {
-    signInWithPopup(auth, fbProvider)
-      .then(data => {
-        if (getAdditionalUserInfo(data).isNewUser) {
-          addDocument("person", {
-            email: data.user.email,
-            name: data.user.displayName,
-            avaURL: data.user.photoURL,
-            createdAt: serverTimestamp(),
-            uid: data.user.uid,
-            keywords: generateKeywords(data.user.displayName?.toLowerCase()),
-          })
-        }
-      })
-      .catch(err => console.log(err));
+    try {
+      signInWithPopup(auth, fbProvider)
+        .then(data => {
+          if (getAdditionalUserInfo(data).isNewUser) {
+            addDocument("person", {
+              email: data.user.email,
+              name: data.user.displayName,
+              avaURL: data.user.photoURL,
+              createdAt: serverTimestamp(),
+              uid: data.user.uid,
+              keywords: generateKeywords(data.user.displayName?.toLowerCase()),
+            })
+          }
+        })
+        .catch(err => console.log(err));
+    }
+    catch (err) {
+      console.log(err)
+    }
   }
   return (
     <div className="wrapper">
@@ -63,7 +68,6 @@ export default function Login() {
             }}
           />
         </div>
-
         <div className="btn-wrapper">
           <Button
             style={{

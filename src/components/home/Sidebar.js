@@ -135,8 +135,8 @@ export default function Sidebar() {
           </Modal>
         </li>
       </ul>
-      <Button type="primary" onClick={() => {
-        signOut(getAuth());
+      <Button type="primary" onClick={async () => {
+        await signOut(getAuth());
         window.location.reload();
       }} >Log out</Button>
     </div>
