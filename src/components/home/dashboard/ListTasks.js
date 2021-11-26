@@ -1,4 +1,4 @@
-import DBTask from './DBTask';
+import Task from '../../main/Task';
 import './listtask.scss';
 import { Row, Col } from 'antd';
 
@@ -13,7 +13,7 @@ export default function ListTasks(props) {
                         if (task.workspace === props.id)
                         return (
                             <Col key={task.id} span={6} className="gutter-row">
-                                <DBTask 
+                                <Task 
                                     key={task.id} 
                                     id={task.id}
                                     task={task} 
