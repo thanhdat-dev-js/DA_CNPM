@@ -22,7 +22,7 @@ export default function Header() {
   const handleOkDelete = () => {
     //deleteDocumentById('workspace', selectWorkspace.memberIdList.map((it) => it === item.uid));
     //const temp = selectWorkspace.memberIdList.map((it) => it !== ID);
-    console.log(deletePerson);
+    // console.log('ád');
     editDocumentById('workspace', selectWorkspace.id, {
       memberIdList: [...selectWorkspace.memberIdList.filter(it => it !== deletePerson)]
     });
@@ -36,6 +36,23 @@ export default function Header() {
       ...modalDelete,
       isModalVisible: false
     })
+  }
+
+  function check(memberuid) {
+    if (selectWorkspace) {
+      if (selectWorkspace.createdById[0] === user.uid) {
+        if (user.uid === memberuid) {
+          return false;
+        }
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    else {
+      return false;
+    }
   }
 
   return (
@@ -70,18 +87,18 @@ export default function Header() {
                     </div>
                     <div className="col col-2" >
                       <div>
-                        {(selectWorkspace === undefined) && selectWorkspace.createdById[0] === user.uid && 
+                        {check(member.uid) &&
                           <Button
-                          onClick={async () => {
-                            setDeletePerson(member.uid);
-                            setModalDelete({
-                              ...modalDelete,
-                              isModalVisible: true,
-                              type: 'delete'
-                            })
-                          }}
-                          icon={<CloseOutlined />}
-                          style={{ marginRight: "35px" }}
+                            onClick={async () => {
+                              setDeletePerson(member.uid);
+                              setModalDelete({
+                                ...modalDelete,
+                                isModalVisible: true,
+                                type: 'delete'
+                              })
+                            }}
+                            icon={<CloseOutlined />}
+                            style={{ marginRight: "35px" }}
                           />
                         }
                       </div>

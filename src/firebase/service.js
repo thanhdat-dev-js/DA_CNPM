@@ -14,7 +14,7 @@ export const addDocument = async (collectionParam, data) => {
 
 export const deleteDocumentById = async (collectionParam, id) => {
   try {
-    await deleteDoc(doc(db, collectionParam, id));
+    return await deleteDoc(doc(db, collectionParam, id));
     console.log("delete id: ", id);
   } catch (e) {
     console.error("Error delete: ", e);
