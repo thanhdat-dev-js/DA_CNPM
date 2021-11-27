@@ -91,6 +91,7 @@ export default function Column(props) {
                     priority={task.priority}
                     tags={task.tag}
                     memberIdList={task.memberIdList}
+                    statusId={props.id}
                   />
                 )
               else

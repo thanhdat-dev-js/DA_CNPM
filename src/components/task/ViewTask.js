@@ -29,7 +29,7 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 export default function ViewTask() {
-    const { visibleTask, setVisibleTask, curTask, memberList } = React.useContext(AppContext);
+    const { visibleTask, setVisibleTask, curTask, memberList, columns } = React.useContext(AppContext);
     const [PrevTitle, setPT] = useState(curTask.name);
     const [title, setTitle] = useState(curTask.name);
 
@@ -41,6 +41,12 @@ export default function ViewTask() {
 
     const [prevPrio, setPP] = useState(curTask.priority);
     const [priority, setPriority] = useState(curTask.priority);
+    
+    const [prevStatus, setPrevStatus] = useState(curTask.statusId); // TODO
+    const [status, setStatus] = useState(curTask.statusId);
+    const statusNameById = (id) => columns.find(col => col.id === id)?.name;
+    // console.log({status});
+    // console.log(statusNameById (status));
 
     const [prevT, setPTag] = useState(curTask.tag);
     const [tags, setTags] = useState(curTask.tag);
@@ -64,6 +70,14 @@ export default function ViewTask() {
             <Menu.Item key="Medium">Medium</Menu.Item>
             <Menu.Item key="High">High</Menu.Item>
         </Menu>
+    );
+    
+    const menuStatus = (
+      <Menu onClick={(e) => { setStatus(e.key) }}>
+        {columns.map(column => (
+          <Menu.Item key={column.id} id={column.id} name={column.name}>{column.name}</Menu.Item>
+        ))}
+      </Menu>
     );
 
     // Change Input Method
@@ -138,6 +152,20 @@ export default function ViewTask() {
                 createdBy: curTask.createdBy,
                 createDate: curTask.createDate
             });
+            
+            if (prevStatus !== status) {
+              const taskIdListById = (colId) => (
+                columns.find(col => col.id === colId)?.taskIdList || []
+              );
+              await editDocumentById('column', prevStatus, {
+                taskIdList: taskIdListById(prevStatus).filter(taskId => (taskId !== curTask.id)),
+              });
+              await editDocumentById('column', status, {
+                taskIdList: [...taskIdListById(status), curTask.id],
+              });
+              setPrevStatus(status);
+            }
+
             setPT(title);
             setPDL(dl);
             setPP(priority);
@@ -223,6 +251,16 @@ export default function ViewTask() {
                     }
                 </Col>
             </Row>
+            
+            { editMode &&
+            <Row className="normal-row">
+            <Col span={5} className='element-text'>Status:</Col>
+              <Col span={10}>
+                <Dropdown disabled={!editMode} overlay={menuStatus}>
+                    <Button> {statusNameById(status)} </Button>
+                </Dropdown>
+              </Col>
+            </Row>}
 
             {/* Creator & Priority */}
             <Row className="normal-row">

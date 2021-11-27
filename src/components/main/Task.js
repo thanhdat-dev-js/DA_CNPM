@@ -21,7 +21,7 @@ export default function Task(props) {
         }}
         bodyStyle={{ padding: '4%', minheight: '150px' }}
         onClick={async () => {
-          await setCurTask({ ...props.task });
+          await setCurTask({ ...props.task, statusId: props.statusId });
           setVisibleTask(true);
         }}
       >
